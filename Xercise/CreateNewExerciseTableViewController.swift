@@ -80,6 +80,14 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 
                                 // Save the exercise to the device only
                                 self.saveToDevice()
+                                
+                                let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                }))
+                                
+                                self.presentViewController(alert, animated: true, completion: nil)
                             }))
                             publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                             self.presentViewController(publicActionSheet, animated: true, completion: nil)
@@ -157,7 +165,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             print("There was an error posting the data")
         }
         
-        // TEST CODE ONLY - Check for exercises
+        /*// TEST CODE ONLY - Check for exercises
         let request = NSFetchRequest(entityName: "Exercise")
         request.returnsObjectsAsFaults = false
         do {
@@ -171,7 +179,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             }*/
         } catch {
             print("There was an error fetching")
-        }
+        }*/
     }
     
     func displayActivityIndicator() {
@@ -268,6 +276,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         case 1:
             let cell = UITableViewCell()
             cell.textLabel?.text = muscleGroups[indexPath.row]
+            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
             if exerciseMuscleGroup == muscleGroups[indexPath.row] {
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
