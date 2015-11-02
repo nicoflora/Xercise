@@ -23,12 +23,11 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     var heavySets = -1
     var enduranceSets = -1
     var activityIndicator = UIActivityIndicatorView()
-    @IBOutlet var newExerciseTableView: UITableView!
-    
     let constants = XerciseConstants()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         sectionTitles = constants.newExerciseTitles
         muscleGroups = constants.muscleGroups
@@ -40,7 +39,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     
     @IBAction func saveExercise(sender: AnyObject) {
         
-        /*print("Title: \(exerciseTitle)")
+        /*
+        print("Title: \(exerciseTitle)")
         print("Muscle Group: \(exerciseMuscleGroup)")
         print("Description: \(exerciseDescription)")
         print("Heavy Reps: \(heavyReps)")
@@ -50,7 +50,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
         exerciseDescription += " The suggested number of heavy reps is: \(heavyReps), and the suggested number of endurance reps is: \(enduranceReps).\nThe suggested number of heavy sets is: \(heavySets), and the suggested number of endurance sets is: \(enduranceSets)."
         
-        print(exerciseDescription)*/
+        print(exerciseDescription)
+        */
         
         var dataValidated = false
         
@@ -115,8 +116,14 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             exercise.saveInBackgroundWithBlock { (success, error) -> Void in
                 self.displayActivityIndicator()
                 if error == nil {
-                    self.displayAlert("Success", message: "Your exercise has been saved!")
+                    //self.displayAlert("Success", message: "Your exercise has been saved!")
+                    let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }))
                     
+                    self.presentViewController(alert, animated: true, completion: nil)
                     // Dismiss VC
                     //self.dismissViewControllerAnimated(true, completion: nil)
                     
@@ -365,6 +372,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
+
 
     /*
     // MARK: - Navigation

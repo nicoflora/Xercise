@@ -407,8 +407,8 @@
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="yM3-Xw-GgL"/>
                                                     <exclude reference="vjQ-hF-HRw"/>
+                                                    <exclude reference="yM3-Xw-GgL"/>
                                                 </mask>
                                             </variation>
                                         </label>
@@ -443,8 +443,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="HdP-nf-Hfh"/>
                                                     <exclude reference="155-TY-IfR"/>
+                                                    <exclude reference="HdP-nf-Hfh"/>
                                                 </mask>
                                             </variation>
                                             <connections>
@@ -460,8 +460,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="GUt-Oz-oFi"/>
                                                     <exclude reference="32P-rF-gOF"/>
+                                                    <exclude reference="GUt-Oz-oFi"/>
                                                 </mask>
                                             </variation>
                                             <connections>
@@ -482,8 +482,8 @@
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="mdZ-oE-Tsy"/>
                                                     <exclude reference="CnU-Iv-NnF"/>
+                                                    <exclude reference="mdZ-oE-Tsy"/>
                                                 </mask>
                                             </variation>
                                         </label>
@@ -520,9 +520,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="New Workout" id="6v3-id-BvV"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <connections>
-                        <outlet property="newExerciseTableView" destination="59c-GV-fUB" id="WRZ-xV-QWf"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="41E-69-GSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
