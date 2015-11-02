@@ -116,7 +116,7 @@ class MyXercisesTableViewController: UITableViewController {
         view.tintColor = UIColor.lightGrayColor()
         
         let header = UITableViewHeaderFooterView()
-        header.textLabel?.font = UIFont(name: "Marker Felt", size: 16)
+        header.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         header.textLabel?.textColor = UIColor.blackColor()
     }
 
@@ -159,6 +159,8 @@ class MyXercisesTableViewController: UITableViewController {
                 cell.textLabel?.text = "No exercises saved!"
             }
         }
+        
+        cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         return cell
     }
     
