@@ -22,8 +22,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     var enduranceReps = -1
     var heavySets = -1
     var enduranceSets = -1
-    var activityIndicator = UIActivityIndicatorView()
-    
+    var activityIndicator = UIActivityIndicatorView()    
     let constants = XerciseConstants()
 
     override func viewDidLoad() {
