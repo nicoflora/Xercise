@@ -23,7 +23,6 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     var heavySets = -1
     var enduranceSets = -1
     var activityIndicator = UIActivityIndicatorView()
-    @IBOutlet var newExerciseTableView: UITableView!
     
     let constants = XerciseConstants()
 
