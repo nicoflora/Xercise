@@ -30,6 +30,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         sectionTitles = constants.newExerciseTitles
         muscleGroups = constants.muscleGroups
         
@@ -40,7 +41,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     
     @IBAction func saveExercise(sender: AnyObject) {
         
-        /*print("Title: \(exerciseTitle)")
+        /*
+        print("Title: \(exerciseTitle)")
         print("Muscle Group: \(exerciseMuscleGroup)")
         print("Description: \(exerciseDescription)")
         print("Heavy Reps: \(heavyReps)")
@@ -50,7 +52,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
         exerciseDescription += " The suggested number of heavy reps is: \(heavyReps), and the suggested number of endurance reps is: \(enduranceReps).\nThe suggested number of heavy sets is: \(heavySets), and the suggested number of endurance sets is: \(enduranceSets)."
         
-        print(exerciseDescription)*/
+        print(exerciseDescription)
+        */
         
         var dataValidated = false
         
