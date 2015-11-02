@@ -116,8 +116,14 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             exercise.saveInBackgroundWithBlock { (success, error) -> Void in
                 self.displayActivityIndicator()
                 if error == nil {
-                    self.displayAlert("Success", message: "Your exercise has been saved!")
+                    //self.displayAlert("Success", message: "Your exercise has been saved!")
+                    let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }))
                     
+                    self.presentViewController(alert, animated: true, completion: nil)
                     // Dismiss VC
                     //self.dismissViewControllerAnimated(true, completion: nil)
                     
@@ -366,6 +372,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
+
 
     /*
     // MARK: - Navigation
