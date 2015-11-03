@@ -24,6 +24,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     var enduranceSets = -1
     var activityIndicator = UIActivityIndicatorView()
     let constants = XerciseConstants()
+    let dataMgr = DataManager()
+    var addingFromWorkout = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,20 +41,6 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     
     @IBAction func saveExercise(sender: AnyObject) {
         
-        /*
-        print("Title: \(exerciseTitle)")
-        print("Muscle Group: \(exerciseMuscleGroup)")
-        print("Description: \(exerciseDescription)")
-        print("Heavy Reps: \(heavyReps)")
-        print("Endurance Reps: \(enduranceReps)")
-        print("Heavy Sets: \(heavySets)")
-        print("Endurance Sets: \(enduranceSets)")
-        
-        exerciseDescription += " The suggested number of heavy reps is: \(heavyReps), and the suggested number of endurance reps is: \(enduranceReps).\nThe suggested number of heavy sets is: \(heavySets), and the suggested number of endurance sets is: \(enduranceSets)."
-        
-        print(exerciseDescription)
-        */
-        
         var dataValidated = false
         
         // Validate Data
@@ -65,33 +53,60 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                             // All validations passed
                             dataValidated = true
                             
-                            // Prompt user for saving the exercise to the community or just on the device
-                            let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
-                            publicActionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                // Save the exercise to the device and Parse DB
-                                
-                                // Save to Parse
-                                self.displayActivityIndicator()
-                                self.saveToParse()
-                                // Save to core data
-                                self.saveToDevice()
-                            }))
-                            publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                
-                                // Save the exercise to the device only
-                                self.saveToDevice()
+                            // Create identifier
+                            let identifier : String = String(arc4random_uniform(100000))
+                            
+                            if addingFromWorkout == false {
+                                // Just adding a single exercise
+                                // Prompt user for saving the exercise to the community or just on the device
+                                let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
+                                publicActionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                    // Save the exercise to the device and Parse DB
+                                    
+                                    // Save to Parse
+                                    self.displayActivityIndicator()
+                                    self.saveToParse(identifier)
+                                    // Save to core data
+                                    self.saveToDevice(identifier)
+                                }))
+                                publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                    
+                                    // Save the exercise to the device only
+                                    self.saveToDevice(identifier)
+                                    
+                                    let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                        self.navigationController?.popViewControllerAnimated(true)
+                                    }))
+                                    
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                }))
+                                publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                                self.presentViewController(publicActionSheet, animated: true, completion: nil)
+                            } else {
+                                // Adding an exercise inside of create workout
+                                // Just save exercise to device
+                                saveToDevice(identifier)
                                 
                                 let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     self.dismissViewControllerAnimated(true, completion: nil)
+                                    
+                                    // store identifier in defaults for access in New Workout VC
+                                    let defaults = NSUserDefaults.standardUserDefaults()
+                                    let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: identifier)
+                                    self.dataMgr.storeEntries([newEntry], key: "addedExercise")
+                                    //defaults.setObject(newEntry, forKey: "addedExercise")
+                                    
+                                    // Pop VC to go back
                                     self.navigationController?.popViewControllerAnimated(true)
                                 }))
                                 
                                 self.presentViewController(alert, animated: true, completion: nil)
-                            }))
-                            publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-                            self.presentViewController(publicActionSheet, animated: true, completion: nil)
-                            
+                                
+                                
+                            }
                         }
                     }
                 }
@@ -104,7 +119,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
     }
     
-    func saveToParse() {
+    func saveToParse(id : String) {
         
         // Save to Parse
         let exercise = PFObject(className: "Exercise")
@@ -112,8 +127,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         exercise["name"] = self.exerciseTitle
         exercise["muscle_group"] = self.exerciseMuscleGroup
         exercise["exercise_desc"] = self.exerciseDescription
-        let identifier = Int(arc4random())
-        exercise["identifier"] = identifier
+        //let identifier = Int(arc4random())
+        exercise["identifier"] = id
         
         if let imageData = UIImageJPEGRepresentation(self.image!, 0.5) {
             let imageFile = PFFile(name: "image.png", data: imageData)
@@ -142,7 +157,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         }
     }
     
-    func saveToDevice() {
+    func saveToDevice(id : String) {
         
         let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -154,7 +169,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         newExercise.setValue(self.exerciseMuscleGroup, forKey: "muscle_group")
         newExercise.setValue(img, forKey: "image")
         newExercise.setValue(self.exerciseDescription, forKey: "exercise_desc")
-        newExercise.setValue(Int(arc4random()), forKey: "identifier")
+        newExercise.setValue(id, forKey: "identifier")
         
         do {
             //self.displayActivityIndicator()

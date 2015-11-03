@@ -67,18 +67,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="rC3-Un-Zzr">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rC3-Un-Zzr" id="zrR-LX-uCu">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </tableViewCellContentView>
-                                <animations/>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="eTa-i0-23I" id="7wx-Zr-1VE"/>
                             <outlet property="delegate" destination="eTa-i0-23I" id="9SF-Jd-fKj"/>
@@ -106,14 +94,14 @@
         <!--New Workout View Controller-->
         <scene sceneID="8Ea-0q-XZd">
             <objects>
-                <tableViewController title="New Workout View Controller" id="pD7-BW-vgG" sceneMemberID="viewController">
+                <tableViewController title="New Workout View Controller" id="pD7-BW-vgG" customClass="CreateNewWorkoutTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KBn-xg-t8a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZQM-Fl-vB9">
-                            <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -121,35 +109,57 @@
                             <state key="normal" title="Save Workout">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="saveWorkoutButtonPressed:" destination="pD7-BW-vgG" eventType="touchUpInside" id="5pw-qJ-kAr"/>
+                            </connections>
                         </button>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jMt-Wk-GOO">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jMt-Wk-GOO" id="in1-Mw-YQs">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </tableViewCellContentView>
-                                <animations/>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="pD7-BW-vgG" id="Gxd-po-wZw"/>
                             <outlet property="delegate" destination="pD7-BW-vgG" id="zst-cQ-PxD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Workout" id="u5l-iI-Vqy"/>
+                    <navigationItem key="navigationItem" title="New Workout" id="u5l-iI-Vqy">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Zz1-eT-RFV">
+                            <connections>
+                                <action selector="addExerciseButtonPressed:" destination="pD7-BW-vgG" id="xMr-Pq-GPH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="hml-sp-qTz" kind="show" identifier="addFromSaved" id="qoP-9W-edl"/>
+                        <segue destination="hBs-PH-c85" kind="show" identifier="newExerciseFromWorkout" id="exV-KX-8yW"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmD-vq-XHy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="889.5" y="1781.5"/>
         </scene>
-        <!--New Workout-->
+        <!--Add From My Xercises-->
+        <scene sceneID="GAC-vd-sOT">
+            <objects>
+                <tableViewController id="hml-sp-qTz" customClass="AddExerciseFromSavedTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gLd-e2-hAm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="hml-sp-qTz" id="pXs-yS-Ud6"/>
+                            <outlet property="delegate" destination="hml-sp-qTz" id="iqT-Ue-Jf9"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add From My Xercises" id="ed0-qh-ezu"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZY0-ag-Yuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1396.5" y="1781.5"/>
+        </scene>
+        <!--New Exercise View Controller-->
         <scene sceneID="3rl-iV-9Yr">
             <objects>
-                <tableViewController id="hBs-PH-c85" customClass="CreateNewExerciseTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="New Exercise View Controller" id="hBs-PH-c85" customClass="CreateNewExerciseTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="59c-GV-fUB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -518,7 +528,7 @@
                             <outlet property="delegate" destination="hBs-PH-c85" id="uhi-Lt-qUE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Workout" id="6v3-id-BvV"/>
+                    <navigationItem key="navigationItem" title="New Exercise" id="6v3-id-BvV"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="41E-69-GSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -867,4 +877,7 @@
         <image name="man_tab_icon" width="30" height="30"/>
         <image name="new_exercise_icon" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="exV-KX-8yW"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468135860.628338"
+            timestampString = "468224423.143472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "saveToDevice()"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "saveToDevice(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468135860.628338"
+            timestampString = "468224423.143472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "saveToDevice()"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "saveToDevice(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468135860.628338"
+            timestampString = "468224423.143472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "saveToDevice()"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "saveToDevice(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468135860.628338"
+            timestampString = "468224423.143472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "saveToParse()"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "saveToParse(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,27 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468128479.659561"
+            timestampString = "468224423.143472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "saveExercise(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Xercise/CreateNewExerciseTableViewController.swift"
-            timestampString = "468135860.628338"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "CreateNewExerciseTableViewController"
             landmarkType = "3">
          </BreakpointContent>

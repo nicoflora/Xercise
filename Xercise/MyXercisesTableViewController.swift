@@ -11,14 +11,12 @@ import CoreData
 
 class MyXercisesTableViewController: UITableViewController {
 
-    var workoutTitles = [String]()
-    var exerciseTitles = [String]()
-
+    var workouts = [Entry]()
+    var exercises = [Entry]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //getMyXercises()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,8 +28,8 @@ class MyXercisesTableViewController: UITableViewController {
     
     func getMyXercises() {
         
-        workoutTitles.removeAll()
-        exerciseTitles.removeAll()
+        workouts.removeAll()
+        exercises.removeAll()
         
         let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -44,8 +42,8 @@ class MyXercisesTableViewController: UITableViewController {
             
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
-                    //print(result.valueForKey("exercise_desc")!)
-                    workoutTitles.append(result.valueForKey("name")! as! String)
+                    workouts.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
+                    
                 }
             }
         } catch {
@@ -61,8 +59,8 @@ class MyXercisesTableViewController: UITableViewController {
             
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
-                    //print(result.valueForKey("exercise_desc")!)
-                    exerciseTitles.append(result.valueForKey("name")! as! String)
+                    //print(result.valueForKey("identifier")! as! Int)
+                    exercises.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
                 }
             }
         } catch {
@@ -126,16 +124,16 @@ class MyXercisesTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            if workoutTitles.count == 0 {
+            if workouts.count == 0 {
                 return 1
             } else {
-                return workoutTitles.count
+                return workouts.count
             }
         } else if section == 1 {
-            if exerciseTitles.count == 0 {
+            if exercises.count == 0 {
                 return 1
             } else {
-                return exerciseTitles.count
+                return exercises.count
             }
         }
         return 0
@@ -143,18 +141,18 @@ class MyXercisesTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+
         let cell = UITableViewCell()
 
         if indexPath.section == 0 {
-            if workoutTitles.count > 0 {
-                cell.textLabel?.text = workoutTitles[indexPath.row]
+            if workouts.count > 0 {
+                cell.textLabel?.text = workouts[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No workouts saved!"
             }
         } else if indexPath.section == 1 {
-            if exerciseTitles.count > 0 {
-                cell.textLabel?.text = exerciseTitles[indexPath.row]
+            if exercises.count > 0 {
+                cell.textLabel?.text = exercises[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No exercises saved!"
             }
@@ -168,6 +166,7 @@ class MyXercisesTableViewController: UITableViewController {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "New Workout", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Present VC to create a new workout
+            self.performSegueWithIdentifier("newWorkout", sender: self)
         }))
         actionSheet.addAction(UIAlertAction(title: "New Exercise", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Present VC to create a new exercise
