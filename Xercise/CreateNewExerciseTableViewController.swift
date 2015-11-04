@@ -13,6 +13,7 @@ import Parse
 class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var sectionTitles = [String]()
+    var sectionTitlesAddingFromWorkout = [String]()
     var muscleGroups = [String]()
     var exerciseTitle = ""
     var exerciseMuscleGroup = ""
@@ -26,14 +27,14 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     let constants = XerciseConstants()
     let dataMgr = DataManager()
     var addingFromWorkout = false
+    var unsavedData = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         sectionTitles = constants.newExerciseTitles
+        sectionTitlesAddingFromWorkout = constants.newExerciseInWorkoutTitles
         muscleGroups = constants.muscleGroups
-        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -46,17 +47,19 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         // Validate Data
         if exerciseTitle.characters.count > 3 {
             if image != UIImage(named: "new_exercise_icon"){
-                if exerciseMuscleGroup != "" {
-                    if exerciseDescription != constants.exerciseDescriptionText {
-                        if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
-                            
-                            // All validations passed
-                            dataValidated = true
-                            
-                            // Create identifier
-                            let identifier : String = String(arc4random_uniform(100000))
-                            
-                            if addingFromWorkout == false {
+                if exerciseDescription != constants.exerciseDescriptionText {
+                    if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
+
+                        // All validations passed
+                        dataValidated = true
+                        
+                        // Create identifier
+                        let identifier : String = String(arc4random_uniform(100000))
+                        let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
+                        
+                        if addingFromWorkout == false {
+                        
+                            if exerciseMuscleGroup != "" {
                                 // Just adding a single exercise
                                 // Prompt user for saving the exercise to the community or just on the device
                                 let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -65,9 +68,9 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                     
                                     // Save to Parse
                                     self.displayActivityIndicator()
-                                    self.saveToParse(identifier)
+                                    self.saveToParse(uuid as String)
                                     // Save to core data
-                                    self.saveToDevice(identifier)
+                                    self.saveToDevice(uuid as String)
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
@@ -84,29 +87,28 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                 self.presentViewController(publicActionSheet, animated: true, completion: nil)
-                            } else {
-                                // Adding an exercise inside of create workout
-                                // Just save exercise to device
-                                saveToDevice(identifier)
-                                
-                                let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
-                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                    self.dismissViewControllerAnimated(true, completion: nil)
-                                    
-                                    // store identifier in defaults for access in New Workout VC
-                                    let defaults = NSUserDefaults.standardUserDefaults()
-                                    let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: identifier)
-                                    self.dataMgr.storeEntries([newEntry], key: "addedExercise")
-                                    //defaults.setObject(newEntry, forKey: "addedExercise")
-                                    
-                                    // Pop VC to go back
-                                    self.navigationController?.popViewControllerAnimated(true)
-                                }))
-                                
-                                self.presentViewController(alert, animated: true, completion: nil)
-                                
-                                
                             }
+                        } else {
+                            // Adding an exercise inside of create workout
+                            // Just save exercise to device
+                            saveToDevice(identifier)
+                            
+                            let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                                
+                                // store identifier in defaults for access in New Workout VC
+                                let defaults = NSUserDefaults.standardUserDefaults()
+                                let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: identifier)
+                                self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
+                                //defaults.setObject(newEntry, forKey: "addedExercise")
+                                
+                                // Pop VC to go back
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }))
+                            
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
                         }
                     }
                 }
@@ -162,22 +164,25 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let context : NSManagedObjectContext = appDel.managedObjectContext
 
-        let img = UIImagePNGRepresentation(self.image!)
+        //let img = UIImagePNGRepresentation(self.image!)
+        if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
         
-        let newExercise = NSEntityDescription.insertNewObjectForEntityForName("Exercise", inManagedObjectContext: context)
-        newExercise.setValue(self.exerciseTitle, forKey: "name")
-        newExercise.setValue(self.exerciseMuscleGroup, forKey: "muscle_group")
-        newExercise.setValue(img, forKey: "image")
-        newExercise.setValue(self.exerciseDescription, forKey: "exercise_desc")
-        newExercise.setValue(id, forKey: "identifier")
-        
-        do {
-            //self.displayActivityIndicator()
-            try context.save()
-            //self.displayActivityIndicator()
-        } catch {
-            //self.displayActivityIndicator()
-            print("There was an error posting the data")
+            let newExercise = NSEntityDescription.insertNewObjectForEntityForName("Exercise", inManagedObjectContext: context)
+            newExercise.setValue(self.exerciseTitle, forKey: "name")
+            newExercise.setValue(self.exerciseMuscleGroup, forKey: "muscle_group")
+            newExercise.setValue(img, forKey: "image")
+            newExercise.setValue(self.exerciseDescription, forKey: "exercise_desc")
+            newExercise.setValue(id, forKey: "identifier")
+            
+            do {
+                //self.displayActivityIndicator()
+                try context.save()
+                unsavedData = false
+                //self.displayActivityIndicator()
+            } catch {
+                //self.displayActivityIndicator()
+                print("There was an error posting the data")
+            }
         }
         
         /*// TEST CODE ONLY - Check for exercises
@@ -230,103 +235,149 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return sectionTitles.count
+        if addingFromWorkout {
+            return sectionTitlesAddingFromWorkout.count
+        } else {
+            return sectionTitles.count
+        }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
+        if addingFromWorkout {
+            return sectionTitlesAddingFromWorkout[section]
+        } else {
+            return sectionTitles[section]
+        }
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = UIColor.lightGrayColor()
-        
         let header = UITableViewHeaderFooterView()
         header.textLabel?.font = UIFont(name: "Marker Felt", size: 16)
         header.textLabel?.textColor = UIColor.blackColor()
     }
-    
-    /*override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = UIColor.lightGrayColor() //UIColor(hexString: "#0f3878")
-        
-        let label = UILabel(frame: CGRectMake(0,0,29,100))
-        label.text = sectionTitles[section]
-        label.textColor = UIColor(hexString: "#0f3878")
-        
-        view.addSubview(label)
-        
-        return view
-    }*/
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return muscleGroups.count
-        } else {
+        if addingFromWorkout {
             return 1
+        } else {
+            if section == 1 {
+                return muscleGroups.count
+            } else {
+                return 1
+            }
         }
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        switch indexPath.section {
-        case 0: return 44
-        case 1: return 44
-        case 2: return 54
-        case 3: return 150
-        case 4: return 85
-        case 5: return 85
-        default: return 44
+        if addingFromWorkout {
+            switch indexPath.section {
+            case 0: return 44
+            case 1: return 54
+            case 2: return 150
+            case 3: return 85
+            case 4: return 85
+            default: return 44
+            }
+        } else {
+            switch indexPath.section {
+            case 0: return 44
+            case 1: return 44
+            case 2: return 54
+            case 3: return 150
+            case 4: return 85
+            case 5: return 85
+            default: return 44
+            }
         }
-
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
-            return cell
-        case 1:
-            let cell = UITableViewCell()
-            cell.textLabel?.text = muscleGroups[indexPath.row]
-            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
-            if exerciseMuscleGroup == muscleGroups[indexPath.row] {
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+        if addingFromWorkout {
+            // If adding from a workout, do not display the muscle groups
+            switch indexPath.section {
+            case 0:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
+                cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.exerciseImage.image = image
+                return cell
+            case 2:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                return cell
+            case 3:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
+                cell.heavyStepper.tag = 0
+                cell.enduranceStepper.tag = 1
+                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                return cell
+            case 4:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
+                cell.heavyStepper.tag = 2
+                cell.enduranceStepper.tag = 3
+                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                return cell
+            default:
+                let cell = UITableViewCell()
+                cell.textLabel?.text = "There was an error, please try reloading the page."
+                return cell
             }
-            return cell
-        case 2:
-            let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
-            cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.exerciseImage.image = image
-            return cell
-        case 3:
-            let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
-            return cell
-        case 4:
-            let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
-            cell.heavyStepper.tag = 0
-            cell.enduranceStepper.tag = 1
-            cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-            cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-            return cell
-        case 5:
-            let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
-            cell.heavyStepper.tag = 2
-            cell.enduranceStepper.tag = 3
-            cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-            cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-            return cell
-        default:
-            let cell = UITableViewCell()
-            cell.textLabel?.text = "There was an error, please try reloading the page."
-            return cell
+        } else {
+            switch indexPath.section {
+            case 0:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                return cell
+            case 1:
+                let cell = UITableViewCell()
+                cell.textLabel?.text = muscleGroups[indexPath.row]
+                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
+                if exerciseMuscleGroup == muscleGroups[indexPath.row] {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }
+                return cell
+            case 2:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
+                cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.exerciseImage.image = image
+                return cell
+            case 3:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                return cell
+            case 4:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
+                cell.heavyStepper.tag = 0
+                cell.enduranceStepper.tag = 1
+                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                return cell
+            case 5:
+                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
+                cell.heavyStepper.tag = 2
+                cell.enduranceStepper.tag = 3
+                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                return cell
+            default:
+                let cell = UITableViewCell()
+                cell.textLabel?.text = "There was an error, please try reloading the page."
+                return cell
+            }
         }
     }
     
     func saveData(notif : NSNotification) {
+        
+        unsavedData = true
         
         if let textField = notif.object as? UITextField {
             // Saving title field
@@ -370,8 +421,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
-            
+        if addingFromWorkout == false && indexPath.section == 1 {
             // Deselct all other rows
             for i in 0...self.muscleGroups.count - 1{
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 1))

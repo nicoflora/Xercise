@@ -13,6 +13,7 @@ class MyXercisesTableViewController: UITableViewController {
 
     var workouts = [Entry]()
     var exercises = [Entry]()
+    let dataMgr = DataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,70 +28,8 @@ class MyXercisesTableViewController: UITableViewController {
     
     
     func getMyXercises() {
-        
-        workouts.removeAll()
-        exercises.removeAll()
-        
-        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let requestWorkout = NSFetchRequest(entityName: "Workout")
-        requestWorkout.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestWorkout)
-            //print(results)
-            
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    workouts.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
-                    
-                }
-            }
-        } catch {
-            print("There was an error fetching workouts")
-        }
-        
-        
-        let requestExercise = NSFetchRequest(entityName: "Exercise")
-        requestExercise.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestExercise)
-            //print(results)
-            
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    //print(result.valueForKey("identifier")! as! Int)
-                    exercises.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
-                }
-            }
-        } catch {
-            print("There was an error fetching exercises")
-        }
-        
-        /*
-        // ** Only use this line to delete bad data in development **
-        requestExercise.predicate = NSPredicate(format: "name = %@", "")
-        requestExercise.returnsObjectsAsFaults = false
-        
-        do {
-        let results = try context.executeFetchRequest(requestExercise)
-        
-        if results.count > 0 {
-        for result in results as! [NSManagedObject] {
-        context.deleteObject(result)
-        print("Deleted object")
-        
-        do {
-        try context.save()
-        } catch {
-        print("There was an error saving the data")
-        }
-        }
-        }
-        }  catch {
-        print("There was an error fetching the data")
-        }*/
- 
+        workouts = dataMgr.getMyWorkouts()
+        exercises = dataMgr.getMyExercises()
     }
 
     override func didReceiveMemoryWarning() {

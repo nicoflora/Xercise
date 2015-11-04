@@ -27,27 +27,9 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
     }
     
     func getMyXercises() {
-        
         savedExercises.removeAll()
-        
-        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let requestExercise = NSFetchRequest(entityName: "Exercise")
-        requestExercise.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestExercise)
-            
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    savedExercises.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
-                }
-            }
-        } catch {
-            print("There was an error fetching exercises")
-        }
+        savedExercises = dataMgr.getMyExercises()
     }
-
 
     // MARK: - Table view data source
 
@@ -66,7 +48,7 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
     override func viewWillDisappear(animated: Bool) {
         // Save exercises to pass back
         if exercisesToAdd.count > 0 {
-            dataMgr.storeEntries(exercisesToAdd, key: "exercisesToAdd")
+            dataMgr.storeEntriesInDefaults(exercisesToAdd, key: "exercisesToAdd")
         }
     }
 

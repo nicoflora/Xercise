@@ -18,7 +18,11 @@ class XerciseConstants {
     
     let heavyInfo = "Heavy weight workout or exercises are aimed to build up the muscles by doing heavy weight with low repetitions and sets. For example, someone with a max bench press of 225 would aim to bench 200 pounds at 5 repetitions for 3 sets."
     
-    let newExerciseTitles = ["Title","Muscle Group","Image","Description","Suggested Reps","Suggested Sets"]
+    let newExerciseTitles = ["Name","Muscle Group","Image","Description","Suggested Reps","Suggested Sets"]
+    
+    let newExerciseInWorkoutTitles = ["Name","Image","Description","Suggested Reps","Suggested Sets"]
+    
+    let newWorkoutTitles = ["Name","Muscle Group","Exercises"]
     
     let exerciseDescriptionText = "An exercise description should contain instructions for performing this exercise, including all equipment and movements."
     
