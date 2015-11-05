@@ -118,25 +118,49 @@ class MyXercisesTableViewController: UITableViewController {
         self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
-    /*
-    // Override to support conditional editing of the table view.
+    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            if indexPath.section == 0 {
+                // Deleting a workout
+                let idToDelete = workouts[indexPath.row].identifier
+                // Remove from core data
+                dataMgr.deleteItemByID(idToDelete, entityName: "Workout", completion: { (success) -> Void in
+                    if success {
+                        // Remove from local array
+                        self.workouts.removeAtIndex(indexPath.row)
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    } else {
+                        self.presentAlert("Error", alertMessage: "There was an issue deleting your workout, please try again!")
+                    }
+                })
+            } else if indexPath.section == 1 {
+                // Deleting an exercise
+                let idToDelete = exercises[indexPath.row].identifier
+                // Remove from core data
+                dataMgr.deleteItemByID(idToDelete, entityName: "Exercise", completion: { (success) -> Void in
+                    if success {
+                        // Remove from local array
+                        self.exercises.removeAtIndex(indexPath.row)
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    } else {
+                        self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
+                    }
+                })
+            }
+        }
     }
-    */
+    
+    func presentAlert(alertTitle : String, alertMessage : String) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 
     /*
     // Override to support rearranging the table view.

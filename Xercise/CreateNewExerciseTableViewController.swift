@@ -54,7 +54,6 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                         dataValidated = true
                         
                         // Create identifier
-                        let identifier : String = String(arc4random_uniform(100000))
                         let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
                         
                         if addingFromWorkout == false {
@@ -64,26 +63,71 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 // Prompt user for saving the exercise to the community or just on the device
                                 let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
                                 publicActionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                    // Save the exercise to the device and Parse DB
                                     
-                                    // Save to Parse
+                                    // Save the exercise to the device and Parse DB
                                     self.displayActivityIndicator()
-                                    self.saveToParse(uuid as String)
-                                    // Save to core data
-                                    self.saveToDevice(uuid as String)
+                                    if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+
+                                        // Save to core data
+                                        self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                            self.removeActivityIndicator()
+                                            if success {
+                                                // Saved to core data, now save to Parse
+                                                // Save to Parse
+                                                self.displayActivityIndicator()
+                                                self.dataMgr.saveExerciseToParse(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                                    self.removeActivityIndicator()
+                                                    if success {
+                                                        // Present success alert and pop VC
+                                                        self.presentSucessAlert()
+                                                    } else {
+                                                        // Saving to Core Data succeeded but Parse failed
+                                                        let alert = UIAlertController(title: "Public Save Error", message: "Your exercise was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
+                                                        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                                                        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                                            //try again
+                                                            self.displayActivityIndicator()
+                                                            self.dataMgr.saveExerciseToParse(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                                                self.removeActivityIndicator()
+                                                                if success {
+                                                                    // Save to Parse was successful
+                                                                    self.presentSucessAlert()
+                                                                } else {
+                                                                    // Parse failed again
+                                                                    let alert = UIAlertController(title: "Public Save Error", message: "Your exercise was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
+                                                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+                                                                    self.presentViewController(alert, animated: true, completion: nil)
+                                                                }
+                                                            })
+                                                        }))
+                                                        self.presentViewController(alert, animated: true, completion: nil)
+                                                    }
+                                                })
+                                            } else {
+                                                self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
+                                            }
+                                        })
+                                    } else {
+                                        self.presentAlert("Error", message: "There was an error with your image, please use a different one and try again.")
+                                    }
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
                                     // Save the exercise to the device only
-                                    self.saveToDevice(identifier)
-                                    
-                                    let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
-                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                        self.dismissViewControllerAnimated(true, completion: nil)
-                                        self.navigationController?.popViewControllerAnimated(true)
-                                    }))
-                                    
-                                    self.presentViewController(alert, animated: true, completion: nil)
+                                    self.displayActivityIndicator()
+                                    if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                        self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                            self.removeActivityIndicator()
+                                            if success {
+                                                // Present success alert and pop VC
+                                                self.presentSucessAlert()
+                                            } else {
+                                                self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
+                                            }
+                                        })
+                                    } else {
+                                        self.presentAlert("Error", message: "There was an error with your image, please use a different one and try again.")
+                                    }
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                 self.presentViewController(publicActionSheet, animated: true, completion: nil)
@@ -91,24 +135,23 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                         } else {
                             // Adding an exercise inside of create workout
                             // Just save exercise to device
-                            saveToDevice(identifier)
-                            
-                            let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                self.dismissViewControllerAnimated(true, completion: nil)
-                                
-                                // store identifier in defaults for access in New Workout VC
-                                let defaults = NSUserDefaults.standardUserDefaults()
-                                let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: identifier)
-                                self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
-                                //defaults.setObject(newEntry, forKey: "addedExercise")
-                                
-                                // Pop VC to go back
-                                self.navigationController?.popViewControllerAnimated(true)
-                            }))
-                            
-                            self.presentViewController(alert, animated: true, completion: nil)
-                            
+                            self.displayActivityIndicator()
+                            if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                    self.removeActivityIndicator()
+                                    if success {
+                                        // Add to NSUserDefaults to get this exercise in Create New Workout
+                                        let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String)
+                                        self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
+                                        // Present success alert and pop VC
+                                        self.presentSucessAlert()
+                                    } else {
+                                        self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
+                                    }
+                                })
+                            } else {
+                                self.presentAlert("Error", message: "There was an error with your image, please use a different one and try again.")
+                            }
                         }
                     }
                 }
@@ -116,113 +159,31 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         }
         
         if dataValidated == false {
-            displayAlert("Error!", message: "There was an error in your exercise data. Please review your data and try again.")
+            presentAlert("Error!", message: "There was an error in your exercise data. Please review your data and try again.")
         }
         
-    }
-    
-    func saveToParse(id : String) {
-        
-        // Save to Parse
-        let exercise = PFObject(className: "Exercise")
-        
-        exercise["name"] = self.exerciseTitle
-        exercise["muscle_group"] = self.exerciseMuscleGroup
-        exercise["exercise_desc"] = self.exerciseDescription
-        //let identifier = Int(arc4random())
-        exercise["identifier"] = id
-        
-        if let imageData = UIImageJPEGRepresentation(self.image!, 0.5) {
-            let imageFile = PFFile(name: "image.png", data: imageData)
-            exercise["image"] = imageFile
-            
-            //self.displayActivityIndicator()
-            
-            exercise.saveInBackgroundWithBlock { (success, error) -> Void in
-                self.displayActivityIndicator()
-                if error == nil {
-                    //self.displayAlert("Success", message: "Your exercise has been saved!")
-                    let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                        self.navigationController?.popViewControllerAnimated(true)
-                    }))
-                    
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    // Dismiss VC
-                    //self.dismissViewControllerAnimated(true, completion: nil)
-                    
-                } else {
-                    self.displayAlert("Error", message: "There was an error saving your exercise, please try again.")
-                }
-            }
-        }
-    }
-    
-    func saveToDevice(id : String) {
-        
-        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-
-        //let img = UIImagePNGRepresentation(self.image!)
-        if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
-        
-            let newExercise = NSEntityDescription.insertNewObjectForEntityForName("Exercise", inManagedObjectContext: context)
-            newExercise.setValue(self.exerciseTitle, forKey: "name")
-            newExercise.setValue(self.exerciseMuscleGroup, forKey: "muscle_group")
-            newExercise.setValue(img, forKey: "image")
-            newExercise.setValue(self.exerciseDescription, forKey: "exercise_desc")
-            newExercise.setValue(id, forKey: "identifier")
-            
-            do {
-                //self.displayActivityIndicator()
-                try context.save()
-                unsavedData = false
-                //self.displayActivityIndicator()
-            } catch {
-                //self.displayActivityIndicator()
-                print("There was an error posting the data")
-            }
-        }
-        
-        /*// TEST CODE ONLY - Check for exercises
-        let request = NSFetchRequest(entityName: "Exercise")
-        request.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(request)
-            print(results)
-            
-            /*if results.count > 0 {
-            for result in results as! [NSManagedObject] {
-            print(result.valueForKey("exercise_desc")!)
-            }
-            }*/
-        } catch {
-            print("There was an error fetching")
-        }*/
     }
     
     func displayActivityIndicator() {
-        if activityIndicator.isAnimating() {
+        /*if activityIndicator.isAnimating() {
             activityIndicator.stopAnimating()
             //activityIndicator.removeFromSuperview()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        } else {
+        } else {*/
             activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
             activityIndicator.center = self.view.center
             activityIndicator.hidesWhenStopped = true
             activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
             activityIndicator.backgroundColor = UIColor.grayColor()
-            view.addSubview(activityIndicator)
-            view.bringSubviewToFront(activityIndicator)
             activityIndicator.startAnimating()
+            view.addSubview(activityIndicator)
+            //view.bringSubviewToFront(activityIndicator)
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        }
+        //}
     }
     
     func removeActivityIndicator() {
         activityIndicator.stopAnimating()
-        //activityIndicator.removeFromSuperview()
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
     }
     
@@ -300,6 +261,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+                cell.title.tag = 1
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
                 return cell
             case 1:
@@ -437,13 +399,19 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         }
     }
     
-    func displayAlert(title : String, message : String) {
-        
+    func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             self.dismissViewControllerAnimated(true, completion: nil)
         }))
-        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func presentSucessAlert() {
+        let alert = UIAlertController(title: "Success", message: "Your workout has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
     

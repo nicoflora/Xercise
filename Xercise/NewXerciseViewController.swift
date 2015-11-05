@@ -86,7 +86,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
 
     }
     
-    @IBAction func updateImage(sender: AnyObject) {
+    func updateImage(sender: AnyObject) {
         if isAnimatingImage == false {
             timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("animateImage"), userInfo: nil, repeats: true)
             isAnimatingImage = true

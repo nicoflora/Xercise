@@ -41,7 +41,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             defaults.removeObjectForKey("addedExercise")
         }
         
-        
         let addedSavedExercises = dataMgr.retrieveEntriesFromDefaults("exercisesToAdd")
         if addedSavedExercises.count > 0 {
             for savedExercise in addedSavedExercises {
@@ -53,17 +52,9 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        
-        // Store the current exercises in NSUserDefaults using the DataManager class
-        //dataMgr.storeEntriesInDefaults(exercises, key: "workoutExercises")
-        
-    }
-    
     func getMyXercises(id : String) {
-        exercises.append(dataMgr.getExerciseByID(id)!)
+        exercises.append(dataMgr.getEntryByID(id, entityName: "Exercise")!)
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -123,50 +114,60 @@ class CreateNewWorkoutTableViewController: UITableViewController {
                 
                 self.saveToDevice(uuid as String, exerciseIDs: exerciseIDs,completion: { (success) -> Void in
                     if success {
-                        // Remove exercises from defaults on success
-                        self.defaults.removeObjectForKey("workoutExercises")
                         
                         // Saving to core data was successful, now try Parse
                         self.saveToParse(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                             if success {
                                 // Save to Parse was successful
-                                self.checkExerciseAvailablity(ids)
-                                self.presentSucessAlert()
+                                // Check to make sure all referenced exercises are in Parse if made public
+                                self.checkExerciseAvailablity(ids, completion: { (success) -> Void in
+                                    if success {
+                                        // Remove exercises from defaults on success
+                                        self.defaults.removeObjectForKey("workoutExercises")
+                                        self.presentSucessAlert()
+                                    }
+                                })
                             } else {
                                 // Saving to Core Data succeeded but Parse failed
-                                let alert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
-                                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-                                alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                let publicAlert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
+                                publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                                publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     //try again
                                     self.saveToParse(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                                         if success == true {
                                             // Save to Parse was successful
-                                            self.checkExerciseAvailablity(ids)
-                                            self.presentSucessAlert()
+                                            // Check to make sure all referenced exercises are in Parse if made public
+                                            self.checkExerciseAvailablity(ids, completion: { (success) -> Void in
+                                                if success {
+                                                    // Remove exercises from defaults on success
+                                                    self.defaults.removeObjectForKey("workoutExercises")
+                                                    self.presentSucessAlert()
+                                                }
+                                            })
                                         } else {
                                             // Saving to Core Data succeeded but Parse failed
                                             let alert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
                                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+                                            self.presentViewController(alert, animated: true, completion: nil)
                                         }
                                     })
                                 }))
+                                self.presentViewController(publicAlert, animated: true, completion: nil)
                             }
                         })
                     } else {
                         self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
                     }
                 })
-                
-                // Remove exercises from defaults on success
-                self.defaults.removeObjectForKey("workoutExercises")
+
             }))
             actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 // Save to device database only
-                self.saveToDevice(uuid as String, exerciseIDs: exerciseIDs,completion: { (success) -> Void in
+                self.saveToDevice(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                     if success {
                         // Remove exercises from defaults on success
                         self.defaults.removeObjectForKey("workoutExercises")
-                        
+
                         // Present success alert and pop VC
                         self.presentSucessAlert()
                     } else {
@@ -183,19 +184,33 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         }
     }
     
-    func checkExerciseAvailablity(ids : [String]) {
-        var query = PFQuery(className: "Exercise")
-        
+    func checkExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
+        var completionSuccess = true
         for exerciseID in ids {
+            print(ids)
+            let query = PFQuery(className: "Exercise")
             query.whereKey("identifier", equalTo: exerciseID)
             query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
                 if objects?.count == 0 {
                     // Not in Parse database, add to Parse
-                    // Query Core Data for exercise info
-                    let exerciseToAdd = self.dataMgr.getExerciseByID(exerciseID)
-                    
+                    if let exerciseToAdd : Exercise = self.dataMgr.getExerciseByID(exerciseID) {
+                        // Got Exercise from Core Data - now add to Parse
+                        if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
+                            self.dataMgr.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
+                                if success == false {
+                                    // erorr saving to Parse
+                                    completionSuccess = false
+                                }
+                            })
+                        }
+                    }
                 }
             })
+        }
+        if completionSuccess {
+            completion(success: true)
+        } else {
+            completion(success: false)
         }
     }
     
@@ -303,6 +318,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         
         if indexPath.section == 0 {
             let titleCell = tableView.dequeueReusableCellWithIdentifier("workoutTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+            titleCell.title.tag = 0
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
             return titleCell
         } else if indexPath.section == 1 {
@@ -324,7 +340,9 @@ class CreateNewWorkoutTableViewController: UITableViewController {
     func saveData(notif : NSNotification) {
         if let textField = notif.object as? UITextField {
             // Saving name field
-            workoutName = textField.text!
+            if textField.tag == 0 {
+                workoutName = textField.text!
+            }
         }
     }
     
@@ -343,25 +361,28 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
-    
 
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        if indexPath.section == 2 {
+            if exercises.count > 0 {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
     }
     
-
-    /*
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+            exercises.removeAtIndex(indexPath.row)
+            tableView.reloadData()
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
-
 }

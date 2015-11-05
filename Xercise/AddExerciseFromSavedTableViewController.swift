@@ -59,6 +59,12 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
         
         if savedExercises.count > 0 {
             cell.textLabel?.text = savedExercises[indexPath.row].title
+            // If cell has been selected, display a checkmark
+            for exToAdd in exercisesToAdd {
+                if exToAdd.identifier == savedExercises[indexPath.row].identifier {
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }
+            }
         } else {
             cell.textLabel?.text = "You have no saved exercises!"
         }

@@ -95,7 +95,7 @@
         <scene sceneID="8Ea-0q-XZd">
             <objects>
                 <tableViewController title="New Workout View Controller" id="pD7-BW-vgG" customClass="CreateNewWorkoutTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KBn-xg-t8a">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KBn-xg-t8a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
@@ -647,14 +647,6 @@
                                     <action selector="selectMuscleGroupBtnPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="Fq8-U1-SLH"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnJ-pm-sEe">
-                                <rect key="frame" x="162" y="458" width="51" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Update"/>
-                                <connections>
-                                    <action selector="updateImage:" destination="WOs-uM-HAx" eventType="touchUpInside" id="lwD-6i-SMz"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -666,9 +658,7 @@
                             <constraint firstItem="Pux-Uh-uyF" firstAttribute="top" secondItem="MCp-Oq-XNz" secondAttribute="bottom" constant="38" id="O4O-V9-XMs"/>
                             <constraint firstItem="MCp-Oq-XNz" firstAttribute="top" secondItem="FJc-CE-5ZJ" secondAttribute="bottom" constant="51" id="TPP-nP-IcZ"/>
                             <constraint firstItem="FJc-CE-5ZJ" firstAttribute="top" secondItem="eme-qh-I5u" secondAttribute="bottom" constant="24" id="Y5O-4W-QXe"/>
-                            <constraint firstItem="fnJ-pm-sEe" firstAttribute="centerX" secondItem="xXq-pE-lGO" secondAttribute="centerX" id="hl2-nv-qdx"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9Kb-4d-YAw" secondAttribute="trailing" constant="20" id="rcU-Jp-cN1"/>
-                            <constraint firstItem="fnJ-pm-sEe" firstAttribute="top" secondItem="MCp-Oq-XNz" secondAttribute="bottom" constant="82" id="xmn-WE-ATW"/>
                             <constraint firstItem="9Kb-4d-YAw" firstAttribute="top" secondItem="MCp-Oq-XNz" secondAttribute="bottom" constant="38" id="zhI-LG-O0s"/>
                         </constraints>
                         <variation key="default">
