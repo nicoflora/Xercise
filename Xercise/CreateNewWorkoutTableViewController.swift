@@ -20,6 +20,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
     let dataMgr = DataManager()
     var workoutMuscleGroup = ""
     var workoutName = ""
+    var activityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,16 +112,18 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             let actionSheet = UIAlertController(title: nil, message: "Would you like to allow this workout to be publicly accessible by other members of the community, or keep the workout private? (Note, to share this exercise with others using a group code, the workout must be made public)", preferredStyle: UIAlertControllerStyle.ActionSheet)
             actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 // Save to both device and Parse databases
-                
-                self.saveToDevice(uuid as String, exerciseIDs: exerciseIDs,completion: { (success) -> Void in
+                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                     if success {
-                        
                         // Saving to core data was successful, now try Parse
-                        self.saveToParse(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                        self.displayActivityIndicator()
+                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                            self.removeActivityIndicator()
                             if success {
                                 // Save to Parse was successful
                                 // Check to make sure all referenced exercises are in Parse if made public
-                                self.checkExerciseAvailablity(ids, completion: { (success) -> Void in
+                                self.displayActivityIndicator()
+                                self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
+                                    self.removeActivityIndicator()
                                     if success {
                                         // Remove exercises from defaults on success
                                         self.defaults.removeObjectForKey("workoutExercises")
@@ -133,11 +136,11 @@ class CreateNewWorkoutTableViewController: UITableViewController {
                                 publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                 publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     //try again
-                                    self.saveToParse(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                                    self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                                         if success == true {
                                             // Save to Parse was successful
                                             // Check to make sure all referenced exercises are in Parse if made public
-                                            self.checkExerciseAvailablity(ids, completion: { (success) -> Void in
+                                            self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
                                                 if success {
                                                     // Remove exercises from defaults on success
                                                     self.defaults.removeObjectForKey("workoutExercises")
@@ -163,7 +166,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             }))
             actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 // Save to device database only
-                self.saveToDevice(uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
                     if success {
                         // Remove exercises from defaults on success
                         self.defaults.removeObjectForKey("workoutExercises")
@@ -184,7 +187,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         }
     }
     
-    func checkExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
+    /*func checkExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
         var completionSuccess = true
         for exerciseID in ids {
             print(ids)
@@ -233,7 +236,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         } catch {
             //self.displayActivityIndicator()
             completion(success: false)
-            print("There was an error saving the workout")
         }
     }
     
@@ -258,10 +260,26 @@ class CreateNewWorkoutTableViewController: UITableViewController {
 
             } else {
                 completion(success: false)
-                self.presentAlert("Error", alertMessage: "There was an error saving your workout, please try again.")
             }
         }
+    }*/
+    
+    func displayActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        activityIndicator.center = self.tableView.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.backgroundColor = UIColor.grayColor()
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
     }
+    
+    func removeActivityIndicator() {
+        activityIndicator.stopAnimating()
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+    }
+
 
     
     func presentAlert(alertTitle : String, alertMessage : String) {

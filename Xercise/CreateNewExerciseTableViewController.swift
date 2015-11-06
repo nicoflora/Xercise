@@ -28,16 +28,13 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     let dataMgr = DataManager()
     var addingFromWorkout = false
     var unsavedData = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sectionTitles = constants.newExerciseTitles
         sectionTitlesAddingFromWorkout = constants.newExerciseInWorkoutTitles
         muscleGroups = constants.muscleGroups
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
     
     @IBAction func saveExercise(sender: AnyObject) {
@@ -65,12 +62,12 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 publicActionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
                                     // Save the exercise to the device and Parse DB
-                                    self.displayActivityIndicator()
                                     if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
 
                                         // Save to core data
+                                        //self.displayActivityIndicator()
                                         self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
-                                            self.removeActivityIndicator()
+                                            //self.removeActivityIndicator()
                                             if success {
                                                 // Saved to core data, now save to Parse
                                                 // Save to Parse
@@ -113,11 +110,11 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
-                                    // Save the exercise to the device only
-                                    self.displayActivityIndicator()
+                                    // Save the exercise to Core Data only
                                     if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                        //self.displayActivityIndicator()
                                         self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
-                                            self.removeActivityIndicator()
+                                            //self.removeActivityIndicator()
                                             if success {
                                                 // Present success alert and pop VC
                                                 self.presentSucessAlert()
@@ -161,32 +158,23 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         if dataValidated == false {
             presentAlert("Error!", message: "There was an error in your exercise data. Please review your data and try again.")
         }
-        
     }
     
     func displayActivityIndicator() {
-        /*if activityIndicator.isAnimating() {
-            activityIndicator.stopAnimating()
-            //activityIndicator.removeFromSuperview()
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-        } else {*/
-            activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
-            activityIndicator.center = self.view.center
-            activityIndicator.hidesWhenStopped = true
-            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-            activityIndicator.backgroundColor = UIColor.grayColor()
-            activityIndicator.startAnimating()
-            view.addSubview(activityIndicator)
-            //view.bringSubviewToFront(activityIndicator)
-            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        //}
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        activityIndicator.center = self.tableView.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.backgroundColor = UIColor.grayColor()
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
     }
     
     func removeActivityIndicator() {
         activityIndicator.stopAnimating()
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -408,7 +396,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     }
     
     func presentSucessAlert() {
-        let alert = UIAlertController(title: "Success", message: "Your workout has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Success", message: "Your exercise has been saved!", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
             self.navigationController?.popViewControllerAnimated(true)
         }))

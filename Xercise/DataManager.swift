@@ -17,28 +17,18 @@ class DataManager {
     let defaults = NSUserDefaults.standardUserDefaults()
     
     func storeEntriesInDefaults(arr : [Entry], key : String) {
-        
         let archiveKey = NSKeyedArchiver.archivedDataWithRootObject(arr)
-        
         defaults.setObject(archiveKey, forKey: key)
-        
     }
     
     func retrieveEntriesFromDefaults(key : String) -> [Entry] {
-        
         let storedAccounts = defaults.objectForKey(key) as? NSData
-        
         if let storedAccounts = storedAccounts {
-            
             let theAccounts = NSKeyedUnarchiver.unarchiveObjectWithData(storedAccounts) as? [Entry]
-            
             if let theAccounts = theAccounts {
-                
                 // Accounts are stored in NSUserDefaults
                 if theAccounts.count > 0 {
-                    
                     return theAccounts
-                    
                 }
             }
         }
@@ -46,9 +36,7 @@ class DataManager {
     }
     
     func archiveArray(arr : [String]) -> NSData {
-        
         let archiveKey = NSKeyedArchiver.archivedDataWithRootObject(arr)
-        
         return archiveKey
     }
     
@@ -66,7 +54,6 @@ class DataManager {
         let context : NSManagedObjectContext = appDel.managedObjectContext
         var entryFound = false
         var entryToReturn = Entry(exerciseTitle: "", exerciseIdentifer: "")
-        
         if id != "" && entityName != "" {
             let requestExercise = NSFetchRequest(entityName: entityName)
             requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
@@ -83,7 +70,6 @@ class DataManager {
             } catch {
                 print("There was an error fetching the entry by ID")
             }
-            
             if entryFound {
                 return entryToReturn
             } else {
@@ -98,22 +84,18 @@ class DataManager {
         
         var workouts = [Entry]()
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        
         let requestWorkout = NSFetchRequest(entityName: "Workout")
         requestWorkout.returnsObjectsAsFaults = false
         do {
             let results = try context.executeFetchRequest(requestWorkout)
-            
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
                     workouts.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
-                    
                 }
             }
         } catch {
             print("There was an error fetching the workouts")
         }
-        
         return workouts
     }
     
@@ -121,12 +103,10 @@ class DataManager {
         
         var exercises = [Entry]()
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        
         let requestExercise = NSFetchRequest(entityName: "Exercise")
         requestExercise.returnsObjectsAsFaults = false
         do {
             let results = try context.executeFetchRequest(requestExercise)
-            
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
                     exercises.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
@@ -135,14 +115,12 @@ class DataManager {
         } catch {
             print("There was an error fetching exercises")
         }
-        
         return exercises
     }
     
     func saveExerciseToDevice(name : String, id : String, muscleGroup : String, image : NSData, exerciseDescription : String, completion : (success : Bool) -> Void) {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
-
         let newExercise = NSEntityDescription.insertNewObjectForEntityForName("Exercise", inManagedObjectContext: context)
         newExercise.setValue(name, forKey: "name")
         newExercise.setValue(muscleGroup, forKey: "muscle_group")
@@ -163,16 +141,12 @@ class DataManager {
                 
         // Parse exercise object
         let exercise = PFObject(className: "Exercise")
-        
         exercise["name"] = name
         exercise["muscle_group"] = muscleGroup
         exercise["exercise_desc"] = exerciseDescription
         exercise["identifier"] = id
-        
         let imageFile = PFFile(name: "image.jpeg", data: image)
         exercise["image"] = imageFile
-        
-    
         exercise.saveInBackgroundWithBlock { (success, error) -> Void in
             if error == nil {
                 completion(success: true)
@@ -182,12 +156,74 @@ class DataManager {
         }
     }
     
+    func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : NSData, completion : (success : Bool) -> Void) {
+        
+        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let newWorkout = NSEntityDescription.insertNewObjectForEntityForName("Workout", inManagedObjectContext: context)
+        newWorkout.setValue(workoutName, forKey: "name")
+        newWorkout.setValue(id, forKey: "identifier")
+        newWorkout.setValue(exerciseIDs, forKey: "exercise_ids")
+        newWorkout.setValue(workoutMuscleGroup, forKey: "muscle_group")
+        do {
+            try context.save()
+            completion(success: true)
+        } catch {
+            completion(success: false)
+        }
+    }
+    
+    func saveWorkoutToParse(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : NSData, completion : (success : Bool) -> Void) {
+        
+        // Create Parse object to save
+        let workout = PFObject(className: "Workout")
+        workout["name"] = workoutName
+        workout["identifier"] = id
+        workout["exercise_ids"] = exerciseIDs
+        workout["muscle_group"] = workoutMuscleGroup
+        workout.saveInBackgroundWithBlock { (success, error) -> Void in
+            if error == nil {
+                completion(success: true)
+            } else {
+                completion(success: false)
+            }
+        }
+    }
+    
+    func checkParseExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
+        var completionSuccess = true
+        for exerciseID in ids {
+            let query = PFQuery(className: "Exercise")
+            query.whereKey("identifier", equalTo: exerciseID)
+            query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
+                if objects?.count == 0 {
+                    // Not in Parse database, add to Parse
+                    if let exerciseToAdd : Exercise = self.getExerciseByID(exerciseID) {
+                        // Got Exercise from Core Data - now add to Parse
+                        if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
+                            self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
+                                if success == false {
+                                    // erorr saving to Parse
+                                    completionSuccess = false
+                                }
+                            })
+                        }
+                    }
+                }
+            })
+        }
+        if completionSuccess {
+            completion(success: true)
+        } else {
+            completion(success: false)
+        }
+    }
+    
     func getWorkoutByID(id : String) -> Workout? {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
         var entryFound = false
         var entryToReturn = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""])
-        
         let requestExercise = NSFetchRequest(entityName: "Workout")
         requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
         requestExercise.returnsObjectsAsFaults = false
@@ -206,7 +242,6 @@ class DataManager {
         } catch {
             print("There was an error fetching the workout by ID")
         }
-        
         if entryFound {
             return entryToReturn
         } else {
@@ -219,13 +254,11 @@ class DataManager {
         let context : NSManagedObjectContext = appDel.managedObjectContext
         var entryFound = false
         var entryToReturn = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
-        
         let requestExercise = NSFetchRequest(entityName: "Exercise")
         requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
         requestExercise.returnsObjectsAsFaults = false
         do {
             let results = try context.executeFetchRequest(requestExercise)
-            
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
                     entryFound = true
@@ -238,7 +271,6 @@ class DataManager {
         } catch {
             print("There was an error fetching the workout by ID")
         }
-        
         if entryFound {
             return entryToReturn
         } else {
@@ -255,7 +287,6 @@ class DataManager {
         requestExercise.returnsObjectsAsFaults = false
         do {
             let results = try context.executeFetchRequest(requestExercise)
-            
             if results.count > 0 {
                 for result in results as! [NSManagedObject] {
                     // Delete from Core Data
