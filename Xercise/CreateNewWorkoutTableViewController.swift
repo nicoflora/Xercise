@@ -112,7 +112,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             let actionSheet = UIAlertController(title: nil, message: "Would you like to allow this workout to be publicly accessible by other members of the community, or keep the workout private? (Note, to share this exercise with others using a group code, the workout must be made public)", preferredStyle: UIAlertControllerStyle.ActionSheet)
             actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 // Save to both device and Parse databases
-                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
                     if success {
                         // Saving to core data was successful, now try Parse
                         self.displayActivityIndicator()
@@ -166,7 +166,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             }))
             actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 // Save to device database only
-                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: false, completion: { (success) -> Void in
                     if success {
                         // Remove exercises from defaults on success
                         self.defaults.removeObjectForKey("workoutExercises")
@@ -279,8 +279,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         activityIndicator.stopAnimating()
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
     }
-
-
     
     func presentAlert(alertTitle : String, alertMessage : String) {
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)

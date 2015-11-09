@@ -27,5 +27,7 @@ class XerciseConstants {
     let exerciseDescriptionText = "An exercise description should contain instructions for performing this exercise, including all equipment and movements."
     
     let muscleGroups = ["Arms","Back","Chest","Legs", "Shoulders"]
+    
+    let displayExerciseTitles = ["Name","Muscle Group","Image","Description", "Share"]
 
 }

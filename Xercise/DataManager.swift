@@ -156,7 +156,7 @@ class DataManager {
         }
     }
     
-    func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : NSData, completion : (success : Bool) -> Void) {
+    func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : NSData, publicWorkout : Bool, completion : (success : Bool) -> Void) {
         
         let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -165,6 +165,7 @@ class DataManager {
         newWorkout.setValue(id, forKey: "identifier")
         newWorkout.setValue(exerciseIDs, forKey: "exercise_ids")
         newWorkout.setValue(workoutMuscleGroup, forKey: "muscle_group")
+        newWorkout.setValue(publicWorkout, forKey: "publicWorkout")
         do {
             try context.save()
             completion(success: true)
@@ -223,7 +224,7 @@ class DataManager {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
         var entryFound = false
-        var entryToReturn = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""])
+        var entryToReturn = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], publicWorkout: false, workoutCode: nil)
         let requestExercise = NSFetchRequest(entityName: "Workout")
         requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
         requestExercise.returnsObjectsAsFaults = false
@@ -236,7 +237,7 @@ class DataManager {
                     // Unarchive exercise IDs
                     let exercises : [String] =  unarchiveArray(result.valueForKey("exercise_ids")! as! NSData)
                     // Create the workout object to be returned
-                    entryToReturn = Workout(name: result.valueForKey("name")! as! String, muscleGroup: result.valueForKey("muscle_group")! as! String, identifier: result.valueForKey("identifier")! as! String, exerciseIds: exercises)
+                    entryToReturn = Workout(name: result.valueForKey("name")! as! String, muscleGroup: result.valueForKey("muscle_group")! as! String, identifier: result.valueForKey("identifier")! as! String, exerciseIds: exercises, publicWorkout: result.valueForKey("publicWorkout") as! Bool, workoutCode: result.valueForKey("workoutCode") as! String?)
                 }
             }
         } catch {
@@ -278,6 +279,102 @@ class DataManager {
         }
     }
     
+    func queryForItemByID(id : String, entityName : String, completion : (success : Bool) -> Void) {
+        
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestExercise = NSFetchRequest(entityName: entityName)
+        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
+        requestExercise.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestExercise)
+            if results.count > 0 {
+                completion(success: true)
+            } else {
+                completion(success: false)
+            }
+        } catch {
+            print("There was an error fetching the \(entityName) by ID")
+            completion(success: false)
+        }
+    }
+    
+    func queryForWorkoutCode(id : String) -> String {
+        
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        var groupCode = ""
+        let requestExercise = NSFetchRequest(entityName: "Workout")
+        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
+        requestExercise.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestExercise)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject] {
+                    groupCode = result.valueForKey("workoutCode")! as! String
+                }
+            }
+        } catch {
+            print("There was an error fetching the workout code by ID")
+        }
+        return groupCode
+    }
+    
+    func queryParseForWorkoutCode(id : String, completion : (success : Bool) -> Void) {
+        var objectID = ""
+        var failure = true
+        let query = PFQuery(className: "Workout")
+        query.whereKey("identifier", equalTo: id)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if error == nil {
+                // Successful query - get objectID
+                if let objects = objects {
+                    for object in objects {
+                        failure = false
+                        objectID = object.objectId!
+                    }
+                }
+                if !failure {
+                    self.addGroupCodeByID(id, code: objectID, completion: { (success) -> Void in
+                        if success {
+                            completion(success: true)
+                        } else {
+                            completion(success: false)
+                        }
+                    })
+                    
+                } else {
+                    completion(success: false)
+                }
+
+            }
+        }
+    }
+    
+    func addGroupCodeByID(id : String, code : String, completion : (success : Bool) -> Void) {
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestWorkout = NSFetchRequest(entityName: "Workout")
+        requestWorkout.predicate = NSPredicate(format: "identifier = %@", id)
+        requestWorkout.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestWorkout)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject] {
+                    result.setValue(code, forKey: "workoutCode")
+                    result.setValue(true, forKey: "publicWorkout")
+                    do {
+                        try context.save()
+                        completion(success: true)
+                    } catch {
+                        completion(success: false)
+                    }
+                    
+                }
+            }
+        } catch {
+            print("There was an error adding the group code by ID")
+            completion(success: false)
+        }
+
+    }
     
     func deleteItemByID(id : String, entityName : String, completion : (success : Bool) -> Void) {
 
@@ -302,36 +399,7 @@ class DataManager {
             }
         } catch {
             print("There was an error deleting the \(entityName) by ID")
+            completion(success: false)
         }
-    }
-}
-
-class Exercise {
-    var name : String
-    var muscleGroup : String
-    var identifier : String
-    var description : String
-    var image : UIImage
-    
-    init(name : String, muscleGroup : String, identifier : String, description : String, image : UIImage) {
-        self.name = name
-        self.muscleGroup = muscleGroup
-        self.identifier = identifier
-        self.description = description
-        self.image = image
-    }
-}
-
-class Workout {
-    var name : String
-    var muscleGroup : String
-    var identifier : String
-    var exerciseIDs : [String]
-    
-    init(name : String, muscleGroup : String, identifier : String, exerciseIds : [String]) {
-        self.name = name
-        self.muscleGroup = muscleGroup
-        self.identifier = identifier
-        self.exerciseIDs = exerciseIds
     }
 }

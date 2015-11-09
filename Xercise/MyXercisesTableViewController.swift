@@ -14,6 +14,7 @@ class MyXercisesTableViewController: UITableViewController {
     var workouts = [Entry]()
     var exercises = [Entry]()
     let dataMgr = DataManager()
+    var selectedIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,40 +126,77 @@ class MyXercisesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // Delete the row from the data source
+            // Prompt the user for confirmation to the row from the data source
             if indexPath.section == 0 {
-                // Deleting a workout
-                let idToDelete = workouts[indexPath.row].identifier
-                // Remove from core data
-                dataMgr.deleteItemByID(idToDelete, entityName: "Workout", completion: { (success) -> Void in
-                    if success {
-                        // Remove from local array
-                        self.workouts.removeAtIndex(indexPath.row)
-                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                presentConfirmAlert("Delete?", alertMessage: "Are you sure you want to delete this workout? This action cannot be undone.", confirmTitle: "Delete", completion: { (confirm) -> Void in
+                    if confirm {
+                        // Delete the workout
+                        let idToDelete = self.workouts[indexPath.row].identifier
+                        // Remove from core data
+                        self.dataMgr.deleteItemByID(idToDelete, entityName: "Workout", completion: { (success) -> Void in
+                            if success {
+                                // Remove from local array
+                                self.workouts.removeAtIndex(indexPath.row)
+                                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                            } else {
+                                self.presentAlert("Error", alertMessage: "There was an issue deleting your workout, please try again!")
+                            }
+                        })
                     } else {
-                        self.presentAlert("Error", alertMessage: "There was an issue deleting your workout, please try again!")
+                        tableView.editing = false
                     }
                 })
+                
             } else if indexPath.section == 1 {
-                // Deleting an exercise
-                let idToDelete = exercises[indexPath.row].identifier
-                // Remove from core data
-                dataMgr.deleteItemByID(idToDelete, entityName: "Exercise", completion: { (success) -> Void in
-                    if success {
-                        // Remove from local array
-                        self.exercises.removeAtIndex(indexPath.row)
-                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                presentConfirmAlert("Delete?", alertMessage: "Are you sure you want to delete this exercise? This action cannot be undone.", confirmTitle: "Delete", completion: { (confirm) -> Void in
+                    if confirm {
+                        // Delete the exercise
+                        let idToDelete = self.exercises[indexPath.row].identifier
+                        // Remove from core data
+                        self.dataMgr.deleteItemByID(idToDelete, entityName: "Exercise", completion: { (success) -> Void in
+                            if success {
+                                // Remove from local array
+                                self.exercises.removeAtIndex(indexPath.row)
+                                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                            } else {
+                                self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
+                            }
+                        })
                     } else {
-                        self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
+                        tableView.editing = false
                     }
                 })
             }
         }
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectedIndex = indexPath.row
+        if indexPath.section == 0 {
+            // Display workout
+            self.performSegueWithIdentifier("displayWorkoutFromSaved", sender: self)
+        } else if indexPath.section == 1 {
+            // Display an exercise
+            self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
+        }
+        
+    }
+    
     func presentAlert(alertTitle : String, alertMessage : String) {
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func presentConfirmAlert(alertTitle : String, alertMessage : String, confirmTitle : String, completion : (confirm : Bool) -> Void) {
+        
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            completion(confirm: false)
+        }))
+        alert.addAction(UIAlertAction(title: confirmTitle, style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            completion(confirm: true)
+        }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
 
@@ -177,14 +215,22 @@ class MyXercisesTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "displayExerciseFromSaved" && selectedIndex != -1 {
+            let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
+            destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
+            destinationVC.exerciseTitle = exercises[selectedIndex].title
+            destinationVC.hideRateFeatures = true
+        } else if segue.identifier == "displayWorkoutFromSaved" && selectedIndex != -1 {
+            let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController
+            destinationVC.workoutIdentifier = workouts[selectedIndex].identifier
+            destinationVC.displayingFromSaved = true
+        }
+        // Reset selected index
+        selectedIndex = -1
     }
-    */
+    
 
 }

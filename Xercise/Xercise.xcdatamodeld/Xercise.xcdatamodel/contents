@@ -28,6 +28,8 @@
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="muscle_group" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicWorkout" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="workoutCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" syncable="YES"/>
     </entity>
     <elements>
@@ -36,6 +38,6 @@
         <element name="Macro_Goal" positionX="-36" positionY="54" width="128" height="90"/>
         <element name="Macro_Meal" positionX="0" positionY="90" width="128" height="90"/>
         <element name="Macros" positionX="-45" positionY="45" width="128" height="60"/>
-        <element name="Workout" positionX="-54" positionY="27" width="128" height="120"/>
+        <element name="Workout" positionX="-54" positionY="27" width="128" height="150"/>
     </elements>
 </model>

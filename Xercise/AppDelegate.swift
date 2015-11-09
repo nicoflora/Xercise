@@ -29,9 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         navigationBarAppearace.tintColor = UIColor.whiteColor() //UIColor(red: 128, green: 175, blue: 220, alpha: 1)
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
-        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
-        //navigationBarAppearace.translucent = false
-        
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]        
         
         return true
     }

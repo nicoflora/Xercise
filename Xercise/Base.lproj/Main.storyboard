@@ -85,6 +85,8 @@
                     <connections>
                         <segue destination="pD7-BW-vgG" kind="show" identifier="newWorkout" id="F3b-yt-Bd4"/>
                         <segue destination="hBs-PH-c85" kind="show" identifier="newExercise" id="9O5-yO-qlf"/>
+                        <segue destination="Bpm-05-4zj" kind="show" identifier="displayWorkoutFromSaved" id="QXE-on-vgE"/>
+                        <segue destination="7Od-Tc-va4" kind="show" identifier="displayExerciseFromSaved" id="gfW-2D-zOh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKd-uV-365" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -683,32 +685,162 @@
                     <connections>
                         <outlet property="animationImage" destination="FJc-CE-5ZJ" id="dfI-ea-CuV"/>
                         <outlet property="selectMuscleGroupBtn" destination="MCp-Oq-XNz" id="3XY-Mh-mA0"/>
-                        <segue destination="6X0-VC-TmF" kind="show" identifier="getExercise" id="e6H-PV-OjK"/>
                         <segue destination="Bpm-05-4zj" kind="show" identifier="getWorkout" id="tSD-4U-aQr"/>
+                        <segue destination="7Od-Tc-va4" kind="show" identifier="getExercise" id="WMk-xE-g5t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e5F-go-7NW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="363.5" y="980.5"/>
         </scene>
-        <!--Exercise View Controller-->
-        <scene sceneID="QgN-xf-hgP">
+        <!--Display Exercise Table View Controller-->
+        <scene sceneID="wfN-Xc-xdF">
             <objects>
-                <viewController title="Exercise View Controller" id="6X0-VC-TmF" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aOV-QV-IHR"/>
-                        <viewControllerLayoutGuide type="bottom" id="9gQ-5f-B8C"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="slU-5D-OM3">
+                <tableViewController title="Display Exercise Table View Controller" id="7Od-Tc-va4" customClass="DisplayExerciseTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="GBJ-UP-Jfw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Exercise" id="8d4-V0-Uj9"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseImage" rowHeight="230" id="pbc-lx-DUE" customClass="DisplayExerciseImageTableViewCell" customModule="Xercise" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="230"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pbc-lx-DUE" id="spe-Mw-Lhg">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="229"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c1x-r2-hqn">
+                                            <rect key="frame" x="27" y="5" width="321" height="219"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="219" id="CVK-ec-3qh"/>
+                                                <constraint firstAttribute="width" constant="321" id="Vlv-CD-qlc"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="c1x-r2-hqn" firstAttribute="centerY" secondItem="spe-Mw-Lhg" secondAttribute="centerY" id="Fmy-zo-RcP"/>
+                                        <constraint firstItem="c1x-r2-hqn" firstAttribute="centerX" secondItem="spe-Mw-Lhg" secondAttribute="centerX" id="P0g-TV-aeb"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="exerciseImage" destination="c1x-r2-hqn" id="Kby-p2-v4W"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseDescription" rowHeight="170" id="MWi-uO-haQ" customClass="DisplayExerciseDescriptionTableViewCell" customModule="Xercise" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="322" width="375" height="170"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MWi-uO-haQ" id="zxe-by-uJv">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="169"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXN-cy-r18">
+                                            <rect key="frame" x="8" y="8" width="359" height="153"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="153" id="KaE-2J-Z3J"/>
+                                            </constraints>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="KaE-2J-Z3J"/>
+                                                </mask>
+                                            </variation>
+                                        </textView>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="pXN-cy-r18" firstAttribute="trailing" secondItem="zxe-by-uJv" secondAttribute="trailingMargin" id="3op-Us-Oj6"/>
+                                        <constraint firstItem="pXN-cy-r18" firstAttribute="top" secondItem="zxe-by-uJv" secondAttribute="topMargin" id="PgL-Pc-th1"/>
+                                        <constraint firstItem="pXN-cy-r18" firstAttribute="bottom" secondItem="zxe-by-uJv" secondAttribute="bottomMargin" id="jyF-xJ-5EV"/>
+                                        <constraint firstItem="pXN-cy-r18" firstAttribute="leading" secondItem="zxe-by-uJv" secondAttribute="leadingMargin" id="zx8-pt-juw"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="exerciseDescription" destination="pXN-cy-r18" id="3mc-hT-ltU"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseShare" rowHeight="90" id="EFd-C1-g97" customClass="DisplayExerciseShareTableViewCell" customModule="Xercise" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="492" width="375" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EFd-C1-g97" id="g3u-vB-ABT">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZP-cD-gBS">
+                                            <rect key="frame" x="35" y="10" width="70" height="70"/>
+                                            <animations/>
+                                            <state key="normal" image="thumbs_up_icon"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xU-wl-Ypa">
+                                            <rect key="frame" x="270" y="10" width="70" height="70"/>
+                                            <animations/>
+                                            <state key="normal" image="thumbs_down_icon"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uu8-Yp-0fF">
+                                            <rect key="frame" x="150" y="30" width="75" height="30"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="J8k-WO-Kch"/>
+                                                <constraint firstAttribute="width" constant="75" id="SMr-yW-fKm"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="23"/>
+                                            <state key="normal" title="Share">
+                                                <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="Uu8-Yp-0fF" firstAttribute="centerX" secondItem="g3u-vB-ABT" secondAttribute="centerX" id="1jK-P4-gZh"/>
+                                        <constraint firstItem="fZP-cD-gBS" firstAttribute="centerY" secondItem="g3u-vB-ABT" secondAttribute="centerY" id="8LZ-6P-5qI"/>
+                                        <constraint firstItem="fZP-cD-gBS" firstAttribute="leading" secondItem="g3u-vB-ABT" secondAttribute="leadingMargin" constant="27" id="OP9-sU-N4p"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5xU-wl-Ypa" secondAttribute="trailing" constant="27" id="XOF-ip-psO"/>
+                                        <constraint firstItem="Uu8-Yp-0fF" firstAttribute="centerY" secondItem="g3u-vB-ABT" secondAttribute="centerY" id="bdy-2v-Juf"/>
+                                        <constraint firstItem="5xU-wl-Ypa" firstAttribute="leading" secondItem="Uu8-Yp-0fF" secondAttribute="trailing" constant="45" id="m4C-IE-6Qo"/>
+                                        <constraint firstItem="5xU-wl-Ypa" firstAttribute="centerY" secondItem="g3u-vB-ABT" secondAttribute="centerY" id="uy2-Zp-6nB"/>
+                                        <constraint firstItem="Uu8-Yp-0fF" firstAttribute="leading" secondItem="fZP-cD-gBS" secondAttribute="trailing" constant="45" id="zz3-Zz-nki"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="OP9-sU-N4p"/>
+                                            <exclude reference="XOF-ip-psO"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="shareButton" destination="Uu8-Yp-0fF" id="XeD-wU-Ele"/>
+                                    <outlet property="thumbsDownRate" destination="5xU-wl-Ypa" id="GZh-sL-TlB"/>
+                                    <outlet property="thumbsUpRate" destination="fZP-cD-gBS" id="FLH-Su-3IN"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="7Od-Tc-va4" id="2tc-Wg-EM5"/>
+                            <outlet property="delegate" destination="7Od-Tc-va4" id="wOk-EM-rnz"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Exercise" id="rvj-8E-DyU">
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="D2d-VJ-xWh">
+                            <connections>
+                                <action selector="nextButtonPressed:" destination="7Od-Tc-va4" id="dBO-uj-Mzg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rcg-tf-58w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <outlet property="nextButton" destination="D2d-VJ-xWh" id="WxA-P6-TsH"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="idL-uA-yUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="889.5" y="980.5"/>
         </scene>
@@ -857,24 +989,24 @@
         <!--Workout View Controller-->
         <scene sceneID="Nvs-uV-Lf7">
             <objects>
-                <tableViewController title="Workout View Controller" id="Bpm-05-4zj" sceneMemberID="viewController">
+                <tableViewController title="Workout View Controller" id="Bpm-05-4zj" customClass="DisplayWorkoutTableViewController" customModule="Xercise" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gPY-Oc-zVo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="nor-iN-szb">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nor-iN-szb" id="B5F-2f-L4c">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </tableViewCellContentView>
-                                <animations/>
-                            </tableViewCell>
-                        </prototypes>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dOM-6e-fsC">
+                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="18"/>
+                            <state key="normal" title="Share with Group">
+                                <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="shareWithGroupButtonPressed:" destination="Bpm-05-4zj" eventType="touchUpInside" id="rOz-Bg-2sh"/>
+                            </connections>
+                        </button>
                         <connections>
                             <outlet property="dataSource" destination="Bpm-05-4zj" id="uef-KY-FjB"/>
                             <outlet property="delegate" destination="Bpm-05-4zj" id="l57-uP-mB9"/>
@@ -882,6 +1014,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Workout" id="oTt-he-x7U"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="shareWithGroupButton" destination="dOM-6e-fsC" id="74x-ra-6aN"/>
+                        <segue destination="7Od-Tc-va4" kind="show" identifier="displayExerciseFromWorkout" id="Ai5-5F-ddJ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hIW-vx-Dzg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -894,8 +1030,12 @@
         <image name="macro_tab_icon" width="30" height="30"/>
         <image name="man_tab_icon" width="30" height="30"/>
         <image name="new_exercise_icon" width="50" height="50"/>
+        <image name="thumbs_down_icon" width="70" height="70"/>
+        <image name="thumbs_up_icon" width="70" height="70"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="exV-KX-8yW"/>
+        <segue reference="QXE-on-vgE"/>
+        <segue reference="9O5-yO-qlf"/>
+        <segue reference="Ai5-5F-ddJ"/>
     </inferredMetricsTieBreakers>
 </document>

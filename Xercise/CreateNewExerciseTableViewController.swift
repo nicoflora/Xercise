@@ -43,7 +43,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         
         // Validate Data
         if exerciseTitle.characters.count > 3 {
-            if image != UIImage(named: "new_exercise_icon"){
+            if image != UIImage(named: "new_exercise_icon")! {
                 if exerciseDescription != constants.exerciseDescriptionText {
                     if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
 
@@ -52,6 +52,9 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                         
                         // Create identifier
                         let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
+                        
+                        // Append reps to the description
+                        exerciseDescription += "\nSuggested heavy lift (sets X reps): \(heavySets) X \(heavyReps).\nSuggested endurance lift (sets X reps): \(enduranceSets) X \(enduranceReps). "
                         
                         if addingFromWorkout == false {
                         
