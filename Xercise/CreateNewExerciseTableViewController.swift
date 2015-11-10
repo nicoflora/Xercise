@@ -181,11 +181,9 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if addingFromWorkout {
             return sectionTitlesAddingFromWorkout.count
@@ -263,6 +261,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             case 2:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
@@ -305,6 +305,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             case 3:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
                 return cell
             case 4:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
@@ -338,6 +340,24 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         } else if let textView = notif.object as? UITextView {
             // Saving description field
             exerciseDescription = textView.text!
+        }
+    }
+    
+    func removePlaceholder(notif : NSNotification) {
+        if let textView = notif.object as? UITextView {
+            if textView.textColor == UIColor.lightGrayColor() {
+                textView.text = nil
+                textView.textColor = UIColor.blackColor()
+            }
+        }
+    }
+    
+    func replacePlaceholder(notif : NSNotification) {
+        if let textView = notif.object as? UITextView {
+            if textView.text.isEmpty {
+                textView.text = constants.exerciseDescriptionText
+                textView.textColor = UIColor.lightGrayColor()
+            }
         }
     }
     
