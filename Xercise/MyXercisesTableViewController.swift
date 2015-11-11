@@ -15,6 +15,7 @@ class MyXercisesTableViewController: UITableViewController {
     var exercises = [Entry]()
     let dataMgr = DataManager()
     var selectedIndex = -1
+    var activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,13 +25,13 @@ class MyXercisesTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         // Fetch data
         getMyXercises()
-        tableView.reloadData()
     }
     
     
     func getMyXercises() {
         workouts = dataMgr.getMyWorkouts()
         exercises = dataMgr.getMyExercises()
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,29 +76,30 @@ class MyXercisesTableViewController: UITableViewController {
             } else {
                 return exercises.count
             }
+        } else {
+            return 1
         }
-        return 0
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let cell = UITableViewCell()
-
         if indexPath.section == 0 {
             if workouts.count > 0 {
                 cell.textLabel?.text = workouts[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No workouts saved!"
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
             }
         } else if indexPath.section == 1 {
             if exercises.count > 0 {
                 cell.textLabel?.text = exercises[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No exercises saved!"
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
             }
         }
-        
         cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         return cell
     }
@@ -112,16 +114,98 @@ class MyXercisesTableViewController: UITableViewController {
             // Present VC to create a new exercise
             self.performSegueWithIdentifier("newExercise", sender: self)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Add From Code", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        actionSheet.addAction(UIAlertAction(title: "Add From Group Code", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Present alert to enter code and perform validation
+            let alert = UIAlertController(title: "Enter Group Code", message: "Enter the group code for the workout you want to add.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+                textField.placeholder = "Group Code"
+                textField.autocorrectionType = UITextAutocorrectionType.No
+                textField.tag = -1
+            })
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Add Workout", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                let textfield = alert.textFields![0] as UITextField
+                if let text = textfield.text {
+                    if text != "" {
+                        // Validate that the group code doesn't contain a space to guard against invalid codes
+                        if !text.containsString(" ") {
+                            self.displayActivityIndicator()
+                            self.dataMgr.queryParseForWorkoutFromGroupCode(text, completion: { (workoutFromCode) -> Void in
+                                self.removeActivityIndicator()
+                                if let workout = workoutFromCode {
+                                    // Query was successful, retrieved a workout - save workout to Device
+                                    self.dataMgr.queryForItemByID(workout.identifier, entityName: "Workout", completion: { (success) -> Void in
+                                        if success {
+                                            // Workout is already stored on device, don't save again
+                                            self.presentAlert("Duplicate Save", alertMessage: "This workout has already been saved to this device!")
+                                        } else {
+                                            let exerciseIds = self.dataMgr.archiveArray(workout.exerciseIDs)
+                                            self.displayActivityIndicator()
+                                            self.dataMgr.saveWorkoutToDevice(workout.name, workoutMuscleGroup: workout.muscleGroup, id: workout.identifier, exerciseIDs: exerciseIds, publicWorkout: true, completion: { (success) -> Void in
+                                                self.removeActivityIndicator()
+                                                if success {
+                                                    // Workout has been saved to device, add group code to device
+                                                    self.displayActivityIndicator()
+                                                    self.dataMgr.addGroupCodeByID(workout.identifier, code: text, completion: { (success) -> Void in
+                                                        self.removeActivityIndicator()
+                                                        if success {
+                                                            // Group code added, now get the exercises from Parse
+                                                            self.displayActivityIndicator()
+                                                            self.dataMgr.queryParseForExercisesFromGroupCode(workout.exerciseIDs, completion: { (success) -> Void in
+                                                                self.removeActivityIndicator()
+                                                                if success {
+                                                                    self.presentAlert("Success", alertMessage: "The workout added from a Group Code was sucessfully added to your My Xercises!")
+                                                                    self.getMyXercises()
+                                                                } else {
+                                                                    self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                                                                }
+                                                            })
+                                                        } else {
+                                                            self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                                                        }
+                                                    })
+                                                } else {
+                                                    self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                                }
+                            })
+                        } else {
+                            self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                        }
+                    }  else {
+                        self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                    }
+                } else {
+                    self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
+                }
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
-    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        if indexPath.section == 0 {
+            if workouts.count == 0 {
+                return false
+            } else {
+                return true
+            }
+        } else if indexPath.section == 1 {
+            if exercises.count == 0 {
+                return false
+            } else {
+                return true
+            }
+        } else {
+            return false
+        }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -137,7 +221,12 @@ class MyXercisesTableViewController: UITableViewController {
                             if success {
                                 // Remove from local array
                                 self.workouts.removeAtIndex(indexPath.row)
-                                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                if self.workouts.count == 0 {
+                                    tableView.reloadData()
+                                } else {
+                                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                }
+
                             } else {
                                 self.presentAlert("Error", alertMessage: "There was an issue deleting your workout, please try again!")
                             }
@@ -157,7 +246,11 @@ class MyXercisesTableViewController: UITableViewController {
                             if success {
                                 // Remove from local array
                                 self.exercises.removeAtIndex(indexPath.row)
-                                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                if self.exercises.count == 0 {
+                                    tableView.reloadData()
+                                } else {
+                                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                }
                             } else {
                                 self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
                             }
@@ -172,10 +265,10 @@ class MyXercisesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedIndex = indexPath.row
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && workouts.count > 0 {
             // Display workout
             self.performSegueWithIdentifier("displayWorkoutFromSaved", sender: self)
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 1 && exercises.count > 0 {
             // Display an exercise
             self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
         }
@@ -199,6 +292,23 @@ class MyXercisesTableViewController: UITableViewController {
         }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
+    func displayActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        activityIndicator.center = self.tableView.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.backgroundColor = UIColor.grayColor()
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+    }
+    
+    func removeActivityIndicator() {
+        activityIndicator.stopAnimating()
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+    }
+
 
     /*
     // Override to support rearranging the table view.
@@ -223,7 +333,7 @@ class MyXercisesTableViewController: UITableViewController {
             destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
             destinationVC.exerciseTitle = exercises[selectedIndex].title
             destinationVC.hideRateFeatures = true
-        } else if segue.identifier == "displayWorkoutFromSaved" && selectedIndex != -1 {
+        } else if segue.identifier == "displayWorkoutFromSaved" &&  selectedIndex != -1 {
             let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController
             destinationVC.workoutIdentifier = workouts[selectedIndex].identifier
             destinationVC.displayingFromSaved = true

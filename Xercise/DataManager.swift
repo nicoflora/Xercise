@@ -349,6 +349,94 @@ class DataManager {
         }
     }
     
+    func queryParseForWorkoutFromGroupCode(code : String, completion : (workoutFromCode : Workout?) -> Void) { //) -> Workout? {
+        var workout = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], publicWorkout: true, workoutCode: "")
+        let query = PFQuery(className: "Workout")
+        query.whereKey("objectId", equalTo: code)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if error == nil {
+                // Successful query - get workout data
+                if let objects = objects {
+                    if objects.count > 0 {
+                        for object in objects {
+                            let exerciseIds = self.unarchiveArray(object["exercise_ids"] as! NSData)
+                            workout = Workout(name: object["name"]! as! String, muscleGroup: object["muscle_group"]! as! String, identifier: object["identifier"]! as! String, exerciseIds: exerciseIds, publicWorkout: true, workoutCode: object.objectId)
+                            completion(workoutFromCode: workout)
+                        }
+                    } else {
+                        completion(workoutFromCode: nil)
+                        return
+                    }
+                } else {
+                    completion(workoutFromCode: nil)
+                    return
+                }
+            } else {
+                completion(workoutFromCode: nil)
+                return
+            }
+        }
+    }
+
+    func queryParseForExercisesFromGroupCode(ids : [String], completion : (success : Bool) -> Void) {
+        var failure = false
+        var successes = 0
+        for id in ids {
+            let query = PFQuery(className: "Exercise")
+            query.whereKey("identifier", equalTo: id)
+            query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+                if error == nil {
+                    // Successful query - store exercises on device
+                    if let objects = objects {
+                        failure = false
+                        for object in objects {
+                            // Get image data
+                            successes++
+                            if let picture = object["image"] as? PFFile {
+                                picture.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
+                                    if error == nil {
+                                        // Successfully recieved the imageData - Check if exercise is already stored on device
+                                        self.queryForItemByID(object["identifier"] as! String, entityName: "Exercise", completion: { (success) -> Void in
+                                            if !success {
+                                                // Exercise has not yet been stored, store on device now
+                                                self.saveExerciseToDevice(object["name"] as! String, id: object["identifier"] as! String, muscleGroup: object["muscle_group"] as! String, image: imageData!, exerciseDescription: object["exercise_desc"] as! String, completion: { (success) -> Void in
+                                                    if !success {
+                                                        completion(success: false)
+                                                        return
+                                                    } else {
+                                                        // If we every save has been successful and we have gone through all exercises, we are done
+                                                        if failure == false && successes == ids.count {
+                                                            // All exercises were retrieved and saved to the device
+                                                            completion(success: true)
+                                                        } else if successes == ids.count {
+                                                            completion(success: false)
+                                                        }
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    } else {
+                                        completion(success: false)
+                                        return
+                                    }
+                                })
+                            } else {
+                                completion(success: false)
+                                return
+                            }
+                        }
+                    } else {
+                        completion(success: false)
+                        return
+                    }
+                } else {
+                    completion(success: false)
+                    return
+                }
+            }
+        }
+    }
+    
     func addGroupCodeByID(id : String, code : String, completion : (success : Bool) -> Void) {
         let context : NSManagedObjectContext = appDel.managedObjectContext
         let requestWorkout = NSFetchRequest(entityName: "Workout")

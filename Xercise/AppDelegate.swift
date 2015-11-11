@@ -29,7 +29,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         navigationBarAppearace.tintColor = UIColor.whiteColor() //UIColor(red: 128, green: 175, blue: 220, alpha: 1)
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
-        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]        
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
+        
+        /* // Example of how to call cloud code
+        PFCloud.callFunctionInBackground("hello", withParameters: nil) { (object, error) -> Void in
+            print(object!)
+        }*/
+        
+        // Rating an exercise - not working, but was just testing
+        /*let rateDictionary = ["type" : "Exercise", "id" : "5C79D30B-39E3-44BA-A242-C10E55A0D962", "rating" : "thumbs_Up_Rate"]
+        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
+            if error == nil {
+                print(object!)
+            } else {
+                print("Error: \(error!.localizedDescription)")
+            }
+        }*/
         
         return true
     }
@@ -121,5 +136,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+extension UIColor {
+    convenience init(hexString:String) {
+        let hexString:NSString = hexString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let scanner = NSScanner(string: hexString as String)
+        
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        
+        var color:UInt32 = 0
+        scanner.scanHexInt(&color)
+        
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        
+        self.init(red:red, green:green, blue:blue, alpha:1)
+    }
+    
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return NSString(format:"#%06x", rgb) as String
+    }
 }
 
