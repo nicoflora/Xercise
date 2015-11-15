@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Parse
 
-class CreateNewWorkoutTableViewController: UITableViewController {
+class CreateNewWorkoutTableViewController: UITableViewController, UITabBarControllerDelegate {
     
     var exercises = [Entry]()
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -26,6 +26,7 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         super.viewDidLoad()
         sectionTitles = constants.newWorkoutTitles
         muscleGroups = constants.muscleGroups
+        defaults.removeObjectForKey("workoutExercises")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -33,7 +34,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         // Get previously made entries
         exercises = dataMgr.retrieveEntriesFromDefaults("workoutExercises")
         let newExercise = dataMgr.retrieveEntriesFromDefaults("addedExercise")
-        
         if newExercise.count > 0 {
             // exercise added to workout
             for newEx in newExercise {
@@ -41,7 +41,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             }
             defaults.removeObjectForKey("addedExercise")
         }
-        
         let addedSavedExercises = dataMgr.retrieveEntriesFromDefaults("exercisesToAdd")
         if addedSavedExercises.count > 0 {
             for savedExercise in addedSavedExercises {
@@ -49,8 +48,12 @@ class CreateNewWorkoutTableViewController: UITableViewController {
             }
             defaults.removeObjectForKey("exercisesToAdd")
         }
-        
         tableView.reloadData()
+        self.tabBarController?.delegate = self
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.tabBarController?.delegate = nil
     }
     
     func getMyXercises(id : String) {
@@ -187,83 +190,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         }
     }
     
-    /*func checkExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
-        var completionSuccess = true
-        for exerciseID in ids {
-            print(ids)
-            let query = PFQuery(className: "Exercise")
-            query.whereKey("identifier", equalTo: exerciseID)
-            query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
-                if objects?.count == 0 {
-                    // Not in Parse database, add to Parse
-                    if let exerciseToAdd : Exercise = self.dataMgr.getExerciseByID(exerciseID) {
-                        // Got Exercise from Core Data - now add to Parse
-                        if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
-                            self.dataMgr.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
-                                if success == false {
-                                    // erorr saving to Parse
-                                    completionSuccess = false
-                                }
-                            })
-                        }
-                    }
-                }
-            })
-        }
-        if completionSuccess {
-            completion(success: true)
-        } else {
-            completion(success: false)
-        }
-    }
-    
-    func saveToDevice(id : String, exerciseIDs : NSData, completion : (success : Bool) -> Void) {
-        
-        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        
-        let newWorkout = NSEntityDescription.insertNewObjectForEntityForName("Workout", inManagedObjectContext: context)
-        newWorkout.setValue(workoutName, forKey: "name")
-        newWorkout.setValue(id, forKey: "identifier")
-        newWorkout.setValue(exerciseIDs, forKey: "exercise_ids")
-        newWorkout.setValue(workoutMuscleGroup, forKey: "muscle_group")
-        
-        do {
-            //self.displayActivityIndicator()
-            try context.save()
-            completion(success: true)
-            //self.displayActivityIndicator()
-        } catch {
-            //self.displayActivityIndicator()
-            completion(success: false)
-        }
-    }
-    
-    func saveToParse(id : String, exerciseIDs : NSData, completion : (success : Bool) -> Void) {
-        
-        // Create Parse object to save
-        let workout = PFObject(className: "Workout")
-        
-        workout["name"] = workoutName
-        workout["identifier"] = id
-        workout["exercise_ids"] = exerciseIDs
-        workout["muscle_group"] = workoutMuscleGroup
-        
-        //self.displayActivityIndicator()
-            
-        workout.saveInBackgroundWithBlock { (success, error) -> Void in
-            //self.displayActivityIndicator()
-            if error == nil {
-                
-                self.presentSucessAlert()
-                completion(success: true)
-
-            } else {
-                completion(success: false)
-            }
-        }
-    }*/
-    
     func displayActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
         activityIndicator.center = self.tableView.center
@@ -293,7 +219,35 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         }))
         self.presentViewController(alert, animated: true, completion: nil)
     }
-
+    
+    func presentLeaveScreenAlert(completion : (leave : Bool) -> Void) {
+        let alert = UIAlertController(title: "Leave Screen?", message: "Leaving this current screen without saving will result in your unsaved workout to be lost, are you sure you want to leave?", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            completion(leave: false)
+        }))
+        alert.addAction(UIAlertAction(title: "Leave", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
+            completion(leave: true)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Tab bar controller delegate
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        // If the My Xercises Tab is selected, prompt the user of data loss before leaving the screen
+        if exercises.count > 0 && viewController.tabBarItem.tag == 1 {
+            presentLeaveScreenAlert({ (leave) -> Void in
+                if leave {
+                    // Leave page confirmed, remove exercises then go back to My Xercises page (root view controller)
+                    self.defaults.removeObjectForKey("workoutExercises")
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                }
+            })
+            return false
+        } else {
+            return true
+        }
+    }
     
     // MARK: - Table view data source
 
@@ -313,7 +267,6 @@ class CreateNewWorkoutTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if section == 0 {
             return  1
         } else if section == 1 {
@@ -397,8 +350,13 @@ class CreateNewWorkoutTableViewController: UITableViewController {
         if editingStyle == .Delete {
             // Delete the row from the data source
             exercises.removeAtIndex(indexPath.row)
-            tableView.reloadData()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            // Update view
+            if self.exercises.count == 0 {
+                tableView.reloadData()
+            } else {
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }
+
         }
     }
 }

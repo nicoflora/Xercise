@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Parse
 
-class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITabBarControllerDelegate, UITabBarDelegate {
     
     var sectionTitles = [String]()
     var sectionTitlesAddingFromWorkout = [String]()
@@ -31,16 +31,22 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         sectionTitles = constants.newExerciseTitles
         sectionTitlesAddingFromWorkout = constants.newExerciseInWorkoutTitles
         muscleGroups = constants.muscleGroups
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        tabBarController?.delegate = nil
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        tabBarController?.delegate = self
+    }
+    
     @IBAction func saveExercise(sender: AnyObject) {
         
         var dataValidated = false
-        
         // Validate Data
         if exerciseTitle.characters.count > 3 {
             if image != UIImage(named: "new_exercise_icon")! {
@@ -181,6 +187,22 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: - Tab bar controller delegate
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        // If the My Xercises Tab is selected, prompt the user of data loss before leaving the screen
+        if unsavedData && viewController.tabBarItem.tag == 1 {
+            presentLeaveScreenAlert({ (leave) -> Void in
+                if leave {
+                    // Leave page confirmed, go back to My Xercises page (root view controller)
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                }
+            })
+            return false
+        } else {
+            return true
+        }
     }
 
     // MARK: - Table view data source
@@ -386,8 +408,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        unsavedData = true
         dismissViewControllerAnimated(true, completion: nil)
-        
         self.image = image
         tableView.reloadData()
         
@@ -401,7 +423,6 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 cell?.accessoryType = UITableViewCellAccessoryType.None
                 
             }
-            
             // Add checkmark to the selected row and store muscle group
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -426,16 +447,14 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func presentLeaveScreenAlert(completion : (leave : Bool) -> Void) {
+        let alert = UIAlertController(title: "Leave Screen?", message: "Leaving this current screen without saving will result in any unsaved exercise to be lost, are you sure you want to leave?", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            completion(leave: false)
+        }))
+        alert.addAction(UIAlertAction(title: "Leave", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
+            completion(leave: true)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
-    */
-
 }
