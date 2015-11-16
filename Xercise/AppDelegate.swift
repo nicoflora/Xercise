@@ -36,16 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(object!)
         }*/
         
-        // Rating an exercise - not working, but was just testing
-        /*let rateDictionary = ["type" : "Exercise", "id" : "5C79D30B-39E3-44BA-A242-C10E55A0D962", "rating" : "thumbs_Up_Rate"]
-        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
-            if error == nil {
-                print(object!)
-            } else {
-                print("Error: \(error!.localizedDescription)")
-            }
-        }*/
-        
         return true
     }
 

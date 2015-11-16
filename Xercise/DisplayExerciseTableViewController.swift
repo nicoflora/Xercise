@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class DisplayExerciseTableViewController: UITableViewController {
 
@@ -121,13 +122,33 @@ class DisplayExerciseTableViewController: UITableViewController {
     }
     
     func thumbsDownRate() {
-        /* Will be completed in Sprint 5 - Use Case 5.6 */
-        // Thumbs down rating button pressed
+        // Call to Parse Cloud Code to rate an exercise with a thumbs down
+        let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Down_Rate"]
+        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
+            if error == nil {
+                self.rateCompleted()
+            } else {
+                print("Error: \(error!.localizedDescription)")
+            }
+        }
     }
     
     func thumbsUpRate() {
-        /* Will be completed in Sprint 5 - Use Case 5.6 */
-        // Thumbs up rating button pressed
+        // Call to Parse Cloud Code to rate an exercise with a thumbs up
+        let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Up_Rate"]
+        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
+            if error == nil {
+                self.rateCompleted()
+            } else {
+                print("Error: \(error!.localizedDescription)")
+            }
+        }
+    }
+    
+    func rateCompleted() {
+        // Make UI changes to the thumbs up and thumbs down rate buttons
+        hideRateFeatures = true
+        tableView.reloadData()
     }
     
     func presentAlert(title : String, message : String) {
