@@ -19,6 +19,8 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     var isAnimatingImage = false
     var timer = NSTimer()
     var muscleGroups = [String]()
+    var selectedMuscleGroup = ""
+    var exercise = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +39,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     }
     
     override func viewWillDisappear(animated: Bool) {
+        isAnimatingImage = false
         timer.invalidate()
     }
     
@@ -45,18 +48,23 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         if muscleGroups.count == 5 {
             let actionSheet = UIAlertController(title: nil, message: "Select a muscle group:", preferredStyle: UIAlertControllerStyle.ActionSheet)
             actionSheet.addAction(UIAlertAction(title: muscleGroups[0], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[0]
                 self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[0])", forState: UIControlState.Normal)
             }))
             actionSheet.addAction(UIAlertAction(title: muscleGroups[1], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[1]
                 self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[1])", forState: UIControlState.Normal)
             }))
             actionSheet.addAction(UIAlertAction(title: muscleGroups[2], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[2]
                 self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[2])", forState: UIControlState.Normal)
             }))
             actionSheet.addAction(UIAlertAction(title: muscleGroups[3], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[3]
                 self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[3])", forState: UIControlState.Normal)
             }))
             actionSheet.addAction(UIAlertAction(title: muscleGroups[4], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[4]
                 self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[4])", forState: UIControlState.Normal)
             }))
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
@@ -69,18 +77,93 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         // Start animation
         updateImage(self)
         
-        // Display activity indicator
-        
-        // Fetch an exercise & perform segue
-        //self.performSegueWithIdentifier("getExercise", sender: self)
+        // Fetch an exercise from Cloud Code
+        if selectedMuscleGroup != "" {
+            // Begin ignoring interaction events
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+
+            // Call Parse Cloud code function
+            let rateDictionary = ["muscleGroup" : selectedMuscleGroup]
+            PFCloud.callFunctionInBackground("getExercise", withParameters: rateDictionary) { (object, error) -> Void in
+                if error == nil {
+                    // Got an exercise - create temp values
+                    var name = ""
+                    var identifier = ""
+                    var muscleGroup = ""
+                    var desc = ""
+                    var picture : UIImage? = nil
+                    
+                    for (index, value) in (object! as! [String]).enumerate() {
+                        print(value)
+                        switch index {
+                        case 0:
+                            name = value
+                        case 1:
+                            identifier = value
+                        case 2:
+                            muscleGroup = value
+                        case 3:
+                            desc = value
+                        case 4:
+                            self.downloadImage(NSURL(string: value)!, completion: { (image) -> Void in
+                                if let image = image {
+                                    picture = image
+                                    self.exercise.image = picture!
+                                }
+                                
+                                // End ignoring interaction events
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                
+                                // Segue to display exercise
+                                self.exercise.name = name
+                                self.exercise.muscleGroup = muscleGroup
+                                self.exercise.identifier = identifier
+                                self.exercise.description = desc
+                                self.performSegueWithIdentifier("getExercise", sender: self)
+                            })
+                        default:
+                            break
+                        }
+                    }
+                } else {
+                    // End ignoring interaction events and present alert
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    self.presentAlert("Error", alertMessage: "There was an error loading your exercise. Please try again.")
+                    self.updateImage(self)
+                }
+            }
+        } else {
+            self.presentAlert("No Muscle Group", alertMessage: "There was no muscle group selected. Please choose one and try again.")
+            self.updateImage(self)
+
+        }
+    }
+    
+    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            completion(data: data, response: response, error: error)
+            }.resume()
+    }
+    
+    func downloadImage(url: NSURL, completion : (image : UIImage?) -> Void) {
+        print("Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+        getDataFromUrl(url) { (data, response, error)  in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                guard let data = data where error == nil else {
+                    print(error?.localizedDescription)
+                    completion(image: nil)
+                    return
+                }
+                print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+                completion(image: UIImage(data: data)!)
+            }
+        }
     }
     
     @IBAction func getWorkoutButtonPressed(sender: AnyObject) {
         // Start animation
         updateImage(self)
-        
-        // Display activity indicator
-        
+                
         // Fetch a workout & perform segue
         //self.performSegueWithIdentifier("getWorkout", sender: self)
 
@@ -94,7 +177,6 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
             isAnimatingImage = false
             timer.invalidate()
         }
-        
     }
     
     func animateImage() {
@@ -122,7 +204,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     }
     
     @IBAction func logout(sender: AnyObject) {
-        let confirmLogout = UIAlertController(title: "Logout?", message: "Are you sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
+        let confirmLogout = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.Alert)
         confirmLogout.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         confirmLogout.addAction(UIAlertAction(title: "Logout", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             PFUser.logOut()
@@ -154,11 +236,34 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         loginVC.logInView?.logo = logo2
         
         //loginVC.facebookPermissions = ["friends_about_me"]
-        
-        //loginVC.fields = (PFLogInFields.UsernameAndPassword | PFLogInFields.LogInButton | PFLogInFields.Facebook | PFLogInFields.Twitter | PFLogInFields.SignUpButton | PFLogInFields.PasswordForgotten)
+        //loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.Twitter, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
+
         
         self.presentViewController(loginVC, animated: true, completion: nil)
 
+    }
+    
+    func displayErrorAlert() {
+        let alert = UIAlertController(title: "Error", message: "There was an error loading your exercise. Please try again.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func presentAlert(alertTitle : String, alertMessage : String) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "getExercise" {
+            let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
+            destinationVC.displayingGeneratedExercise = true
+            destinationVC.exerciseToDisplay = exercise
+        }
     }
     
 

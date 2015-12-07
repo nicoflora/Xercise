@@ -18,10 +18,13 @@ class DisplayExerciseTableViewController: UITableViewController {
     let constants = XerciseConstants()
     var titles = [String]()
     var exerciseToDisplay = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
+    var displayingGeneratedExercise = false
     @IBOutlet var nextButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        titles = constants.displayExerciseTitles
         
         if exerciseIdentifier != "" {
             // Retrieve the exercise from Core Data using the passed identifier
@@ -30,12 +33,12 @@ class DisplayExerciseTableViewController: UITableViewController {
             // If a non-nil exercise was returned, populate the appropriate fields
             if let exercise = retrievedExercise {
                 exerciseToDisplay = exercise
-                titles = constants.displayExerciseTitles
             } else {
                 // Couldn't fetch the exercise, nothing to display - present error and pop VC
                 displayErrorAlert()
             }
-        } else {
+        } else if !displayingGeneratedExercise {
+        
             // No exercise identifier, nothing to display - present error and pop VC
             displayErrorAlert()
         }
@@ -83,32 +86,34 @@ class DisplayExerciseTableViewController: UITableViewController {
     func shareAction() {
         // Share button pressed
         let shareActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        shareActionSheet.addAction(UIAlertAction(title: "Save Exercise", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            // Save to device
-            // Check if the exercise already exists
-            self.dataMgr.queryForItemByID(self.exerciseToDisplay.identifier, entityName: "Exercise", completion: { (success) -> Void in
-                if success {
-                    // Exercise is already saved, alert user of this
-                    self.presentAlert("Already Saved", message: "This exercise has already been saved in your 'My Xercises' page.")
-                } else {
-                    // Exercise has not been saved to device, save it
-                    // Convert image
-                    if let img = UIImageJPEGRepresentation(self.exerciseToDisplay.image, 0.5) {
-                        // Save exercise to device
-                        self.dataMgr.saveExerciseToDevice(self.exerciseToDisplay.name, id: self.exerciseToDisplay.identifier, muscleGroup: self.exerciseToDisplay.muscleGroup, image: img, exerciseDescription: self.exerciseToDisplay.description, completion: { (success) -> Void in
-                            if success {
-                                self.presentAlert("Success", message: "The exercise has been saved to 'My Xercises'!")
-                            } else {
-                                self.presentAlert("Error", message: "There was a problem saving this exercise, please try again.")
-                            }
-                        })
+        if displayingGeneratedExercise {
+            shareActionSheet.addAction(UIAlertAction(title: "Save Exercise", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                // Save to device
+                // Check if the exercise already exists
+                self.dataMgr.queryForItemByID(self.exerciseToDisplay.identifier, entityName: "Exercise", completion: { (success) -> Void in
+                    if success {
+                        // Exercise is already saved, alert user of this
+                        self.presentAlert("Already Saved", message: "This exercise has already been saved in your 'My Xercises' page.")
                     } else {
-                        self.presentAlert("Error", message: "There was a problem saving this exercise, please try again.")
-                    }
+                        // Exercise has not been saved to device, save it
+                        // Convert image
+                        if let img = UIImageJPEGRepresentation(self.exerciseToDisplay.image, 0.5) {
+                            // Save exercise to device
+                            self.dataMgr.saveExerciseToDevice(self.exerciseToDisplay.name, id: self.exerciseToDisplay.identifier, muscleGroup: self.exerciseToDisplay.muscleGroup, image: img, exerciseDescription: self.exerciseToDisplay.description, completion: { (success) -> Void in
+                                if success {
+                                    self.presentAlert("Success", message: "The exercise has been saved to 'My Xercises'!")
+                                } else {
+                                    self.presentAlert("Error", message: "There was a problem saving this exercise, please try again.")
+                                }
+                            })
+                        } else {
+                            self.presentAlert("Error", message: "There was a problem saving this exercise, please try again.")
+                        }
 
-                }
-            })
-        }))
+                    }
+                })
+            }))
+        }
         shareActionSheet.addAction(UIAlertAction(title: "Share to Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             /* Will be completed in Sprint 5 - Use Case 5.3 */
             // Share to Facebook
