@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import Social
 
 class DisplayExerciseTableViewController: UITableViewController {
 
@@ -115,12 +116,26 @@ class DisplayExerciseTableViewController: UITableViewController {
             }))
         }
         shareActionSheet.addAction(UIAlertAction(title: "Share to Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            /* Will be completed in Sprint 5 - Use Case 5.3 */
             // Share to Facebook
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+                let facebookShare = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                facebookShare.setInitialText("Checkout this awesome exercise I found on the Xercise Fitness iOS App!\n\nName: \(self.exerciseToDisplay.name)\n\nDescription: \(self.exerciseToDisplay.description)")
+                facebookShare.addImage(self.exerciseToDisplay.image)
+                self.presentViewController(facebookShare, animated: true, completion: nil)
+            } else {
+                self.presentAlert("No Facebook Accounts", message: "Please login to a Facebook account in Settings to enable sharing to Facebook.")
+            }
         }))
         shareActionSheet.addAction(UIAlertAction(title: "Share to Twitter", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            /* Will be completed in Sprint 5 - Use Case 5.2 */
             // Share to Twitter
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+                let twitterShare = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                twitterShare.setInitialText("Checkout this awesome exercise I found on the Xercise Fitness iOS App!\n\nIt's called \(self.exerciseToDisplay.name)")
+                twitterShare.addImage(self.exerciseToDisplay.image)
+                self.presentViewController(twitterShare, animated: true, completion: nil)
+            } else {
+                self.presentAlert("No Twitter Accounts", message: "Please login to a Twitter account in Settings to enable sharing to Twitter.")
+            }
         }))
         shareActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         self.presentViewController(shareActionSheet, animated: true, completion: nil)
@@ -133,6 +148,7 @@ class DisplayExerciseTableViewController: UITableViewController {
             if error == nil {
                 self.rateCompleted()
             } else {
+                self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
             }
         }
@@ -145,6 +161,7 @@ class DisplayExerciseTableViewController: UITableViewController {
             if error == nil {
                 self.rateCompleted()
             } else {
+                self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
             }
         }

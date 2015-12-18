@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import ParseUI
+import ParseFacebookUtilsV4
 
 class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
     
@@ -235,9 +236,9 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         logo2.contentMode = UIViewContentMode.ScaleAspectFill
         loginVC.logInView?.logo = logo2
         
-        //loginVC.facebookPermissions = ["friends_about_me"]
-        //loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.Twitter, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
-
+        /*loginVC.facebookPermissions = ["friends_about_me"]
+        loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.Twitter, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
+        */
         
         self.presentViewController(loginVC, animated: true, completion: nil)
 
