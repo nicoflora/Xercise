@@ -9,21 +9,16 @@
 import UIKit
 import Parse
 import ParseUI
+import FBSDKLoginKit
+import ParseFacebookUtilsV4
 
 class LoginViewController: PFLogInViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
-        //self.logInView?.dismissButton?.removeFromSuperview()
-        
-        //self.logInView?.logo?.frame = CGRectMake(0, 0, 200, 200)
-        
-        //self.logInView?.logo? = UIImageView(image: UIImage(named: "iTunesArtwork.png"))
-        
-        //self.fields = PFLogInFields.UsernameAndPassword | PFLogInFields.LogInButton | PFLogInFields.Facebook | PFLogInFields.Twitter | PFLogInFields.PasswordForgotten | PFLogInFields.SignUpButton
+        self.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
+        logInView?.facebookButton?.addTarget(self, action: "loginWithFacebook", forControlEvents: UIControlEvents.TouchUpInside)
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,8 +26,38 @@ class LoginViewController: PFLogInViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    func loginWithFacebook() {
+        /*let loginManager = FBSDKLoginManager()
+        loginManager.logInWithReadPermissions(["public_profile", "user_friends", "email"], fromViewController: self) { (result, error) -> Void in
+            if error != nil {
+                print("error")
+            } else if result.isCancelled {
+                print("Cancelled")
+            } else {
+                // Logged In
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }*/
+        
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "user_friends", "email"]) { (user, error) -> Void in
+            if let user = user {
+                // Successful login
+                print("logged in")
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                print("not logged in")
+                print(error)
+                self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
+            }
+        }
+    }
 
+    func presentAlert(alertTitle : String, alertMessage : String) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

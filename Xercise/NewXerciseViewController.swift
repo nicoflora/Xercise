@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 import ParseUI
-import ParseFacebookUtilsV4
+//import ParseFacebookUtilsV4
 
 class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
     
@@ -226,6 +226,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         
         let logo = UIImageView(image: UIImage(named: "loginImage"))
         logo.contentMode = UIViewContentMode.ScaleAspectFill
+        logo.sizeToFit()
         signupVC.signUpView?.logo = logo
         
         loginVC.signUpController = signupVC
@@ -233,12 +234,13 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         loginVC.logInView?.dismissButton?.removeFromSuperview()
         
         let logo2 = UIImageView(image: UIImage(named: "loginImage"))
-        logo2.contentMode = UIViewContentMode.ScaleAspectFill
+        //logo2.contentMode = UIViewContentMode.ScaleAspectFill
+        logo2.sizeToFit()
         loginVC.logInView?.logo = logo2
         
-        /*loginVC.facebookPermissions = ["friends_about_me"]
-        loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.Twitter, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
-        */
+        loginVC.facebookPermissions = ["public_profile", "user_friends", "email"]
+        loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
+        
         
         self.presentViewController(loginVC, animated: true, completion: nil)
 
