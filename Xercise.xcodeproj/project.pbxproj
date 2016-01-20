@@ -134,7 +134,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2516A30A1C27252D00DE83F4 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Xercise-Bridging-Header.h"; path = "../../../../../Downloads/Tinder-3/ParseStarterProject/Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
 		251F1BF71BDFD1DC00B1F3B0 /* Xercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xercise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewXerciseViewController.swift; sourceTree = "<group>"; };
@@ -386,7 +385,6 @@
 		25C56BEA1BEE7803008D7C6B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2516A30A1C27252D00DE83F4 /* Xercise-Bridging-Header.h */,
 				25D62D061BE842D700B8F276 /* Entry.swift */,
 				25C56BDF1BEE7664008D7C6B /* Exercise.swift */,
 				25C56BE31BEE7688008D7C6B /* Workout.swift */,
