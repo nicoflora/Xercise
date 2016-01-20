@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Xercise": {
+      "applicationId": "04vnOim3efwtboWA2ZFc8FNpaqQeiLhkN7GPBkAD"
+    },
+    "_default": {
+      "link": "Xercise"
+    }
+  }
+}
