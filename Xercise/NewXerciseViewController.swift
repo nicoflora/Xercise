@@ -22,6 +22,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     var muscleGroups = [String]()
     var selectedMuscleGroup = ""
     var exercise = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
+    var workout = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,9 +165,38 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     @IBAction func getWorkoutButtonPressed(sender: AnyObject) {
         // Start animation
         updateImage(self)
-                
-        // Fetch a workout & perform segue
-        //self.performSegueWithIdentifier("getWorkout", sender: self)
+        
+        if selectedMuscleGroup != "" {
+            // Begin ignoring interaction events
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            
+            // Call Parse Cloud code function
+            let rateDictionary = ["muscleGroup" : selectedMuscleGroup]
+            PFCloud.callFunctionInBackground("getWorkout", withParameters: rateDictionary) { (object, error) -> Void in
+                if error == nil {
+                    if let object = object {
+                        let exercise_ids = object.valueForKey("exercise_ids") as? [String]
+                        let exercise_names = object.valueForKey("exercise_names") as? [String]
+                        
+                        // Save to class level workout
+                        //let generatedWorkout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: "", exerciseIds: object.valueForKey("exercise_ids") as! [String], publicWorkout: true, workoutCode: nil)
+                        //print(generatedWorkout)
+                        
+                        if let exercise_ids = exercise_ids {
+                            if let exercise_names = exercise_names {
+                                print(exercise_ids)
+                                print(exercise_names)
+                                self.workout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, exerciseIds: object.valueForKey("exercise_ids") as! [String], exerciseNames : exercise_names, publicWorkout: true, workoutCode: nil)
+                                self.performSegueWithIdentifier("getWorkout", sender: self)
+                            }
+                        }
+                    }
+                }
+                // End ignoring interaction events and present alert
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                self.updateImage(self)
+            }
+        }
 
     }
     
@@ -266,6 +296,10 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
             let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
             destinationVC.displayingGeneratedExercise = true
             destinationVC.exerciseToDisplay = exercise
+        } else if segue.identifier == "getWorkout" {
+            let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController
+            destinationVC.workoutToDisplay = workout
+            
         }
     }
     

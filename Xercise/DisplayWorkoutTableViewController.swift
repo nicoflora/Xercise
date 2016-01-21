@@ -14,8 +14,9 @@ class DisplayWorkoutTableViewController: UITableViewController {
     let constants = XerciseConstants()
     var titles = [String]()
     var workoutIdentifier = ""
-    var workoutToDisplay = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], publicWorkout: false, workoutCode: nil)
+    var workoutToDisplay = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
     var exercises = [Entry]()
+    var exerciseNames = [String]()
     var selectedIndex = -1
     var displayingFromSaved = false
     var activityIndicator = UIActivityIndicatorView()
@@ -39,6 +40,7 @@ class DisplayWorkoutTableViewController: UITableViewController {
                     // Fetch the exercise from Core Data, make sure it has not been deleted
                     if let exercise = dataMgr.getEntryByID(exID, entityName: "Exercise") {
                         exercises.append(exercise)
+                        exerciseNames.append(exercise.title)
                     }
                 }
                 // If the workout is public, check if the workout code is stored already
@@ -60,6 +62,13 @@ class DisplayWorkoutTableViewController: UITableViewController {
                 } else {
                     // Exercise is private - no code to display
                     shareWithGroupButton.setTitle("Share with Group", forState: UIControlState.Normal)
+                }
+            }
+        } else {
+            if let exerciseNames = workoutToDisplay.exerciseNames {
+                // Displaying a generated workout
+                for (index,id) in workoutToDisplay.exerciseIDs.enumerate() {
+                    exercises.append(Entry(exerciseTitle: exerciseNames[index], exerciseIdentifer: id))
                 }
             }
         }
@@ -92,8 +101,8 @@ class DisplayWorkoutTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Share", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Upload to Parse
             self.displayActivityIndicator()
-            let exercises = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
-            self.dataMgr.saveWorkoutToParse(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: exercises, completion: { (success) -> Void in
+            //let exercises = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
+            self.dataMgr.saveWorkoutToParse(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, exerciseNames: self.exerciseNames, completion: { (success) -> Void in
                 self.removeActivityIndicator()
                 if success {
                     // Uploaded to Parse, now check exercise availability

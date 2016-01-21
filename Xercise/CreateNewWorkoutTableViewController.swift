@@ -103,8 +103,10 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
             
             // Get list of identifiers for each exercise and archive the array for storage
             var ids = [String]()
+            var names = [String]()
             for ex in exercises {
                 ids.append(ex.identifier)
+                names.append(ex.title)
             }
             let exerciseIDs = dataMgr.archiveArray(ids)
             
@@ -119,7 +121,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                     if success {
                         // Saving to core data was successful, now try Parse
                         self.displayActivityIndicator()
-                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
                             self.removeActivityIndicator()
                             if success {
                                 // Save to Parse was successful
@@ -139,7 +141,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                                 publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                 publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     //try again
-                                    self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, completion: { (success) -> Void in
+                                    self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
                                         if success == true {
                                             // Save to Parse was successful
                                             // Check to make sure all referenced exercises are in Parse if made public

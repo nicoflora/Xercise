@@ -5,10 +5,6 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
-Parse.Cloud.define("hello2", function(request, response) {
-  response.success("Hello world2!");
-});
-
 // Need Type(e.g. "Exercise"), id, and rating(e.g. "thumbs_Up_Rate")
 Parse.Cloud.define("rate", function(request, response) {
     //var Test = Parse.Object.extend(request.params.type);
@@ -65,8 +61,46 @@ Parse.Cloud.define("getExercise", function(request, response) {
 			}, error: function (error) { 
 				console.log('Error finding an exercise with the input data');
 				console.log(error);
-				response("Error");
+				response.error("Error");
 			}
     	});
     //}
+});
+
+// Need request.params.muscleGroup
+Parse.Cloud.define("getWorkout", function(request, response) {
+	var countQuery = new Parse.Query("Workout");
+		countQuery.equalTo("muscle_group", request.params.muscleGroup);
+		countQuery.count({
+			success: function(count) {
+				var randomNumber = Math.floor(Math.random() * count);
+				var query = new Parse.Query("Workout");
+				query.equalTo("muscle_group", request.params.muscleGroup);
+				query.skip(randomNumber);
+				query.first({
+					success: function(object) {
+						var jsonResults = new Array();
+						var ids = object.get("exercise_ids");
+						var names = object.get("exercise_names");
+						//if (ids.count > 0 && names.count > 0) {
+							jsonResults["ids"] = ids;
+							jsonResults["names"] = names;
+							var result = {ids : ids, names: names};
+							response.success(object);
+						/*} else {
+							console.log('No ids or names');
+							response.error("This workout contains no exercises");
+						}*/
+					}, error: function (error) { 
+						console.log('Error finding a workout');
+						console.log(error);
+						response.error("Error getting a random workout");
+					}	
+				});
+			}, error: function (error) { 
+				console.log('Error counting the workouts');
+				console.log(error);
+				response.error("Error searching the workouts");
+			}
+		});
 });
