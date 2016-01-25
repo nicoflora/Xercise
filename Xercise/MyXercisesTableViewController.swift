@@ -331,7 +331,6 @@ class MyXercisesTableViewController: UITableViewController {
         if segue.identifier == "displayExerciseFromSaved" && selectedIndex != -1 {
             let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
             destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
-            destinationVC.exerciseTitle = exercises[selectedIndex].title
             destinationVC.hideRateFeatures = true
         } else if segue.identifier == "displayWorkoutFromSaved" &&  selectedIndex != -1 {
             let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController

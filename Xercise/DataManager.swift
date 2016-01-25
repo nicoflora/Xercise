@@ -16,6 +16,8 @@ class DataManager {
     let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let defaults = NSUserDefaults.standardUserDefaults()
     
+    // MARK: - Utility Functions
+    
     func storeEntriesInDefaults(arr : [Entry], key : String) {
         let archiveKey = NSKeyedArchiver.archivedDataWithRootObject(arr)
         defaults.setObject(archiveKey, forKey: key)
@@ -48,6 +50,29 @@ class DataManager {
             return []
         }
     }
+    
+    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            completion(data: data, response: response, error: error)
+            }.resume()
+    }
+    
+    func downloadImage(url: NSURL, completion : (image : UIImage?) -> Void) {
+        print("Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+        getDataFromUrl(url) { (data, response, error)  in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                guard let data = data where error == nil else {
+                    print(error?.localizedDescription)
+                    completion(image: nil)
+                    return
+                }
+                print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+                completion(image: UIImage(data: data)!)
+            }
+        }
+    }
+
+    // MARK: - Core Data Functions
     
     func getEntryByID(id : String, entityName : String) -> Entry? {
         
@@ -553,57 +578,158 @@ class DataManager {
         }
     }
     
-    /*func getRandomExercise(muscleGroup : String) {
+    func queryForExerciseFromParse(id : String, completion : (exercise : Exercise?) -> Void) {
+        let query = PFQuery(className: "Exercise")
+        query.whereKey("objectId", equalTo: id)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects {
+                    // Retrieved an exercise
+                    if objects.count == 1 {
+                        let first = objects.first
+                        if let first = first {
+                            let imageFile = first.valueForKey("image") as! PFFile
+                            imageFile.getDataInBackgroundWithBlock({ (data, error) -> Void in
+                                if error == nil {
+                                    if let data = data {
+                                        let image = UIImage(data: data)
+                                        if let image = image {
+                                            let exercise = Exercise(name: first.valueForKey("name") as! String, muscleGroup: first.valueForKey("muscle_group") as! String, identifier: id, description: first.valueForKey("exercise_desc") as! String, image: image)
+                                            completion(exercise: exercise)
+                                        } else {
+                                            completion(exercise: nil)
+                                        }
+                                    } else {
+                                        completion(exercise: nil)
+                                    }
+                                } else {
+                                    completion(exercise: nil)
+                                }
+                            })
+                        } else {
+                            completion(exercise: nil)
+                        }
+                    } else {
+                        completion(exercise: nil)
+                    }
+                } else {
+                    completion(exercise: nil)
+                }
+            } else {
+                completion(exercise: nil)
+            }
+        }
+    }
+    
+    // MARK: - Cloud Code Functions
+    
+    func generateExercise(muscleGroup : String, completion : (exercise : Exercise?) -> Void) {
         // Call Parse Cloud code function
         let rateDictionary = ["muscleGroup" : muscleGroup]
         PFCloud.callFunctionInBackground("getExercise", withParameters: rateDictionary) { (object, error) -> Void in
             if error == nil {
-                // Got an exercise - create temp values
-                var name = ""
-                var identifier = ""
-                var muscleGroup = ""
-                var desc = ""
-                var picture : UIImage? = nil
-                
-                for (index, value) in (object! as! [String]).enumerate() {
-                    print(value)
-                    switch index {
-                    case 0:
-                        name = value
-                    case 1:
-                        identifier = value
-                    case 2:
-                        muscleGroup = value
-                    case 3:
-                        desc = value
-                    case 4:
-                        self.downloadImage(NSURL(string: value)!, completion: { (image) -> Void in
-                            if let image = image {
-                                picture = image
-                                self.exercise.image = picture!
-                            }
-                            
-                            // End ignoring interaction events
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            
-                            // Segue to display exercise
-                            self.exercise.name = name
-                            self.exercise.muscleGroup = muscleGroup
-                            self.exercise.identifier = identifier
-                            self.exercise.description = desc
-                            self.performSegueWithIdentifier("getExercise", sender: self)
-                        })
-                    default:
-                        break
+                if let object = object {
+                    let imageFile = object.valueForKey("image") as! PFFile
+                    let imageURL = imageFile.url
+                    if let imageURL = imageURL {
+                        let url = NSURL(string: imageURL)
+                        if let url = url {
+                            self.getDataFromUrl(url, completion: { (data, response, error) -> Void in
+                                if error == nil {
+                                    if let data = data {
+                                        let image = UIImage(data: data)
+                                        if let image = image {
+                                            let exercise = Exercise(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, description: object.valueForKey("exercise_desc") as! String, image: image)
+                                            completion(exercise: exercise)
+                                        } else {
+                                            completion(exercise: nil)
+                                        }
+                                    } else {
+                                        completion(exercise: nil)
+                                    }
+                                } else {
+                                    completion(exercise: nil)
+                                }
+                            })
+                        } else {
+                            completion(exercise: nil)
+                        }
+                    } else {
+                        completion(exercise: nil)
                     }
+
+                    /*// Got an exercise - create temp values
+                    var name = ""
+                    var identifier = ""
+                    var muscleGroup = ""
+                    var desc = ""
+                    var picture = UIImage()
+                    
+                    let objects = object as? [String]
+                    if let objects = objects {
+                        for (index, value) in objects.enumerate() {
+                            print(value)
+                            switch index {
+                            case 0:
+                                name = value
+                            case 1:
+                                identifier = value
+                            case 2:
+                                muscleGroup = value
+                            case 3:
+                                desc = value
+                            case 4:
+                                self.downloadImage(NSURL(string: value)!, completion: { (image) -> Void in
+                                    if let image = image {
+                                        picture = image
+                                        // Return exercise in the completion function
+                                        let exercise = Exercise(name: name, muscleGroup: muscleGroup, identifier: identifier, description: desc, image: picture)
+                                        completion(exercise: exercise)
+                                    } else {
+                                        completion(exercise: nil)
+                                    }
+                                })
+                            default:
+                                break
+                            }
+                        }
+                    } else {
+                        completion(exercise: nil)
+                    }*/
+                } else {
+                    completion(exercise: nil)
                 }
             } else {
-                // End ignoring interaction events and present alert
-                UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                self.presentAlert("Error", alertMessage: "There was an error loading your exercise. Please try again.")
-                self.updateImage(self)
+                completion(exercise: nil)
             }
         }
-
-    }*/
+    }
+    
+    func generateWorkout(muscleGroup : String, completion : (workout : Workout?) -> Void) {
+        // Call Parse Cloud code function
+        let rateDictionary = ["muscleGroup" : muscleGroup]
+        PFCloud.callFunctionInBackground("getWorkout", withParameters: rateDictionary) { (object, error) -> Void in
+            if error == nil {
+                if let object = object {
+                    let exercise_ids = object.valueForKey("exercise_ids") as? [String]
+                    let exercise_names = object.valueForKey("exercise_names") as? [String]
+                    if let exercise_ids = exercise_ids {
+                        if let exercise_names = exercise_names {
+                            let workout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, exerciseIds: exercise_ids, exerciseNames : exercise_names, publicWorkout: true, workoutCode: nil)
+                            completion(workout: workout)
+                        } else {
+                            completion(workout: nil)
+                        }
+                    } else {
+                        completion(workout: nil)
+                    }
+                } else {
+                    completion(workout: nil)
+                }
+            } else {
+                completion(workout: nil)
+            }
+        }
+    }
+    
 }

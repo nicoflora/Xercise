@@ -16,6 +16,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     @IBOutlet var animationImage: UIImageView!
     @IBOutlet var selectMuscleGroupBtn: UIButton!
     
+    let dataMgr = DataManager()
     var imageCounter = 1
     var isAnimatingImage = false
     var timer = NSTimer()
@@ -83,61 +84,23 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         if selectedMuscleGroup != "" {
             // Begin ignoring interaction events
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-
-            // Call Parse Cloud code function
-            let rateDictionary = ["muscleGroup" : selectedMuscleGroup]
-            PFCloud.callFunctionInBackground("getExercise", withParameters: rateDictionary) { (object, error) -> Void in
-                if error == nil {
-                    // Got an exercise - create temp values
-                    var name = ""
-                    var identifier = ""
-                    var muscleGroup = ""
-                    var desc = ""
-                    var picture : UIImage? = nil
-                    
-                    for (index, value) in (object! as! [String]).enumerate() {
-                        print(value)
-                        switch index {
-                        case 0:
-                            name = value
-                        case 1:
-                            identifier = value
-                        case 2:
-                            muscleGroup = value
-                        case 3:
-                            desc = value
-                        case 4:
-                            self.downloadImage(NSURL(string: value)!, completion: { (image) -> Void in
-                                if let image = image {
-                                    picture = image
-                                    self.exercise.image = picture!
-                                }
-                                
-                                // End ignoring interaction events
-                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                                
-                                // Segue to display exercise
-                                self.exercise.name = name
-                                self.exercise.muscleGroup = muscleGroup
-                                self.exercise.identifier = identifier
-                                self.exercise.description = desc
-                                self.performSegueWithIdentifier("getExercise", sender: self)
-                            })
-                        default:
-                            break
-                        }
-                    }
+            
+            dataMgr.generateExercise(selectedMuscleGroup, completion: { (exercise) -> Void in
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                if let exercise = exercise {
+                    self.exercise = exercise
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.performSegueWithIdentifier("getExercise", sender: self)
+                    })
                 } else {
-                    // End ignoring interaction events and present alert
-                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                    // Present alert
                     self.presentAlert("Error", alertMessage: "There was an error loading your exercise. Please try again.")
                     self.updateImage(self)
                 }
-            }
+            })
         } else {
             self.presentAlert("No Muscle Group", alertMessage: "There was no muscle group selected. Please choose one and try again.")
             self.updateImage(self)
-
         }
     }
     
@@ -169,33 +132,19 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         if selectedMuscleGroup != "" {
             // Begin ignoring interaction events
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-            
-            // Call Parse Cloud code function
-            let rateDictionary = ["muscleGroup" : selectedMuscleGroup]
-            PFCloud.callFunctionInBackground("getWorkout", withParameters: rateDictionary) { (object, error) -> Void in
-                if error == nil {
-                    if let object = object {
-                        let exercise_ids = object.valueForKey("exercise_ids") as? [String]
-                        let exercise_names = object.valueForKey("exercise_names") as? [String]
-                        
-                        // Save to class level workout
-                        //let generatedWorkout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: "", exerciseIds: object.valueForKey("exercise_ids") as! [String], publicWorkout: true, workoutCode: nil)
-                        //print(generatedWorkout)
-                        
-                        if let exercise_ids = exercise_ids {
-                            if let exercise_names = exercise_names {
-                                print(exercise_ids)
-                                print(exercise_names)
-                                self.workout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, exerciseIds: object.valueForKey("exercise_ids") as! [String], exerciseNames : exercise_names, publicWorkout: true, workoutCode: nil)
-                                self.performSegueWithIdentifier("getWorkout", sender: self)
-                            }
-                        }
-                    }
-                }
-                // End ignoring interaction events and present alert
+            dataMgr.generateWorkout(selectedMuscleGroup, completion: { (workout) -> Void in
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                self.updateImage(self)
-            }
+                if let workout = workout {
+                    self.workout = workout
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.performSegueWithIdentifier("getWorkout", sender: self)
+                    })
+                } else {
+                    // Present alert
+                    self.presentAlert("Error", alertMessage: "There was an error loading your workout. Please try again.")
+                    self.updateImage(self)
+                }
+            })
         }
 
     }

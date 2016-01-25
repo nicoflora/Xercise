@@ -13,19 +13,30 @@ import Social
 class DisplayExerciseTableViewController: UITableViewController {
 
     var exerciseIdentifier = ""
-    var exerciseTitle = ""
+    //var exerciseTitle = ""
     var hideRateFeatures = false
     let dataMgr = DataManager()
     let constants = XerciseConstants()
     var titles = [String]()
     var exerciseToDisplay = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
     var displayingGeneratedExercise = false
+    var displayingExerciseInWorkout = false
+    var downloadedExercises = [Exercise]()
+    var nextExercises = [String]()
     @IBOutlet var nextButton: UIBarButtonItem!
+    var activityIndicator = UIActivityIndicatorView()
+    var coverView = UIView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         titles = constants.displayExerciseTitles
+        
+        // Setup cover view
+        coverView = UIView(frame: self.view.bounds)
+        coverView.backgroundColor = UIColor.grayColor()
+        coverView.alpha = 0.3
         
         if exerciseIdentifier != "" {
             // Retrieve the exercise from Core Data using the passed identifier
@@ -39,28 +50,23 @@ class DisplayExerciseTableViewController: UITableViewController {
                 displayErrorAlert()
             }
         } else if !displayingGeneratedExercise {
-        
             // No exercise identifier, nothing to display - present error and pop VC
             displayErrorAlert()
+        }
+        
+        // If there are no next exercises, remove next button
+        if displayingExerciseInWorkout {
+            if nextExercises.count == 0 {
+                removeNextButton()
+            }
+        } else if !displayingGeneratedExercise {
+            removeNextButton()
         }
     }
     
     override func viewDidDisappear(animated: Bool) {
         // Reset variable to hide rate features
         hideRateFeatures = false
-    }
-    
-    func changeExercise(identifier : String) {
-        if identifier != "" {
-            // Retrieve the exercise from Core Data using the passed identifier
-            let retrievedExercise = dataMgr.getExerciseByID(identifier)
-            
-            // If a non-nil exercise was returned, populate the appropriate fields
-            if let exercise = retrievedExercise {
-                exerciseToDisplay = exercise
-                tableView.reloadData()
-            }
-        }
     }
     
     func imageResize(imageObj:UIImage, sizeChange:CGSize)-> UIImage {
@@ -77,12 +83,97 @@ class DisplayExerciseTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+    
+    // MARK: - "Next" navigation to change the currently displayed exercise
+    
     @IBAction func nextButtonPressed(sender: AnyObject) {
-        // If displaying from a generated exercise, this will generate a new exercise
-        
-        // If displaying from a generated/saved workout, this will display the next exercise in the workout
+        if displayingExerciseInWorkout {
+            if nextExercises.count > 0 {
+                let next = nextExercises.first
+                if let nextExercise = next {
+                    checkForExercise(nextExercise)
+                    nextExercises.removeFirst()
+                    if nextExercises.count == 0 {
+                        // Remove Next button
+                        removeNextButton()
+                    }
+                }
+            }
+        } else if displayingGeneratedExercise {
+            // Displaying from a generated exercise, generate a new exercise with the same muscle group
+            generateNewExercise()
+        }
     }
     
+    func generateNewExercise() {
+        displayActivityIndicator()
+        dataMgr.generateExercise(exerciseToDisplay.muscleGroup, completion: { (exercise) -> Void in
+            if let exercise = exercise {
+                self.exerciseToDisplay = exercise
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.changeExercise()
+                })
+            } else {
+                // Present alert
+                self.removeActivityIndicator()
+                self.presentAlert("Error", message: "There was an error loading your exercise. Please try again.")
+            }
+        })
+    }
+    
+    func checkForExercise(id : String) {
+        displayActivityIndicator()
+        // Check if the exercise has already been downloaded and cached
+        let cachedExercise = checkIfExerciseisCached(id)
+        if let cachedExercise = cachedExercise {
+            exerciseToDisplay = cachedExercise
+            changeExercise()
+        } else {
+            // Exercise has not been downloaded yet - try to fetch workout from device
+            let exercise = dataMgr.getExerciseByID(id)
+            if let exercise = exercise {
+                // In core data, present this exercise
+                exerciseToDisplay = exercise
+                // Cache exercise
+                downloadedExercises.append(exercise)
+                changeExercise()
+            } else {
+                // Fetch from Parse
+                dataMgr.queryForExerciseFromParse(id, completion: { (exercise) -> Void in
+                    if let exercise = exercise {
+                        // Successfully retrieved an exercise
+                        self.exerciseToDisplay = exercise
+                        // Cache exercise
+                        self.downloadedExercises.append(exercise)
+                        self.changeExercise()
+                    } else {
+                        print("Error fetching exercise from Parse")
+                        self.presentAlert("Error", message: "There was an error retrieving this exercise, please make sure you are connected to the internet and try again.")
+                    }
+                    if self.activityIndicator.isAnimating() {
+                        self.removeActivityIndicator()
+                    }
+                })
+            }
+        }
+    }
+    
+    func checkIfExerciseisCached(id : String) -> Exercise? {
+        for exercise in downloadedExercises {
+            if exercise.identifier == id {
+                // The exercise has been downloaded - return it
+                return exercise
+            }
+        }
+        return nil
+    }
+    
+    func changeExercise() {
+        removeActivityIndicator()
+        tableView.reloadData()
+    }
+
+    // MARK: - Share Action and rating
     
     func shareAction() {
         // Share button pressed
@@ -173,6 +264,37 @@ class DisplayExerciseTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    
+    // MARK: - Utility functions
+    
+    func removeNextButton() {
+        let rightButton = self.navigationItem.rightBarButtonItem
+        if rightButton != nil {
+            self.navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
+    func displayActivityIndicator() {
+        self.view.addSubview(coverView)
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        activityIndicator.center = self.tableView.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.alpha = 1.0
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(activityIndicator)
+        self.view.bringSubviewToFront(activityIndicator)
+        activityIndicator.startAnimating()
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+    }
+    
+    func removeActivityIndicator() {
+        coverView.removeFromSuperview()
+        activityIndicator.stopAnimating()
+        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+    }
+
+
     func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in

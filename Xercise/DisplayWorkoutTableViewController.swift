@@ -15,10 +15,13 @@ class DisplayWorkoutTableViewController: UITableViewController {
     var titles = [String]()
     var workoutIdentifier = ""
     var workoutToDisplay = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
+    var exerciseToDisplay = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
+    var downloadedExercises = [Exercise]()
     var exercises = [Entry]()
     var exerciseNames = [String]()
     var selectedIndex = -1
     var displayingFromSaved = false
+    var displayingGeneratedWorkout = false
     var activityIndicator = UIActivityIndicatorView()
     @IBOutlet var shareWithGroupButton: UIButton!
 
@@ -66,9 +69,12 @@ class DisplayWorkoutTableViewController: UITableViewController {
             }
         } else {
             if let exerciseNames = workoutToDisplay.exerciseNames {
-                // Displaying a generated workout
-                for (index,id) in workoutToDisplay.exerciseIDs.enumerate() {
-                    exercises.append(Entry(exerciseTitle: exerciseNames[index], exerciseIdentifer: id))
+                if exerciseNames.count > 0 {
+                    // Displaying a generated workout
+                    displayingGeneratedWorkout = true
+                    for (index,id) in workoutToDisplay.exerciseIDs.enumerate() {
+                        exercises.append(Entry(exerciseTitle: exerciseNames[index], exerciseIdentifer: id))
+                    }
                 }
             }
         }
@@ -151,6 +157,57 @@ class DisplayWorkoutTableViewController: UITableViewController {
         UIApplication.sharedApplication().endIgnoringInteractionEvents()
     }
     
+    func checkForExercise(id : String) {
+        if displayingGeneratedWorkout {
+            displayActivityIndicator()
+            // Check if the exercise has already been downloaded and cached
+            let cachedExercise = checkIfExerciseisCached(id)
+            if let cachedExercise = cachedExercise {
+                exerciseToDisplay = cachedExercise
+                self.performSegueWithIdentifier("displayExerciseFromWorkout", sender: self)
+                removeActivityIndicator()
+            } else {
+                // Exercise has not been downloaded yet - try to fetch workout from device
+                let exercise = dataMgr.getExerciseByID(id)
+                if let exercise = exercise {
+                    // In core data, present this exercise
+                    exerciseToDisplay = exercise
+                    self.performSegueWithIdentifier("displayExerciseFromWorkout", sender: self)
+                    removeActivityIndicator()
+                    // Cache exercise
+                    downloadedExercises.append(exercise)
+                } else {
+                    // Fetch from Parse
+                    dataMgr.queryForExerciseFromParse(id, completion: { (exercise) -> Void in
+                        if let exercise = exercise {
+                            // Successfully retrieved an exercise
+                            self.exerciseToDisplay = exercise
+                            self.performSegueWithIdentifier("displayExerciseFromWorkout", sender: self)
+                            // Cache exercise
+                            self.downloadedExercises.append(exercise)
+                        } else {
+                            print("Error fetching exercise from Parse")
+                            self.presentAlert("Error", message: "There was an error retrieving this exercise, please make sure you are connected to the internet and try again.")
+                        }
+                        self.removeActivityIndicator()
+                    })
+                }
+            }
+        } else {
+            self.performSegueWithIdentifier("displayExerciseFromWorkout", sender: self)
+        }
+    }
+    
+    func checkIfExerciseisCached(id : String) -> Exercise? {
+        for exercise in downloadedExercises {
+            if exercise.identifier == id {
+                // The exercise has been downloaded - return it
+                return exercise
+            }
+        }
+        return nil
+    }
+    
     func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
@@ -212,30 +269,11 @@ class DisplayWorkoutTableViewController: UITableViewController {
         if indexPath.section == 2 {
             if exercises.count > indexPath.row {
                 selectedIndex = indexPath.row
-                self.performSegueWithIdentifier("displayExerciseFromWorkout", sender: self)
+                checkForExercise(exercises[selectedIndex].identifier)
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
             }
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
 
     
     // MARK: - Navigation
@@ -244,10 +282,30 @@ class DisplayWorkoutTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "displayExerciseFromWorkout" && selectedIndex != -1 {
             let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
-            destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
-            destinationVC.exerciseTitle = exercises[selectedIndex].title
+            // Get next exercise identifiers
+            if exercises.count > selectedIndex + 1 {
+                var nextExercises = [String]()
+                for var i = selectedIndex + 1; i < exercises.count; i++ {
+                    nextExercises.append(exercises[i].identifier)
+                }
+                destinationVC.nextExercises = nextExercises
+            }
+            destinationVC.displayingExerciseInWorkout = true
+            // Handle differences in displaying from saved/generated workout
             if displayingFromSaved {
                 destinationVC.hideRateFeatures = true
+            }
+            // Check if the exercise is being displayed from a generated workout
+            if displayingGeneratedWorkout {
+                if exerciseToDisplay.name != "" {
+                    destinationVC.displayingGeneratedExercise = true
+                    destinationVC.exerciseToDisplay = exerciseToDisplay
+                    destinationVC.downloadedExercises = downloadedExercises
+                } else {
+                    // handle error
+                }
+            } else {
+                destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
             }
         }
         // Reset selected index value

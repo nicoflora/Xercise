@@ -42,16 +42,18 @@ Parse.Cloud.define("getExercise", function(request, response) {
 				console.log("Random number = " + randomNumber)
 				var query = new Parse.Query("Exercise");
 				query.equalTo("muscle_group", request.params.muscleGroup);
-				query.skip(randomNumber)
+				query.skip(randomNumber);
 				query.first({
 					success: function(object) {
-						var responseArray = new Array();
+						/*var responseArray = new Array();
 						responseArray.push(object.get("name"));
-						responseArray.push(object.get("identifier"));
+						responseArray.push(object.get("objectId"));
 						responseArray.push(object.get("muscle_group"));
 						responseArray.push(object.get("exercise_desc"));
 						responseArray.push(object.get("image").url());
-						response.success(responseArray);						
+						console.log(responseArray);
+						response.success(responseArray);*/
+						response.success(object);					
 					}, error: function (error) { 
 						console.log('Error finding an exercise');
 						console.log(error);
