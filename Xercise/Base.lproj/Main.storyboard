@@ -624,7 +624,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="New Xercise" id="vlh-e1-Bzo">
+                    <navigationItem key="navigationItem" title="Xercise" id="vlh-e1-Bzo">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="7AM-D5-8A8">
                             <connections>
                                 <action selector="logout:" destination="WOs-uM-HAx" id="aNt-j4-W1O"/>

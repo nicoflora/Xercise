@@ -100,95 +100,105 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
         
         // Confirm that there is at least 1 exercise in the workout
         if exercises.count > 0 {
-            
-            // Get list of identifiers for each exercise and archive the array for storage
-            var ids = [String]()
-            var names = [String]()
-            for ex in exercises {
-                ids.append(ex.identifier)
-                names.append(ex.title)
-            }
-            let exerciseIDs = dataMgr.archiveArray(ids)
-            
-            // Generate workout UUID
-            let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
-            
-            // Present action sheet to determine if the workout is public or not and save appropriately
-            let actionSheet = UIAlertController(title: nil, message: "Would you like to allow this workout to be publicly accessible by other members of the community, or keep the workout private? (Note, to share this exercise with others using a group code, the workout must be made public)", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                // Save to both device and Parse databases
-                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
-                    if success {
-                        // Saving to core data was successful, now try Parse
-                        self.displayActivityIndicator()
-                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
-                            self.removeActivityIndicator()
-                            if success {
-                                // Save to Parse was successful
-                                // Check to make sure all referenced exercises are in Parse if made public
-                                self.displayActivityIndicator()
-                                self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
-                                    self.removeActivityIndicator()
-                                    if success {
-                                        // Remove exercises from defaults on success
-                                        self.defaults.removeObjectForKey("workoutExercises")
-                                        self.presentSucessAlert()
-                                    }
-                                })
-                            } else {
-                                // Saving to Core Data succeeded but Parse failed
-                                let publicAlert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
-                                publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-                                publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                    //try again
-                                    self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
-                                        if success == true {
-                                            // Save to Parse was successful
-                                            // Check to make sure all referenced exercises are in Parse if made public
-                                            self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
-                                                if success {
-                                                    // Remove exercises from defaults on success
-                                                    self.defaults.removeObjectForKey("workoutExercises")
-                                                    self.presentSucessAlert()
-                                                }
-                                            })
-                                        } else {
-                                            // Saving to Core Data succeeded but Parse failed
-                                            let alert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
-                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
-                                            self.presentViewController(alert, animated: true, completion: nil)
+            // Confirm that the workout name has at least 3 characters
+            if workoutName.characters.count > 2 {
+                
+                if workoutMuscleGroup != "" {
+                
+                // Get list of identifiers for each exercise and archive the array for storage
+                var ids = [String]()
+                var names = [String]()
+                for ex in exercises {
+                    ids.append(ex.identifier)
+                    names.append(ex.title)
+                }
+                let exerciseIDs = dataMgr.archiveArray(ids)
+                
+                // Generate workout UUID
+                let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
+                
+                // Present action sheet to determine if the workout is public or not and save appropriately
+                let actionSheet = UIAlertController(title: nil, message: "Would you like to allow this workout to be publicly accessible by other members of the community, or keep the workout private? (Note, to share this exercise with others using a group code, the workout must be made public)", preferredStyle: UIAlertControllerStyle.ActionSheet)
+                actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    // Save to both device and Parse databases
+                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
+                        if success {
+                            // Saving to core data was successful, now try Parse
+                            self.displayActivityIndicator()
+                            self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
+                                self.removeActivityIndicator()
+                                if success {
+                                    // Save to Parse was successful
+                                    // Check to make sure all referenced exercises are in Parse if made public
+                                    self.displayActivityIndicator()
+                                    self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
+                                        self.removeActivityIndicator()
+                                        if success {
+                                            // Remove exercises from defaults on success
+                                            self.defaults.removeObjectForKey("workoutExercises")
+                                            self.presentSucessAlert()
                                         }
                                     })
-                                }))
-                                self.presentViewController(publicAlert, animated: true, completion: nil)
-                            }
-                        })
-                    } else {
-                        self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
-                    }
-                })
+                                } else {
+                                    // Saving to Core Data succeeded but Parse failed
+                                    let publicAlert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
+                                    publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                                    publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                                        //try again
+                                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
+                                            if success == true {
+                                                // Save to Parse was successful
+                                                // Check to make sure all referenced exercises are in Parse if made public
+                                                self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
+                                                    if success {
+                                                        // Remove exercises from defaults on success
+                                                        self.defaults.removeObjectForKey("workoutExercises")
+                                                        self.presentSucessAlert()
+                                                    }
+                                                })
+                                            } else {
+                                                // Saving to Core Data succeeded but Parse failed
+                                                let alert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
+                                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+                                                self.presentViewController(alert, animated: true, completion: nil)
+                                            }
+                                        })
+                                    }))
+                                    self.presentViewController(publicAlert, animated: true, completion: nil)
+                                }
+                            })
+                        } else {
+                            self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
+                        }
+                    })
 
-            }))
-            actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                // Save to device database only
-                self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: false, completion: { (success) -> Void in
-                    if success {
-                        // Remove exercises from defaults on success
-                        self.defaults.removeObjectForKey("workoutExercises")
+                }))
+                actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    // Save to device database only
+                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: false, completion: { (success) -> Void in
+                        if success {
+                            // Remove exercises from defaults on success
+                            self.defaults.removeObjectForKey("workoutExercises")
 
-                        // Present success alert and pop VC
-                        self.presentSucessAlert()
-                    } else {
-                        self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
-                    }
-                })
-            }))
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(actionSheet, animated: true, completion: nil)
-            
+                            // Present success alert and pop VC
+                            self.presentSucessAlert()
+                        } else {
+                            self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
+                        }
+                    })
+                }))
+                actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(actionSheet, animated: true, completion: nil)
+                    
+                } else {
+                    presentAlert("No Muscle Group", alertMessage: "This workout does not have a muscle group. Please select one before saving.")
+                }
+            } else {
+                presentAlert("No Name", alertMessage: "This workout does not have a name. Please name it before saving.")
+            }
         } else {
             // Show error alert
-            presentAlert("Error", alertMessage: "There are no exercises in this workout. Please add at least one exercise before saving.")
+            presentAlert("No Exercises", alertMessage: "There are no exercises in this workout. Please add at least one exercise before saving.")
         }
     }
     
