@@ -162,33 +162,6 @@ class DataManager {
         }
     }
     
-    func saveExerciseToParse(name : String, id : String, muscleGroup : String, image : NSData, exerciseDescription : String, completion : (success : Bool) -> Void) {
-                
-        // Parse exercise object
-        let exercise = PFObject(className: "Exercise")
-        exercise["name"] = name
-        exercise["muscle_group"] = muscleGroup
-        exercise["exercise_desc"] = exerciseDescription
-        exercise["thumbs_Down_Rate"] = 0
-        exercise["thumbs_Up_Rate"] = 0
-        let imageFile = PFFile(name: "image.jpeg", data: image)
-        exercise["image"] = imageFile
-        exercise.saveInBackgroundWithBlock { (success, error) -> Void in
-            if error == nil {
-                if success {
-                    if let objectId = exercise.objectId {
-                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Exercise")
-                        completion(success: true)
-                    }
-                } else {
-                    completion(success: false)
-                }
-            } else {
-                completion(success: false)
-            }
-        }
-    }
-    
     func updateLocalObjectIdentifier(currentId : String, newId : String, entityName : String) {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -210,7 +183,7 @@ class DataManager {
             print("There was an error updating the local object's id")
         }
     }
-
+    
     
     func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : NSData, publicWorkout : Bool, completion : (success : Bool) -> Void) {
         
@@ -229,85 +202,7 @@ class DataManager {
             completion(success: false)
         }
     }
-    
-    func saveWorkoutToParse(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : [String], exerciseNames : [String], completion : (success : Bool) -> Void) {
-        
-        // Create Parse object to save
-        let workout = PFObject(className: "Workout")
-        workout["name"] = workoutName
-        //workout["identifier"] = id
-        workout["exercise_ids"] = exerciseIDs
-        workout["muscle_group"] = workoutMuscleGroup
-        workout["exercise_names"] = exerciseNames
-        workout.saveInBackgroundWithBlock { (success, error) -> Void in
-            if error == nil {
-                if success {
-                    if let objectId = workout.objectId {
-                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Workout")
-                        completion(success: true)
-                    }
-                } else {
-                    completion(success: false)
-                }
-            } else {
-                completion(success: false)
-            }
-        }
-    }
-    
-    func checkParseExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
-        var completionSuccess = true
-        for exerciseID in ids {
-            checkSingleExerciseAvailabilityOnParse(exerciseID, completion: { (success) -> Void in
-                if !success {
-                    completionSuccess = false
-                }
-            })
-        }
-        if completionSuccess {
-            completion(success: true)
-        } else {
-            completion(success: false)
-        }
-    }
-    
-    func checkSingleExerciseAvailabilityOnParse(id : String, completion : (success : Bool) -> Void) {
-        let query = PFQuery(className: "Exercise")
-        query.whereKey("objectId", equalTo: id)
-        query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
-            if error == nil {
-                if let objects = objects {
-                    if objects.count == 0 {
-                        // Not in Parse database, add to Parse
-                        if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
-                            // Got Exercise from Core Data - now add to Parse
-                            if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
-                                self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
-                                    if success {
-                                        completion(success: true)
-                                    } else {
-                                        completion(success: false)
-                                    }
-                                })
-                            } else {
-                                completion(success: true)
-                            }
-                        }  else {
-                            completion(success: true)
-                        }
-                    }  else {
-                        completion(success: true)
-                    }
-                }  else {
-                    completion(success: true)
-                }
-            }  else {
-                completion(success: false)
-            }
-        })
 
-    }
-    
     func getWorkoutByID(id : String) -> Workout? {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -385,7 +280,7 @@ class DataManager {
             completion(success: false)
         }
     }
-    
+
     func queryForWorkoutCode(id : String) -> String {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -404,6 +299,168 @@ class DataManager {
             print("There was an error fetching the workout code by ID")
         }
         return groupCode
+    }
+
+    func addGroupCodeByID(id : String, code : String, completion : (success : Bool) -> Void) {
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestWorkout = NSFetchRequest(entityName: "Workout")
+        requestWorkout.predicate = NSPredicate(format: "identifier = %@", id)
+        requestWorkout.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestWorkout)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject] {
+                    result.setValue(code, forKey: "workoutCode")
+                    result.setValue(true, forKey: "publicWorkout")
+                    do {
+                        try context.save()
+                        completion(success: true)
+                    } catch {
+                        completion(success: false)
+                    }
+                    
+                }
+            }
+        } catch {
+            print("There was an error adding the group code by ID")
+            completion(success: false)
+        }
+    }
+    
+    func deleteItemByID(id : String, entityName : String, completion : (success : Bool) -> Void) {
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestExercise = NSFetchRequest(entityName: entityName)
+        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
+        requestExercise.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestExercise)
+            if results.count > 0 {
+                for result in results as! [NSManagedObject] {
+                    // Delete from Core Data
+                    context.deleteObject(result)
+                    do {
+                        try context.save()
+                        completion(success: true)
+                    } catch {
+                        print("There was an error saving after delection of a \(entityName)")
+                        completion(success: false)
+                    }
+                }
+            }
+        } catch {
+            print("There was an error deleting the \(entityName) by ID")
+            completion(success: false)
+        }
+    }
+
+    
+    // MARK: - Parse Functions
+    
+    func saveExerciseToParse(name : String, id : String, muscleGroup : String, image : NSData, exerciseDescription : String, completion : (success : Bool) -> Void) {
+                
+        // Parse exercise object
+        let exercise = PFObject(className: "Exercise")
+        exercise["name"] = name
+        exercise["muscle_group"] = muscleGroup
+        exercise["exercise_desc"] = exerciseDescription
+        exercise["thumbs_Down_Rate"] = 0
+        exercise["thumbs_Up_Rate"] = 0
+        let imageFile = PFFile(name: "image.jpeg", data: image)
+        exercise["image"] = imageFile
+        exercise.saveInBackgroundWithBlock { (success, error) -> Void in
+            //guard error == nil else {return}
+            if error == nil {
+                if success {
+                    if let objectId = exercise.objectId {
+                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Exercise")
+                        completion(success: true)
+                    }
+                } else {
+                    completion(success: false)
+                }
+            } else {
+                completion(success: false)
+            }
+        }
+    }
+    
+    
+    func saveWorkoutToParse(workoutName : String, workoutMuscleGroup : String, id : String, exerciseIDs : [String], exerciseNames : [String], completion : (success : Bool) -> Void) {
+        
+        // Create Parse object to save
+        let workout = PFObject(className: "Workout")
+        workout["name"] = workoutName
+        //workout["identifier"] = id
+        workout["exercise_ids"] = exerciseIDs
+        workout["muscle_group"] = workoutMuscleGroup
+        workout["exercise_names"] = exerciseNames
+        workout.saveInBackgroundWithBlock { (success, error) -> Void in
+            if error == nil {
+                if success {
+                    if let objectId = workout.objectId {
+                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Workout")
+                        completion(success: true)
+                    }
+                } else {
+                    completion(success: false)
+                }
+            } else {
+                completion(success: false)
+            }
+        }
+    }
+    
+    func checkParseExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
+        var completionSuccess = true
+        for exerciseID in ids {
+            checkSingleExerciseAvailabilityOnParse(exerciseID, completion: { (success) -> Void in
+                if !success {
+                    completionSuccess = false
+                }
+            })
+        }
+        if completionSuccess {
+            completion(success: true)
+        } else {
+            completion(success: false)
+        }
+    }
+    
+    func checkSingleExerciseAvailabilityOnParse(id : String, completion : (success : Bool) -> Void) {
+        let query = PFQuery(className: "Exercise")
+        query.whereKey("objectId", equalTo: id)
+        query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                if let objects = objects {
+                    if objects.count == 0 {
+                        // Not in Parse database, add to Parse
+                        if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
+                            // Got Exercise from Core Data - now add to Parse
+                            if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
+                                self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
+                                    if success {
+                                        completion(success: true)
+                                    } else {
+                                        completion(success: false)
+                                    }
+                                })
+                            } else {
+                                completion(success: true)
+                            }
+                        }  else {
+                            completion(success: true)
+                        }
+                    }  else {
+                        completion(success: true)
+                    }
+                }  else {
+                    completion(success: true)
+                }
+            }  else {
+                completion(success: false)
+            }
+        })
+
     }
     
     func queryParseForWorkoutCode(id : String, completion : (success : Bool) -> Void) {
@@ -525,59 +582,6 @@ class DataManager {
         }
     }
     
-    func addGroupCodeByID(id : String, code : String, completion : (success : Bool) -> Void) {
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        let requestWorkout = NSFetchRequest(entityName: "Workout")
-        requestWorkout.predicate = NSPredicate(format: "identifier = %@", id)
-        requestWorkout.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestWorkout)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    result.setValue(code, forKey: "workoutCode")
-                    result.setValue(true, forKey: "publicWorkout")
-                    do {
-                        try context.save()
-                        completion(success: true)
-                    } catch {
-                        completion(success: false)
-                    }
-                    
-                }
-            }
-        } catch {
-            print("There was an error adding the group code by ID")
-            completion(success: false)
-        }
-
-    }
-    
-    func deleteItemByID(id : String, entityName : String, completion : (success : Bool) -> Void) {
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        let requestExercise = NSFetchRequest(entityName: entityName)
-        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
-        requestExercise.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestExercise)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    // Delete from Core Data
-                    context.deleteObject(result)
-                    do {
-                        try context.save()
-                        completion(success: true)
-                    } catch {
-                        print("There was an error saving after delection of a \(entityName)")
-                        completion(success: false)
-                    }
-                }
-            }
-        } catch {
-            print("There was an error deleting the \(entityName) by ID")
-            completion(success: false)
-        }
-    }
-    
     func queryForExerciseFromParse(id : String, completion : (exercise : Exercise?) -> Void) {
         let query = PFQuery(className: "Exercise")
         query.whereKey("objectId", equalTo: id)
@@ -627,81 +631,42 @@ class DataManager {
         // Call Parse Cloud code function
         let rateDictionary = ["muscleGroup" : muscleGroup]
         PFCloud.callFunctionInBackground("getExercise", withParameters: rateDictionary) { (object, error) -> Void in
-            if error == nil {
-                if let object = object {
-                    let imageFile = object.valueForKey("image") as! PFFile
-                    let imageURL = imageFile.url
-                    if let imageURL = imageURL {
-                        let url = NSURL(string: imageURL)
-                        if let url = url {
-                            self.getDataFromUrl(url, completion: { (data, response, error) -> Void in
-                                if error == nil {
-                                    if let data = data {
-                                        let image = UIImage(data: data)
-                                        if let image = image {
-                                            let exercise = Exercise(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, description: object.valueForKey("exercise_desc") as! String, image: image)
-                                            completion(exercise: exercise)
-                                        } else {
-                                            completion(exercise: nil)
-                                        }
-                                    } else {
-                                        completion(exercise: nil)
-                                    }
-                                } else {
-                                    completion(exercise: nil)
-                                }
-                            })
-                        } else {
-                            completion(exercise: nil)
-                        }
-                    } else {
-                        completion(exercise: nil)
-                    }
-
-                    /*// Got an exercise - create temp values
-                    var name = ""
-                    var identifier = ""
-                    var muscleGroup = ""
-                    var desc = ""
-                    var picture = UIImage()
-                    
-                    let objects = object as? [String]
-                    if let objects = objects {
-                        for (index, value) in objects.enumerate() {
-                            print(value)
-                            switch index {
-                            case 0:
-                                name = value
-                            case 1:
-                                identifier = value
-                            case 2:
-                                muscleGroup = value
-                            case 3:
-                                desc = value
-                            case 4:
-                                self.downloadImage(NSURL(string: value)!, completion: { (image) -> Void in
-                                    if let image = image {
-                                        picture = image
-                                        // Return exercise in the completion function
-                                        let exercise = Exercise(name: name, muscleGroup: muscleGroup, identifier: identifier, description: desc, image: picture)
-                                        completion(exercise: exercise)
-                                    } else {
-                                        completion(exercise: nil)
-                                    }
-                                })
-                            default:
-                                break
-                            }
-                        }
-                    } else {
-                        completion(exercise: nil)
-                    }*/
-                } else {
-                    completion(exercise: nil)
-                }
-            } else {
-                completion(exercise: nil)
-            }
+            // Check that error is nil and object is not nil
+            guard error == nil else {completion(exercise: nil);return}
+            guard let object = object else {completion(exercise: nil);return}
+            
+            // Try to retrieve the image as a PFFile, then try to get it's URL
+            let file = object.valueForKey("image") as? PFFile
+            guard let imageFile = file else {completion(exercise: nil);return}
+            let fileUrl = imageFile.url
+            guard let imageURL = fileUrl else {completion(exercise: nil);return}
+            
+            // Create an NSURL and get the image asynchronously
+            let urlString = NSURL(string: imageURL)
+            guard let url = urlString else {completion(exercise: nil);return}
+            self.getDataFromUrl(url, completion: { (data, response, error) -> Void in
+                // Check that error is nil and the data is not nil
+                guard error == nil else {completion(exercise: nil);return}
+                guard let data = data else {completion(exercise: nil);return}
+                
+                // Create the image with the recieved data and make sure it's not nil
+                let imageWithData = UIImage(data: data)
+                guard let image = imageWithData else {completion(exercise: nil);return}
+                
+                // Retrieve exercise fields and check that they are not nil
+                let name = object.valueForKey("name") as? String
+                let muscleGroup = object.valueForKey("muscle_group") as? String
+                let identifier = object.valueForKey("objectId") as? String
+                let description = object.valueForKey("exercise_desc") as? String
+                guard name != nil else {completion(exercise: nil);return}
+                guard muscleGroup != nil else {completion(exercise: nil);return}
+                guard identifier != nil else {completion(exercise: nil);return}
+                guard description != nil else {completion(exercise: nil);return}
+                
+                // Return this exercise
+                let exercise = Exercise(name: name!, muscleGroup: muscleGroup!, identifier: identifier!, description: description!, image: image)
+                completion(exercise: exercise)
+            })
         }
     }
     
@@ -709,26 +674,25 @@ class DataManager {
         // Call Parse Cloud code function
         let rateDictionary = ["muscleGroup" : muscleGroup]
         PFCloud.callFunctionInBackground("getWorkout", withParameters: rateDictionary) { (object, error) -> Void in
-            if error == nil {
-                if let object = object {
-                    let exercise_ids = object.valueForKey("exercise_ids") as? [String]
-                    let exercise_names = object.valueForKey("exercise_names") as? [String]
-                    if let exercise_ids = exercise_ids {
-                        if let exercise_names = exercise_names {
-                            let workout = Workout(name: object.valueForKey("name") as! String, muscleGroup: object.valueForKey("muscle_group") as! String, identifier: object.valueForKey("objectId") as! String, exerciseIds: exercise_ids, exerciseNames : exercise_names, publicWorkout: true, workoutCode: nil)
-                            completion(workout: workout)
-                        } else {
-                            completion(workout: nil)
-                        }
-                    } else {
-                        completion(workout: nil)
-                    }
-                } else {
-                    completion(workout: nil)
-                }
-            } else {
-                completion(workout: nil)
-            }
+            // Check that error is nil and object is not nil
+            guard error == nil else {completion(workout: nil);return}
+            guard let object = object else {completion(workout: nil);return}
+            
+            // Retrieve workout fields and check that they are not nil
+            let name = object.valueForKey("name") as? String
+            let muscleGroup = object.valueForKey("muscle_group") as? String
+            let identifier = object.valueForKey("objectId") as? String
+            let exercise_ids = object.valueForKey("exercise_ids") as? [String]
+            let exercise_names = object.valueForKey("exercise_names") as? [String]
+            guard name != nil else {completion(workout: nil);return}
+            guard muscleGroup != nil else {completion(workout: nil);return}
+            guard identifier != nil else {completion(workout: nil);return}
+            guard exercise_ids != nil else {completion(workout: nil);return}
+            guard exercise_names != nil else {completion(workout: nil);return}
+            
+            // Return this workout
+            let workout = Workout(name: name!, muscleGroup: muscleGroup!, identifier: identifier!, exerciseIds: exercise_ids!, exerciseNames: exercise_names!, publicWorkout: true, workoutCode: identifier!)
+            completion(workout: workout)
         }
     }
     

@@ -94,8 +94,10 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
                     })
                 } else {
                     // Present alert
-                    self.presentAlert("Error", alertMessage: "There was an error loading your exercise. Please try again.")
-                    self.updateImage(self)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.presentAlert("Error", alertMessage: "There was an error loading your exercise. Please try again.")
+                        self.updateImage(self)
+                    })
                 }
             })
         } else {
