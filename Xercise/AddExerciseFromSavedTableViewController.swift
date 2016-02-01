@@ -76,26 +76,23 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let selectedCell = tableView.cellForRowAtIndexPath(indexPath)!
-        
-        let anEntry = Entry(exerciseTitle: savedExercises[indexPath.row].title, exerciseIdentifer: savedExercises[indexPath.row].identifier)
-        
-        if selectedCell.accessoryType == UITableViewCellAccessoryType.Checkmark {
-        
-        //if exercisesToAdd.contains(anEntry) {
-            // Already in exercise to add, remove accessory type and remove
-            selectedCell.accessoryType = UITableViewCellAccessoryType.None
-            for (index,exercise) in exercisesToAdd.enumerate() {
-                if exercise.identifier == anEntry.identifier {
-                    exercisesToAdd.removeAtIndex(index)
+        if savedExercises.count > 0 {
+            let selectedCell = tableView.cellForRowAtIndexPath(indexPath)!
+            let anEntry = Entry(exerciseTitle: savedExercises[indexPath.row].title, exerciseIdentifer: savedExercises[indexPath.row].identifier)
+            if selectedCell.accessoryType == UITableViewCellAccessoryType.Checkmark {
+                // Already in exercise to add, remove accessory type and remove
+                selectedCell.accessoryType = UITableViewCellAccessoryType.None
+                for (index,exercise) in exercisesToAdd.enumerate() {
+                    if exercise.identifier == anEntry.identifier {
+                        exercisesToAdd.removeAtIndex(index)
+                    }
                 }
+            } else {
+                // Add to array, add accessory type
+                exercisesToAdd.append(anEntry)
+                selectedCell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
-        } else {
-            // Add to array, add accessory type
-            exercisesToAdd.append(anEntry)
-            selectedCell.accessoryType = UITableViewCellAccessoryType.Checkmark
         }
-        
     }
 
     /*

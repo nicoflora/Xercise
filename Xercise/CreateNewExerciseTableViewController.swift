@@ -85,7 +85,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                                     self.removeActivityIndicator()
                                                     if success {
                                                         // Present success alert and pop VC
-                                                        self.presentSucessAlert()
+                                                        //self.presentSucessAlert()
+                                                        self.navigationController?.popViewControllerAnimated(true)
                                                     } else {
                                                         // Saving to Core Data succeeded but Parse failed
                                                         let alert = UIAlertController(title: "Public Save Error", message: "Your exercise was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -97,7 +98,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                                                 self.removeActivityIndicator()
                                                                 if success {
                                                                     // Save to Parse was successful
-                                                                    self.presentSucessAlert()
+                                                                    //self.presentSucessAlert()
+                                                                    self.navigationController?.popViewControllerAnimated(true)
                                                                 } else {
                                                                     // Parse failed again
                                                                     let alert = UIAlertController(title: "Public Save Error", message: "Your exercise was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -126,7 +128,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                             //self.removeActivityIndicator()
                                             if success {
                                                 // Present success alert and pop VC
-                                                self.presentSucessAlert()
+                                                //self.presentSucessAlert()
+                                                self.navigationController?.popViewControllerAnimated(true)
                                             } else {
                                                 self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
                                             }
@@ -150,7 +153,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                         let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String)
                                         self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
                                         // Present success alert and pop VC
-                                        self.presentSucessAlert()
+                                        //self.presentSucessAlert()
+                                        self.navigationController?.popViewControllerAnimated(true)
                                     } else {
                                         self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
                                     }

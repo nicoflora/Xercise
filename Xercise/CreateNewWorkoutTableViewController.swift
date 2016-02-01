@@ -136,7 +136,8 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                                         if success {
                                             // Remove exercises from defaults on success
                                             self.defaults.removeObjectForKey("workoutExercises")
-                                            self.presentSucessAlert()
+                                            //self.presentSucessAlert()
+                                            self.navigationController?.popViewControllerAnimated(true)
                                         }
                                     })
                                 } else {
@@ -153,7 +154,8 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                                                     if success {
                                                         // Remove exercises from defaults on success
                                                         self.defaults.removeObjectForKey("workoutExercises")
-                                                        self.presentSucessAlert()
+                                                        //self.presentSucessAlert()
+                                                        self.navigationController?.popViewControllerAnimated(true)
                                                     }
                                                 })
                                             } else {
@@ -181,7 +183,8 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                             self.defaults.removeObjectForKey("workoutExercises")
 
                             // Present success alert and pop VC
-                            self.presentSucessAlert()
+                            //self.presentSucessAlert()
+                            self.navigationController?.popViewControllerAnimated(true)
                         } else {
                             self.presentAlert("Error", alertMessage: "There was an error saving your workout. Please try again")
                         }
