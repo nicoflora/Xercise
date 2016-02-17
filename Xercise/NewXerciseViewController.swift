@@ -20,16 +20,17 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     var imageCounter = 1
     var isAnimatingImage = false
     var timer = NSTimer()
-    var muscleGroups = [String]()
+    var muscleGroups = [MuscleGroup]()
+    //var subMuscleGroups = [String]()
     var selectedMuscleGroup = ""
-    var exercise = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
-    var workout = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
+    var exercise = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
+    var workout = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let constants = XerciseConstants()
-        muscleGroups = constants.muscleGroups
+        muscleGroups = constants.muscleGroupsArray
         
     }
     
@@ -46,32 +47,46 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         timer.invalidate()
     }
     
+    func requestSubMuscleGroup(index : Int) {
+        let subGroupActionSheet = UIAlertController(title: nil, message: "Select a sub-muscle group:", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        for (subIndex, _) in muscleGroups[index].subGroups.enumerate() {
+            subGroupActionSheet.addAction(createActionSheetAction(index, subIndex: subIndex))
+        }
+        subGroupActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(subGroupActionSheet, animated: true, completion: nil)
+    }
+    
+    func createActionSheetAction(index : Int, subIndex : Int?) -> UIAlertAction {
+        if let subIndex = subIndex {
+            // Sub index was passed, sub muscle group
+            return UIAlertAction(title: muscleGroups[index].subGroups[subIndex], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                if subIndex == 0 {
+                    self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].mainGroup)", forState: UIControlState.Normal)
+                } else {
+                    self.selectedMuscleGroup = self.muscleGroups[index].subGroups[subIndex]
+                    self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].subGroups[subIndex])", forState: UIControlState.Normal)
+                }
+            })
+        } else {
+            // Main muscle group
+            return UIAlertAction(title: muscleGroups[index].mainGroup, style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.selectedMuscleGroup = self.muscleGroups[index].mainGroup
+                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].mainGroup)", forState: UIControlState.Normal)
+                self.requestSubMuscleGroup(index)
+            })
+        }
+    }
+    
     @IBAction func selectMuscleGroupBtnPressed(sender: AnyObject) {
         
-        if muscleGroups.count == 5 {
+        if muscleGroups.count > 0 {
             let actionSheet = UIAlertController(title: nil, message: "Select a muscle group:", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            actionSheet.addAction(UIAlertAction(title: muscleGroups[0], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[0]
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[0])", forState: UIControlState.Normal)
-            }))
-            actionSheet.addAction(UIAlertAction(title: muscleGroups[1], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[1]
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[1])", forState: UIControlState.Normal)
-            }))
-            actionSheet.addAction(UIAlertAction(title: muscleGroups[2], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[2]
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[2])", forState: UIControlState.Normal)
-            }))
-            actionSheet.addAction(UIAlertAction(title: muscleGroups[3], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[3]
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[3])", forState: UIControlState.Normal)
-            }))
-            actionSheet.addAction(UIAlertAction(title: muscleGroups[4], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[4]
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[4])", forState: UIControlState.Normal)
-            }))
+            
+            for (index, _) in muscleGroups.enumerate() {
+                actionSheet.addAction(createActionSheetAction(index, subIndex: nil))
+            }
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-                self.presentViewController(actionSheet, animated: true, completion: nil)
+            self.presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
     
@@ -85,7 +100,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
             // Begin ignoring interaction events
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
             
-            dataMgr.generateExercise(selectedMuscleGroup, completion: { (exercise) -> Void in
+            dataMgr.generateExercise(selectedMuscleGroup, previousIdentifiers: nil, completion: { (exercise, resetPreviousIdentifiers) -> Void in
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 if let exercise = exercise {
                     self.exercise = exercise

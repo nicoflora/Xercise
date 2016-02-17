@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Social
 
 class DisplayWorkoutTableViewController: UITableViewController {
     
@@ -14,8 +15,8 @@ class DisplayWorkoutTableViewController: UITableViewController {
     let constants = XerciseConstants()
     var titles = [String]()
     var workoutIdentifier = ""
-    var workoutToDisplay = Workout(name: "", muscleGroup: "", identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
-    var exerciseToDisplay = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
+    var workoutToDisplay = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
+    var exerciseToDisplay = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
     var downloadedExercises = [Exercise]()
     var exercises = [Entry]()
     var exerciseNames = [String]()
@@ -46,26 +47,6 @@ class DisplayWorkoutTableViewController: UITableViewController {
                         exerciseNames.append(exercise.title)
                     }
                 }
-                // If the workout is public, check if the workout code is stored already
-                if workoutToDisplay.publicWorkout {
-                    if let code = workoutToDisplay.workoutCode {
-                        // Code exists - display it
-                        shareWithGroupButton.setTitle("Group Code: \(code)", forState: UIControlState.Normal)
-                        self.shareWithGroupButton.enabled = false
-                    } else {
-                        // Workout was made public, but no code is stored - query for it
-                        self.getWorkoutCode({ (success) -> Void in
-                            if !success {
-                                self.presentAlert("Error", message: "There was an error getting your group code, please try again.")
-                                self.shareWithGroupButton.setTitle("Share with Group", forState: UIControlState.Normal)
-                                self.shareWithGroupButton.enabled = true
-                            }
-                        })
-                    }
-                } else {
-                    // Exercise is private - no code to display
-                    shareWithGroupButton.setTitle("Share with Group", forState: UIControlState.Normal)
-                }
             }
         } else {
             if let exerciseNames = workoutToDisplay.exerciseNames {
@@ -80,19 +61,6 @@ class DisplayWorkoutTableViewController: UITableViewController {
         }
         titles = constants.newWorkoutTitles
     }
-    
-    func getWorkoutCode(completion : (success : Bool) -> Void) {
-        let workoutCode = dataMgr.queryParseForWorkoutCode(workoutToDisplay.identifier) { (success) -> Void in
-            if success {
-                // Get group code from Core Data
-                let code = self.dataMgr.queryForWorkoutCode(self.workoutToDisplay.identifier)
-                if code != "" {
-                    self.shareWithGroupButton.setTitle("Group Code: \(code)", forState: UIControlState.Normal)
-                    self.shareWithGroupButton.enabled = false
-                }
-            }
-        }
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -100,26 +68,97 @@ class DisplayWorkoutTableViewController: UITableViewController {
     
 
     @IBAction func shareWithGroupButtonPressed(sender: AnyObject) {
-        // Workout was previously private - prompt user then make workout public
-        var error = false
-        let alert = UIAlertController(title: "Share with Group?", message: "Sharing with a group will generate a code other users can enter to access your workout!", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Share", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            // Upload to Parse
-            self.displayActivityIndicator()
-            //let exercises = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
-            self.dataMgr.saveWorkoutToParse(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, exerciseNames: self.exerciseNames, completion: { (success) -> Void in
-                self.removeActivityIndicator()
-                if success {
-                    // Uploaded to Parse, now check exercise availability
+        
+        // Share button pressed
+        let shareActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        if displayingGeneratedWorkout {
+            shareActionSheet.addAction(UIAlertAction(title: "Save Workout", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                // Save to device
+                // Check if the workout already exists
+                self.dataMgr.queryForItemByID(self.workoutToDisplay.identifier, entityName: "Workout", completion: { (success) -> Void in
+                    if success {
+                        // Workout is already saved, alert user of this
+                        //self.presentAlert("Already Saved", message: "This workout has already been saved in your 'My Xercises' page.")
+                        self.showPopup("This workout has already been saved in your 'My Xercises' page.")
+                    } else {
+                        // Workout has not been saved to device, save it
+                        let exerciseIDs = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
+                        self.dataMgr.saveWorkoutToDevice(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
+                            if success {
+                                //self.presentAlert("Saved!", message: "The workout has been saved to 'My Xercises'!")
+                                self.showPopup("The workout has been saved to 'My Xercises'!")
+                            } else {
+                                self.presentAlert("Error", message: "There was a problem saving this workout, please try again.")
+                            }
+                        })
+                    }
+                })
+            }))
+        }
+        shareActionSheet.addAction(UIAlertAction(title: "Share to Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            // Share to Facebook
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+                var commaSeparatedExercises = ""
+                for exercise in self.exercises {
+                    if commaSeparatedExercises == "" {
+                        commaSeparatedExercises += "\(exercise.title)"
+                    } else {
+                        commaSeparatedExercises += ", \(exercise.title)"
+                    }
+                }
+                let facebookShare = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                facebookShare.setInitialText("Checkout this awesome \(self.workoutToDisplay.muscleGroup) workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                facebookShare.addImage(UIImage(named: "AppIcon"))
+                self.presentViewController(facebookShare, animated: true, completion: nil)
+            } else {
+                self.presentAlert("No Facebook Accounts", message: "Please login to a Facebook account in Settings to enable sharing to Facebook.")
+            }
+        }))
+        shareActionSheet.addAction(UIAlertAction(title: "Share to Twitter", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            // Share to Twitter
+            if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+                var commaSeparatedExercises = ""
+                for exercise in self.exercises {
+                    if commaSeparatedExercises == "" {
+                        commaSeparatedExercises += "\(exercise.title)"
+                    } else {
+                        commaSeparatedExercises += ", \(exercise.title)"
+                    }
+                }
+                let twitterShare = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                twitterShare.setInitialText("Checkout this awesome \(self.workoutToDisplay.muscleGroup) workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                twitterShare.addImage(UIImage(named: "AppIcon"))
+                self.presentViewController(twitterShare, animated: true, completion: nil)
+            } else {
+                self.presentAlert("No Twitter Accounts", message: "Please login to a Twitter account in Settings to enable sharing to Twitter.")
+            }
+        }))
+        if !self.displayingGeneratedWorkout && !self.workoutToDisplay.publicWorkout {
+            shareActionSheet.addAction(UIAlertAction(title: "Share with Group", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                
+                // prompt user then make workout public
+                var error = false
+                let alert = UIAlertController(title: "Share with Group?", message: "Sharing with a group will generate a code other users can enter to access your workout!", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Share", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    // Upload to Parse
                     self.displayActivityIndicator()
-                    self.dataMgr.checkParseExerciseAvailablity(self.workoutToDisplay.exerciseIDs, completion: { (success) -> Void in
+                    //let exercises = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
+                    self.dataMgr.saveWorkoutToParse(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, exerciseNames: self.exerciseNames, completion: { (success, identifier) -> Void in
                         self.removeActivityIndicator()
                         if success {
-                            // Exercise availability is complete, now get ObjectID
-                            self.getWorkoutCode({ (success) -> Void in
+                            // Uploaded to Parse, now check exercise availability
+                            self.displayActivityIndicator()
+                            self.dataMgr.checkParseExerciseAvailablity(self.workoutToDisplay.exerciseIDs, completion: { (success) -> Void in
+                                self.removeActivityIndicator()
                                 if success {
-                                    self.presentAlert("Success", message: "Your workout has been uploaded to the community and can now be accessed by others by using the group code below.")
+                                    // Exercise availability is complete, now get ObjectID
+                                    if let identifier = identifier {
+                                        if let workout = self.dataMgr.getWorkoutByID(identifier) {
+                                            self.workoutToDisplay = workout
+                                            self.tableView.reloadData()
+                                        }
+                                    }
                                 } else {
                                     error = true
                                 }
@@ -127,19 +166,20 @@ class DisplayWorkoutTableViewController: UITableViewController {
                         } else {
                             error = true
                         }
+                        if error {
+                            self.presentAlert("Error", message: "There was an error creating your group code, please try again.")
+                            self.shareWithGroupButton.setTitle("Share with Group", forState: UIControlState.Normal)
+                            self.shareWithGroupButton.enabled = true
+                        }
                     })
-                } else {
-                   error = true
-                }
-                if error {
-                    self.presentAlert("Error", message: "There was an error creating your group code, please try again.")
-                    self.shareWithGroupButton.setTitle("Share with Group", forState: UIControlState.Normal)
-                    self.shareWithGroupButton.enabled = true
-                }
-            })
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
+                }))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }))
+        }
+        shareActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(shareActionSheet, animated: true, completion: nil)
     }
+    
     
     func displayActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
@@ -223,45 +263,69 @@ class DisplayWorkoutTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1
-        case 1 : return 1
-        case 2:
-            if exercises.count == 0 {
-                return 1
-            } else {
-                return exercises.count
+        if workoutToDisplay.publicWorkout {
+            switch section {
+            case 0: return 1
+            case 1: return 1
+            case 2:
+                if exercises.count == 0 {
+                    return 1
+                } else {
+                    return exercises.count + 1
+                }
+            default: return 1
             }
-        default: return 1
+        } else {
+            switch section {
+            case 0: return 1
+            case 1: return 1
+            case 2:
+                if exercises.count == 0 {
+                    return 1
+                } else {
+                    return exercises.count
+                }
+            default: return 1
+            }
         }
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        switch indexPath.section {
-        case 0:
-            cell.textLabel?.text = workoutToDisplay.name
-            cell.textLabel?.textAlignment = NSTextAlignment.Center
-            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-        case 1:
-            cell.textLabel?.text = "Muscle Group: \(workoutToDisplay.muscleGroup)"
-            cell.textLabel?.textAlignment = NSTextAlignment.Center
-            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-        case 2:
-            if exercises.count == 0 {
-                cell.textLabel?.text = "There are no exercises in this workout!"
+            switch indexPath.section {
+            case 0:
+                cell.textLabel?.text = workoutToDisplay.name
+                cell.textLabel?.textAlignment = NSTextAlignment.Center
+                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-            } else {
-                cell.textLabel?.text = exercises[indexPath.row].title
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            case 1:
+                if let muscleGroup = workoutToDisplay.muscleGroup.last {
+                    cell.textLabel?.text = "Muscle Group: \(muscleGroup)"
+                }
+                cell.textLabel?.textAlignment = NSTextAlignment.Center
+                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+            case 2:
+                if exercises.count == 0 {
+                    cell.textLabel?.text = "There are no exercises in this workout!"
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                } else {
+                    if exercises.count > indexPath.row {
+                        cell.textLabel?.text = exercises[indexPath.row].title
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    } else if workoutToDisplay.publicWorkout {
+                        cell.textLabel?.text = "Group Code: \(workoutToDisplay.identifier)"
+                        cell.textLabel?.textAlignment = NSTextAlignment.Center
+                        cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
+                        cell.selectionStyle = UITableViewCellSelectionStyle.Gray
+                        cell.accessoryType = UITableViewCellAccessoryType.DetailButton
+                    }
+                }
+                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 18)
+            default:
+                return cell
             }
-            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 18)
-        default:
-            return cell
-        }
         return cell
     }
     
@@ -271,7 +335,33 @@ class DisplayWorkoutTableViewController: UITableViewController {
                 selectedIndex = indexPath.row
                 checkForExercise(exercises[selectedIndex].identifier)
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            } else if workoutToDisplay.publicWorkout {
+                copyText(workoutToDisplay.identifier)
             }
+        }
+    }
+    
+    
+    // MARK: - Utility functions
+    
+    func copyText(text : String) {
+        let pasteBoard = UIPasteboard.generalPasteboard()
+        pasteBoard.string = text
+        showPopup("The group code \(text) was copied!")
+        
+    }
+    
+    func showPopup(message : String) {
+        let copyPopup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        self.presentViewController(copyPopup, animated: true, completion: nil)
+        self.performSelector("hidePopup", withObject: nil, afterDelay: 1.0)
+
+    }
+    
+    func hidePopup() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        if exercises.count > 0 && tableView.numberOfRowsInSection(2) == exercises.count + 1 {
+            tableView.deselectRowAtIndexPath(NSIndexPath(forRow: exercises.count + 1, inSection: 2), animated: true)
         }
     }
 

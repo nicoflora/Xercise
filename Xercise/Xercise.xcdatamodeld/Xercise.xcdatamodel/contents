@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15A284" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
     <entity name="Exercise" syncable="YES">
         <attribute name="exercise_desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="muscle_group" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="muscle_group" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Macro_Days" syncable="YES">
@@ -26,7 +26,7 @@
     <entity name="Workout" syncable="YES">
         <attribute name="exercise_ids" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="muscle_group" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="muscle_group" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publicWorkout" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="workoutCode" optional="YES" attributeType="String" syncable="YES"/>

@@ -9,13 +9,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Xercise/MyXercisesTableViewController.swift"
-            timestampString = "468963413.201423"
+            filePath = "Xercise/DataManager.swift"
+            timestampString = "477425705.59856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            startingLineNumber = "565"
+            endingLineNumber = "565"
+            landmarkName = "queryParseForExercisesFromGroupCode(_:completion:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Xercise/DataManager.swift"
+            timestampString = "477425743.769838"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "563"
+            endingLineNumber = "563"
+            landmarkName = "queryParseForExercisesFromGroupCode(_:completion:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

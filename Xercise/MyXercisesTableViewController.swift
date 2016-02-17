@@ -33,6 +33,12 @@ class MyXercisesTableViewController: UITableViewController {
         exercises = dataMgr.getMyExercises()
         tableView.reloadData()
     }
+    
+    func sortByMuscleGroup() {
+        if exercises.count > 0 {
+            
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -139,9 +145,8 @@ class MyXercisesTableViewController: UITableViewController {
                                             // Workout is already stored on device, don't save again
                                             self.presentAlert("Duplicate Save", alertMessage: "This workout has already been saved to this device!")
                                         } else {
-                                            let exerciseIds = self.dataMgr.archiveArray(workout.exerciseIDs)
                                             self.displayActivityIndicator()
-                                            self.dataMgr.saveWorkoutToDevice(workout.name, workoutMuscleGroup: workout.muscleGroup, id: workout.identifier, exerciseIDs: exerciseIds, publicWorkout: true, completion: { (success) -> Void in
+                                            self.dataMgr.saveWorkoutToDevice(workout.name, workoutMuscleGroup: workout.muscleGroup, id: workout.identifier, exerciseIDs: workout.exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
                                                 self.removeActivityIndicator()
                                                 if success {
                                                     // Workout has been saved to device, add group code to device

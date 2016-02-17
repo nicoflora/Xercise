@@ -16,16 +16,16 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     let defaults = NSUserDefaults.standardUserDefaults()
     let constants = XerciseConstants()
     var sectionTitles = [String]()
-    var muscleGroups = [String]()
+    var muscleGroups = [MuscleGroup]()
     let dataMgr = DataManager()
-    var workoutMuscleGroup = ""
+    var workoutMuscleGroup = [String]()
     var workoutName = ""
     var activityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         sectionTitles = constants.newWorkoutTitles
-        muscleGroups = constants.muscleGroups
+        muscleGroups = constants.muscleGroupsArray
         defaults.removeObjectForKey("workoutExercises")
     }
     
@@ -71,7 +71,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
         let actionSheet = UIAlertController(title: nil, message: "Would you like to create a new exercise or add one from My Xercises?", preferredStyle: UIAlertControllerStyle.ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "Create New", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Validate that the muscle group has been selected
-            if self.workoutMuscleGroup != "" {
+            if self.workoutMuscleGroup.count > 0 {
                 self.performSegueWithIdentifier("newExerciseFromWorkout", sender: self)
             } else {
                 self.presentAlert("Error!", alertMessage: "Please select a muscle group before adding a new exercise")
@@ -103,7 +103,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
             // Confirm that the workout name has at least 3 characters
             if workoutName.characters.count > 2 {
                 
-                if workoutMuscleGroup != "" {
+                if workoutMuscleGroup.count > 0 {
                 
                 // Get list of identifiers for each exercise and archive the array for storage
                 var ids = [String]()
@@ -112,7 +112,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                     ids.append(ex.identifier)
                     names.append(ex.title)
                 }
-                let exerciseIDs = dataMgr.archiveArray(ids)
+                //let exerciseIDs = dataMgr.archiveArray(ids)
                 
                 // Generate workout UUID
                 let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
@@ -121,11 +121,12 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                 let actionSheet = UIAlertController(title: nil, message: "Would you like to allow this workout to be publicly accessible by other members of the community, or keep the workout private? (Note, to share this exercise with others using a group code, the workout must be made public)", preferredStyle: UIAlertControllerStyle.ActionSheet)
                 actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     // Save to both device and Parse databases
-                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
+                    
+                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: true, completion: { (success) -> Void in
                         if success {
                             // Saving to core data was successful, now try Parse
                             self.displayActivityIndicator()
-                            self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
+                            self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
                                 self.removeActivityIndicator()
                                 if success {
                                     // Save to Parse was successful
@@ -146,7 +147,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                                     publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                     publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                         //try again
-                                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success) -> Void in
+                                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
                                             if success == true {
                                                 // Save to Parse was successful
                                                 // Check to make sure all referenced exercises are in Parse if made public
@@ -177,7 +178,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                 }))
                 actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     // Save to device database only
-                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: exerciseIDs, publicWorkout: false, completion: { (success) -> Void in
+                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: false, completion: { (success) -> Void in
                         if success {
                             // Remove exercises from defaults on success
                             self.defaults.removeObjectForKey("workoutExercises")
@@ -306,8 +307,8 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
             return titleCell
         } else if indexPath.section == 1 {
-            cell.textLabel?.text = muscleGroups[indexPath.row]
-            if muscleGroups[indexPath.row] == workoutMuscleGroup {
+            cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
+            if workoutMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
             return cell
@@ -341,7 +342,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
             // Add checkmark to the selected row and store muscle group
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            workoutMuscleGroup = (cell?.textLabel?.text)!
+            workoutMuscleGroup.append((cell?.textLabel?.text)!)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }

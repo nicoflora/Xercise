@@ -42,6 +42,7 @@
 		258BFDED1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
 		258BFDEE1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
 		258BFDEF1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
+		25979FA21C73861F00D58B2F /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
 		25ACC22A1C4EAA97001040E8 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */; };
 		25ACC22B1C4EAA97001040E8 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */; };
 		25ACC22C1C4EAA97001040E8 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */; };
@@ -157,6 +158,7 @@
 		2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetsTableViewCell.swift; sourceTree = "<group>"; };
 		2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewExerciseTableViewController.swift; sourceTree = "<group>"; };
 		258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayWorkoutTableViewController.swift; sourceTree = "<group>"; };
+		25979FA11C73861F00D58B2F /* MuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuscleGroup.swift; sourceTree = "<group>"; };
 		25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseFacebookUtilsV4.framework; path = "parse-library-1-2/ParseFacebookUtilsV4.framework"; sourceTree = "<group>"; };
 		25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "parse-library-1-2/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		25ACC23D1C4EACD2001040E8 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 				25C56BDF1BEE7664008D7C6B /* Exercise.swift */,
 				25C56BE31BEE7688008D7C6B /* Workout.swift */,
 				2566DB7B1BE677D50065507C /* XerciseConstants.swift */,
+				25979FA11C73861F00D58B2F /* MuscleGroup.swift */,
 				25D62D021BE83E0D00B8F276 /* DataManager.swift */,
 				251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */,
 				251F1C041BDFD1DC00B1F3B0 /* Assets.xcassets */,
@@ -569,6 +572,7 @@
 				25C56BE01BEE7664008D7C6B /* Exercise.swift in Sources */,
 				25D62CFF1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
 				25D62CF81BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25979FA21C73861F00D58B2F /* MuscleGroup.swift in Sources */,
 				2566DB901BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */,
 				25D62D031BE83E0D00B8F276 /* DataManager.swift in Sources */,
 				2566DB7C1BE677D50065507C /* XerciseConstants.swift in Sources */,

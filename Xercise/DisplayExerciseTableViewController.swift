@@ -18,11 +18,12 @@ class DisplayExerciseTableViewController: UITableViewController {
     let dataMgr = DataManager()
     let constants = XerciseConstants()
     var titles = [String]()
-    var exerciseToDisplay = Exercise(name: "", muscleGroup: "", identifier: "", description: "", image: UIImage())
+    var exerciseToDisplay = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
     var displayingGeneratedExercise = false
     var displayingExerciseInWorkout = false
     var downloadedExercises = [Exercise]()
     var nextExercises = [String]()
+    var previousExercises = [String]()
     @IBOutlet var nextButton: UIBarButtonItem!
     var activityIndicator = UIActivityIndicatorView()
     var coverView = UIView()
@@ -101,18 +102,24 @@ class DisplayExerciseTableViewController: UITableViewController {
             }
         } else if displayingGeneratedExercise {
             // Displaying from a generated exercise, generate a new exercise with the same muscle group
-            generateNewExercise()
+            // Pass the previous exercise to prevent receiving duplicate exercises
+            previousExercises.append(exerciseToDisplay.identifier)
+            generateNewExercise(previousExercises)
         }
     }
     
-    func generateNewExercise() {
+    func generateNewExercise(previousIdentifiers : [String]) {
         displayActivityIndicator()
-        dataMgr.generateExercise(exerciseToDisplay.muscleGroup, completion: { (exercise) -> Void in
+        guard let firstMuscleGroup = exerciseToDisplay.muscleGroup.first else {return}
+        dataMgr.generateExercise(firstMuscleGroup, previousIdentifiers: previousIdentifiers, completion: { (exercise, resetPreviousIdentifiers) -> Void in
             if let exercise = exercise {
                 self.exerciseToDisplay = exercise
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.changeExercise()
                 })
+                if resetPreviousIdentifiers {
+                    self.previousExercises.removeAll()
+                }
             } else {
                 // Present alert
                 self.removeActivityIndicator()
@@ -185,7 +192,8 @@ class DisplayExerciseTableViewController: UITableViewController {
                 self.dataMgr.queryForItemByID(self.exerciseToDisplay.identifier, entityName: "Exercise", completion: { (success) -> Void in
                     if success {
                         // Exercise is already saved, alert user of this
-                        self.presentAlert("Already Saved", message: "This exercise has already been saved in your 'My Xercises' page.")
+                        //self.presentAlert("Already Saved", message: "This exercise has already been saved in your 'My Xercises' page.")
+                        self.showPopup("This exercise has already been saved in your 'My Xercises' page.")
                     } else {
                         // Exercise has not been saved to device, save it
                         // Convert image
@@ -193,7 +201,8 @@ class DisplayExerciseTableViewController: UITableViewController {
                             // Save exercise to device
                             self.dataMgr.saveExerciseToDevice(self.exerciseToDisplay.name, id: self.exerciseToDisplay.identifier, muscleGroup: self.exerciseToDisplay.muscleGroup, image: img, exerciseDescription: self.exerciseToDisplay.description, completion: { (success) -> Void in
                                 if success {
-                                    self.presentAlert("Success", message: "The exercise has been saved to 'My Xercises'!")
+                                    //self.presentAlert("Success", message: "The exercise has been saved to 'My Xercises'!")
+                                    self.showPopup("The exercise has been saved to 'My Xercises'!")
                                 } else {
                                     self.presentAlert("Error", message: "There was a problem saving this exercise, please try again.")
                                 }
@@ -266,6 +275,15 @@ class DisplayExerciseTableViewController: UITableViewController {
     
     
     // MARK: - Utility functions
+    func showPopup(message : String) {
+        let popup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        self.presentViewController(popup, animated: true, completion: nil)
+        self.performSelector("hidePopup", withObject: nil, afterDelay: 1.0)
+    }
+    
+    func hidePopup() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     func removeNextButton() {
         let rightButton = self.navigationItem.rightBarButtonItem
@@ -350,7 +368,8 @@ class DisplayExerciseTableViewController: UITableViewController {
             return cell
         case 1:
             let cell = UITableViewCell()
-            cell.textLabel?.text = "Muscle Group: \(exerciseToDisplay.muscleGroup)"
+            guard let group = exerciseToDisplay.muscleGroup.first else {return cell}
+            cell.textLabel?.text = "Muscle Group: \(group)"
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
             cell.selectionStyle = UITableViewCellSelectionStyle.None

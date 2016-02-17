@@ -14,9 +14,9 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     
     var sectionTitles = [String]()
     var sectionTitlesAddingFromWorkout = [String]()
-    var muscleGroups = [String]()
+    var muscleGroups = [MuscleGroup]()
     var exerciseTitle = ""
-    var exerciseMuscleGroup = ""
+    var exerciseMuscleGroup = [String]()
     var image = UIImage(named: "new_exercise_icon")
     var exerciseDescription = ""
     var heavyReps = -1
@@ -33,7 +33,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         super.viewDidLoad()
         sectionTitles = constants.newExerciseTitles
         sectionTitlesAddingFromWorkout = constants.newExerciseInWorkoutTitles
-        muscleGroups = constants.muscleGroups
+        muscleGroups = constants.muscleGroupsArray
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -64,7 +64,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                         
                         if addingFromWorkout == false {
                         
-                            if exerciseMuscleGroup != "" {
+                            if exerciseMuscleGroup.count > 0 {
                                 // Just adding a single exercise
                                 // Prompt user for saving the exercise to the community or just on the device
                                 let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -317,9 +317,9 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 return cell
             case 1:
                 let cell = UITableViewCell()
-                cell.textLabel?.text = muscleGroups[indexPath.row]
+                cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
-                if exerciseMuscleGroup == muscleGroups[indexPath.row] {
+                if exerciseMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup) {
                     cell.accessoryType = UITableViewCellAccessoryType.Checkmark
                 }
                 return cell
@@ -430,7 +430,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             // Add checkmark to the selected row and store muscle group
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            exerciseMuscleGroup = (cell?.textLabel?.text)!
+            exerciseMuscleGroup.append((cell?.textLabel?.text)!)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
