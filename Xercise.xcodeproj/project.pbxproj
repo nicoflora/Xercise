@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		250A63241C75091D00F2D510 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */; };
 		251F1BFB1BDFD1DC00B1F3B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */; };
 		251F1BFD1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */; };
 		251F1C001BDFD1DC00B1F3B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */; };
@@ -110,6 +111,8 @@
 		25D62D071BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
 		25D62D081BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
 		25D62D091BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
+		25E17B121C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
+		25E17B131C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
 		25EBC6001BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
 		25EBC6011BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
 		25EBC6021BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
@@ -135,6 +138,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisesByMuscleGroup.swift; sourceTree = "<group>"; };
 		251F1BF71BDFD1DC00B1F3B0 /* Xercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xercise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewXerciseViewController.swift; sourceTree = "<group>"; };
@@ -393,6 +397,7 @@
 				2566DB7B1BE677D50065507C /* XerciseConstants.swift */,
 				25979FA11C73861F00D58B2F /* MuscleGroup.swift */,
 				25D62D021BE83E0D00B8F276 /* DataManager.swift */,
+				250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */,
 				251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */,
 				251F1C041BDFD1DC00B1F3B0 /* Assets.xcassets */,
 				251F1C061BDFD1DC00B1F3B0 /* LaunchScreen.storyboard */,
@@ -586,6 +591,7 @@
 				25C56BF61BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
 				25C56BE41BEE7688008D7C6B /* Workout.swift in Sources */,
 				251F1BFB1BDFD1DC00B1F3B0 /* AppDelegate.swift in Sources */,
+				250A63241C75091D00F2D510 /* ExercisesByMuscleGroup.swift in Sources */,
 				2566DB841BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
 				25D62D071BE842D700B8F276 /* Entry.swift in Sources */,
 				25C56BF21BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
@@ -619,6 +625,7 @@
 				25C225481BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
 				2566DB791BE6776C0065507C /* InfoTableViewController.swift in Sources */,
 				25C56BF31BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
+				25E17B121C768A19009F5D17 /* MuscleGroup.swift in Sources */,
 				25EBC6091BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */,
 				251F1C131BDFD1DC00B1F3B0 /* XerciseTests.swift in Sources */,
 				2566DB8D1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */,
@@ -651,6 +658,7 @@
 				25C225491BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
 				2566DB7A1BE6776C0065507C /* InfoTableViewController.swift in Sources */,
 				25C56BF41BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
+				25E17B131C768A19009F5D17 /* MuscleGroup.swift in Sources */,
 				251F1C1E1BDFD1DC00B1F3B0 /* XerciseUITests.swift in Sources */,
 				25D62CFD1BE82C3600B8F276 /* MyXercisesTableViewController.swift in Sources */,
 				2566DB8E1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */,

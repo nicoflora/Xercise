@@ -78,7 +78,7 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
         
         if savedExercises.count > 0 {
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)!
-            let anEntry = Entry(exerciseTitle: savedExercises[indexPath.row].title, exerciseIdentifer: savedExercises[indexPath.row].identifier)
+            let anEntry = savedExercises[indexPath.row]
             if selectedCell.accessoryType == UITableViewCellAccessoryType.Checkmark {
                 // Already in exercise to add, remove accessory type and remove
                 selectedCell.accessoryType = UITableViewCellAccessoryType.None

@@ -15,7 +15,6 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     var exercises = [Entry]()
     let defaults = NSUserDefaults.standardUserDefaults()
     let constants = XerciseConstants()
-    var sectionTitles = [String]()
     var muscleGroups = [MuscleGroup]()
     let dataMgr = DataManager()
     var workoutMuscleGroup = [String]()
@@ -24,7 +23,6 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        sectionTitles = constants.newWorkoutTitles
         muscleGroups = constants.muscleGroupsArray
         defaults.removeObjectForKey("workoutExercises")
     }
@@ -268,11 +266,19 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        if workoutMuscleGroup.count > 0 {
+            return 4
+        } else {
+            return 3
+        }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
+        if workoutMuscleGroup.count > 0 {
+            return constants.newWorkoutTitlesSubGroup[section]
+        } else {
+            return constants.newWorkoutTitles[section]
+        }
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -287,13 +293,26 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
             return  1
         } else if section == 1 {
             return muscleGroups.count
+        } else if workoutMuscleGroup.count > 0 {
+            if section == 2 {
+                // Sub muscle group
+                for group in muscleGroups {
+                    if group.mainGroup == workoutMuscleGroup[0] {
+                        // This is the selected main group
+                        return group.subGroups.count
+                    }
+                }
+            } else {
+                if exercises.count > 0 {
+                    return exercises.count
+                }
+            }
         } else {
             if exercises.count > 0 {
                 return exercises.count
-            } else {
-                return 1
             }
         }
+        return 1
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -301,25 +320,55 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
         let cell = UITableViewCell()
         cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         
-        if indexPath.section == 0 {
+        switch indexPath.section {
+        case 0:
             let titleCell = tableView.dequeueReusableCellWithIdentifier("workoutTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
             titleCell.title.tag = 0
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
             return titleCell
-        } else if indexPath.section == 1 {
+        case 1:
             cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
             if workoutMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
             return cell
-        } else {
+        case 2:
+            if workoutMuscleGroup.count > 0 {
+                // Sub muscle group
+                for group in muscleGroups {
+                    if group.mainGroup == workoutMuscleGroup[0] {
+                        // This is the selected main group
+                        let subGroup = group.subGroups[indexPath.row]
+                        if indexPath.row == 0 && workoutMuscleGroup.count == 1 {
+                            // Select 'All'
+                            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                        }
+                        cell.textLabel?.text = subGroup
+                        if workoutMuscleGroup.contains(subGroup) {
+                            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                        }
+                    }
+                }
+                return cell
+            } else {
+                if exercises.count > 0 {
+                    cell.textLabel?.text = exercises[indexPath.row].title
+                } else {
+                    cell.textLabel?.text = "No exercises in this workout!"
+                }
+                return cell
+            }
+        case 3:
             if exercises.count > 0 {
                 cell.textLabel?.text = exercises[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No exercises in this workout!"
             }
             return cell
+        default:
+            return cell
         }
+        
     }
     
     func saveData(notif : NSNotification) {
@@ -333,18 +382,45 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            // Deselct all other rows
-            for i in 0...self.muscleGroups.count - 1{
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 1))
-                cell?.accessoryType = UITableViewCellAccessoryType.None
+            // Main muscle group
+            //let cell = tableView.cellForRowAtIndexPath(indexPath)
+            let muscleGroup = muscleGroups[indexPath.row].mainGroup
+            if workoutMuscleGroup.contains(muscleGroup) {
+                // Was previously selected - remove from array and deselect it
+                guard let index = workoutMuscleGroup.indexOf(muscleGroup) else {return}
+                workoutMuscleGroup.removeAtIndex(index)
+            } else {
+                // Add to array and add checkmark
+                workoutMuscleGroup.removeAll()
+                workoutMuscleGroup.append(muscleGroup)
             }
-            
-            // Add checkmark to the selected row and store muscle group
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            workoutMuscleGroup.append((cell?.textLabel?.text)!)
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        } else if workoutMuscleGroup.count > 0 && indexPath.section == 2 {
+            if indexPath.row == 0 {
+                // 'All' selected
+                // Deselect all other rows
+                while workoutMuscleGroup.count > 1 {
+                    workoutMuscleGroup.popLast()
+                }
+            } else {
+                // Something other than 'All' selected
+                for group in muscleGroups {
+                    if group.mainGroup == workoutMuscleGroup[0] {
+                        // This is the selected main group
+                        let subGroup = group.subGroups[indexPath.row]
+                        if workoutMuscleGroup.contains(subGroup) {
+                            // Remove it
+                            guard let index = workoutMuscleGroup.indexOf(subGroup) else {return}
+                            workoutMuscleGroup.removeAtIndex(index)
+                        } else {
+                            // Add it
+                            workoutMuscleGroup.append(subGroup)
+                        }
+                    }
+                }
+            }
         }
+        tableView.reloadData()
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     

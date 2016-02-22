@@ -54,7 +54,8 @@ class DisplayWorkoutTableViewController: UITableViewController {
                     // Displaying a generated workout
                     displayingGeneratedWorkout = true
                     for (index,id) in workoutToDisplay.exerciseIDs.enumerate() {
-                        exercises.append(Entry(exerciseTitle: exerciseNames[index], exerciseIdentifer: id))
+                        guard let mainMuscleGroup = workoutToDisplay.muscleGroup.first else {return}
+                        exercises.append(Entry(exerciseTitle: exerciseNames[index], exerciseIdentifer: id, muscle_group: mainMuscleGroup))
                     }
                 }
             }
@@ -300,9 +301,17 @@ class DisplayWorkoutTableViewController: UITableViewController {
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
             case 1:
-                if let muscleGroup = workoutToDisplay.muscleGroup.last {
-                    cell.textLabel?.text = "Muscle Group: \(muscleGroup)"
+                var muscleGroupsString = ""
+                for group in workoutToDisplay.muscleGroup {
+                    if let lastGroup = workoutToDisplay.muscleGroup.last {
+                        if group == lastGroup {
+                            muscleGroupsString += "\(group)"
+                        } else {
+                            muscleGroupsString += "\(group), "
+                        }
+                    }
                 }
+                cell.textLabel?.text = "Muscle Groups: \(muscleGroupsString)"
                 cell.textLabel?.textAlignment = NSTextAlignment.Center
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
                 cell.selectionStyle = UITableViewCellSelectionStyle.None

@@ -14,8 +14,10 @@ class MyXercisesTableViewController: UITableViewController {
     var workouts = [Entry]()
     var exercises = [Entry]()
     let dataMgr = DataManager()
-    var selectedIndex = -1
+    let constants = XerciseConstants()
+    var selectedIndex : NSIndexPath?
     var activityIndicator = UIActivityIndicatorView()
+    var exercisesByGroup = [ExercisesByMuscleGroup]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,12 +33,20 @@ class MyXercisesTableViewController: UITableViewController {
     func getMyXercises() {
         workouts = dataMgr.getMyWorkouts()
         exercises = dataMgr.getMyExercises()
+        sortByMuscleGroup(constants.muscleGroups)
         tableView.reloadData()
     }
     
-    func sortByMuscleGroup() {
-        if exercises.count > 0 {
-            
+    func sortByMuscleGroup(groups : [String]) {
+        exercisesByGroup.removeAll()
+        for currentMuscleGroup in groups {
+            var exercisesForMuscle = [Entry]()
+            for exercise in exercises {
+                if exercise.muscle_group == currentMuscleGroup {
+                    exercisesForMuscle.append(exercise)
+                }
+            }
+            exercisesByGroup.append(ExercisesByMuscleGroup(muscleGroup: currentMuscleGroup, exercises : exercisesForMuscle))
         }
     }
 
@@ -50,23 +60,28 @@ class MyXercisesTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Workouts"
-        } else if section == 1 {
-            return "Exercises"
         } else {
-            return ""
+            if exercisesByGroup.count > 0 {
+                return "\(exercisesByGroup[section - 1].muscleGroup) Exercises"
+            } else {
+                return "Exercises"
+            }
         }
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = UIColor.lightGrayColor()
-        
         let header = UITableViewHeaderFooterView()
         header.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         header.textLabel?.textColor = UIColor.blackColor()
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        if exercisesByGroup.count > 0 {
+            return exercisesByGroup.count + 1
+        } else {
+            return 2
+        }
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,14 +91,12 @@ class MyXercisesTableViewController: UITableViewController {
             } else {
                 return workouts.count
             }
-        } else if section == 1 {
-            if exercises.count == 0 {
-                return 1
-            } else {
-                return exercises.count
-            }
         } else {
-            return 1
+            if exercisesByGroup[section - 1].exercises.count > 0 {
+                return exercisesByGroup[section - 1].exercises.count
+            } else {
+                return 1
+            }
         }
     }
 
@@ -98,13 +111,20 @@ class MyXercisesTableViewController: UITableViewController {
                 cell.textLabel?.text = "No workouts saved!"
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
             }
-        } else if indexPath.section == 1 {
+        } else {
+            if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
+                cell.textLabel?.text = exercisesByGroup[indexPath.section - 1].exercises[indexPath.row].title
+            } else {
+                cell.textLabel?.text = "No \(exercisesByGroup[indexPath.section - 1].muscleGroup) exercises saved!"
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+            }
+            /*
             if exercises.count > 0 {
                 cell.textLabel?.text = exercises[indexPath.row].title
             } else {
                 cell.textLabel?.text = "No exercises saved!"
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-            }
+            }*/
         }
         cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
         return cell
@@ -202,13 +222,12 @@ class MyXercisesTableViewController: UITableViewController {
             } else {
                 return true
             }
-        } else if indexPath.section == 1 {
-            if exercises.count == 0 {
-                return false
-            } else {
-                return true
-            }
         } else {
+            if exercisesByGroup.count >= indexPath.section - 1 {
+                if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
+                    return true
+                }
+            }
             return false
         }
     }
@@ -241,41 +260,47 @@ class MyXercisesTableViewController: UITableViewController {
                     }
                 })
                 
-            } else if indexPath.section == 1 {
-                presentConfirmAlert("Delete?", alertMessage: "Are you sure you want to delete this exercise? This action cannot be undone.", confirmTitle: "Delete", completion: { (confirm) -> Void in
-                    if confirm {
-                        // Delete the exercise
-                        let idToDelete = self.exercises[indexPath.row].identifier
-                        // Remove from core data
-                        self.dataMgr.deleteItemByID(idToDelete, entityName: "Exercise", completion: { (success) -> Void in
-                            if success {
-                                // Remove from local array
-                                self.exercises.removeAtIndex(indexPath.row)
-                                if self.exercises.count == 0 {
-                                    tableView.reloadData()
-                                } else {
-                                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                                }
+            } else {
+                if exercisesByGroup.count >= indexPath.section - 1 {
+                    if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
+                        presentConfirmAlert("Delete?", alertMessage: "Are you sure you want to delete this exercise? This action cannot be undone.", confirmTitle: "Delete", completion: { (confirm) -> Void in
+                            if confirm {
+                                // Delete the exercise
+                                let idToDelete = self.exercisesByGroup[indexPath.section - 1].exercises[indexPath.row].identifier
+                                // Remove from core data
+                                self.dataMgr.deleteItemByID(idToDelete, entityName: "Exercise", completion: { (success) -> Void in
+                                    if success {
+                                        // Remove from local array
+                                        self.exercisesByGroup[indexPath.section - 1].exercises.removeAtIndex(indexPath.row)
+                                        if self.exercisesByGroup[indexPath.section - 1].exercises.count == 0 {
+                                            tableView.reloadData()
+                                        } else {
+                                            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                        }
+                                    } else {
+                                        self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
+                                    }
+                                })
                             } else {
-                                self.presentAlert("Error", alertMessage: "There was an issue deleting your exercise, please try again!")
+                                tableView.editing = false
                             }
                         })
-                    } else {
-                        tableView.editing = false
                     }
-                })
+                }
             }
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectedIndex = indexPath.row
+        selectedIndex = indexPath
         if indexPath.section == 0 && workouts.count > 0 {
             // Display workout
             self.performSegueWithIdentifier("displayWorkoutFromSaved", sender: self)
-        } else if indexPath.section == 1 && exercises.count > 0 {
+        } else if exercises.count > 0 {
             // Display an exercise
-            self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
+            if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
+                self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
+            }
         }
         
     }
@@ -333,17 +358,18 @@ class MyXercisesTableViewController: UITableViewController {
     
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "displayExerciseFromSaved" && selectedIndex != -1 {
+        guard let index = selectedIndex else {return}
+        if segue.identifier == "displayExerciseFromSaved" {
             let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
-            destinationVC.exerciseIdentifier = exercises[selectedIndex].identifier
+            destinationVC.exerciseIdentifier = exercisesByGroup[index.section - 1].exercises[index.row].identifier
             destinationVC.hideRateFeatures = true
-        } else if segue.identifier == "displayWorkoutFromSaved" &&  selectedIndex != -1 {
+        } else if segue.identifier == "displayWorkoutFromSaved" {
             let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController
-            destinationVC.workoutIdentifier = workouts[selectedIndex].identifier
+            destinationVC.workoutIdentifier = workouts[index.row].identifier
             destinationVC.displayingFromSaved = true
         }
         // Reset selected index
-        selectedIndex = -1
+        selectedIndex = nil
     }
     
 

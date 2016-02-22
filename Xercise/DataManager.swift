@@ -82,32 +82,26 @@ class DataManager {
     func getEntryByID(id : String, entityName : String) -> Entry? {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        var entryFound = false
-        var entryToReturn = Entry(exerciseTitle: "", exerciseIdentifer: "")
         if id != "" && entityName != "" {
             let requestExercise = NSFetchRequest(entityName: entityName)
             requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
             requestExercise.returnsObjectsAsFaults = false
             do {
                 let results = try context.executeFetchRequest(requestExercise)
-                
                 if results.count > 0 {
-                    for result in results as! [NSManagedObject] {
-                        entryFound = true
-                        entryToReturn = Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String)
-                    }
+                    guard let result = results.first as? NSManagedObject else {return nil}
+                    guard let title = result.valueForKey("name") as? String else {return nil}
+                    guard let id = result.valueForKey("identifier") as? String else {return nil}
+                    guard let muscle_group = result.valueForKey("muscle_group") as? NSData else {return nil}
+                    let muscleGroup = unarchiveArray(muscle_group)
+                    guard let mainMuscleGroup = muscleGroup.first else {return nil}
+                    return Entry(exerciseTitle: title, exerciseIdentifer: id, muscle_group: mainMuscleGroup)
                 }
             } catch {
                 print("There was an error fetching the entry by ID")
             }
-            if entryFound {
-                return entryToReturn
-            } else {
-                return nil
-            }
-        } else {
-            return nil
         }
+        return nil
     }
     
     func getMyWorkouts() -> [Entry] {
@@ -119,8 +113,15 @@ class DataManager {
         do {
             let results = try context.executeFetchRequest(requestWorkout)
             if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    workouts.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
+                guard let results = results as? [NSManagedObject] else {return []}
+                for result in results {
+                    guard let title = result.valueForKey("name") as? String else {continue}
+                    guard let id = result.valueForKey("identifier") as? String else {continue}
+                    guard let muscleGroups = result.valueForKey("muscle_group") as? NSData else {continue}
+                    let muscleGroup = unarchiveArray(muscleGroups)
+                    guard muscleGroup.count > 0 else {continue}
+                    guard let mainMuscleGroup = muscleGroup.first else {continue}
+                    workouts.append(Entry(exerciseTitle: title, exerciseIdentifer: id, muscle_group: mainMuscleGroup))
                 }
             }
         } catch {
@@ -138,8 +139,15 @@ class DataManager {
         do {
             let results = try context.executeFetchRequest(requestExercise)
             if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    exercises.append(Entry(exerciseTitle: result.valueForKey("name")! as! String, exerciseIdentifer: result.valueForKey("identifier")! as! String))
+                guard let results = results as? [NSManagedObject] else {return []}
+                for result in results {
+                    guard let title = result.valueForKey("name") as? String else {continue}
+                    guard let id = result.valueForKey("identifier") as? String else {continue}
+                    guard let muscleGroups = result.valueForKey("muscle_group") as? NSData else {continue}
+                    let muscleGroup = unarchiveArray(muscleGroups)
+                    guard muscleGroup.count > 0 else {continue}
+                    guard let mainMuscleGroup = muscleGroup.first else {continue}
+                    exercises.append(Entry(exerciseTitle: title, exerciseIdentifer: id, muscle_group: mainMuscleGroup))
                 }
             }
         } catch {
@@ -381,7 +389,7 @@ class DataManager {
         // Parse exercise object
         let exercise = PFObject(className: "Exercise")
         exercise["name"] = name
-        exercise["muscle_group"] = muscleGroup
+        exercise["muscle_groups"] = muscleGroup
         exercise["exercise_desc"] = exerciseDescription
         exercise["thumbs_Down_Rate"] = 0
         exercise["thumbs_Up_Rate"] = 0
@@ -410,9 +418,8 @@ class DataManager {
         // Create Parse object to save
         let workout = PFObject(className: "Workout")
         workout["name"] = workoutName
-        //workout["objectId"] = id
         workout["exercise_ids"] = exerciseIDs
-        workout["muscle_group"] = workoutMuscleGroup
+        workout["muscle_groups"] = workoutMuscleGroup
         workout["exercise_names"] = exerciseNames
         workout.saveInBackgroundWithBlock { (success, error) -> Void in
             if error == nil {
@@ -551,6 +558,14 @@ class DataManager {
             self.queryForItemByID(id, entityName: "Exercise", completion: { (success) -> Void in
                 if success {
                    successes += 1
+                    
+                    if !failure && successes == ids.count {
+                        completion(success: true)
+                        return
+                    } else if failure {
+                        completion(success: false)
+                        return
+                    }
                 } else {
                     // Exercise not stored on device - query for it
                     let query = PFQuery(className: "Exercise")

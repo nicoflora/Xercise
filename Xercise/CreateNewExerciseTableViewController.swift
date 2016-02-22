@@ -150,7 +150,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                     self.removeActivityIndicator()
                                     if success {
                                         // Add to NSUserDefaults to get this exercise in Create New Workout
-                                        let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String)
+                                        guard let mainMuscleGroup = self.exerciseMuscleGroup.first else {return}
+                                        let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String, muscle_group: mainMuscleGroup)
                                         self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
                                         // Present success alert and pop VC
                                         //self.presentSucessAlert()
@@ -214,7 +215,11 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         if addingFromWorkout {
             return sectionTitlesAddingFromWorkout.count
         } else {
-            return sectionTitles.count
+            if exerciseMuscleGroup.count > 0 {
+                return constants.newExerciseTitlesSubGroup.count
+            } else {
+                return sectionTitles.count
+            }
         }
     }
     
@@ -222,7 +227,12 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         if addingFromWorkout {
             return sectionTitlesAddingFromWorkout[section]
         } else {
-            return sectionTitles[section]
+            if exerciseMuscleGroup.count > 0 {
+                return constants.newExerciseTitlesSubGroup[section]
+            } else {
+                return sectionTitles[section]
+            }
+
         }
     }
     
@@ -239,10 +249,17 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         } else {
             if section == 1 {
                 return muscleGroups.count
-            } else {
-                return 1
+            } else if section == 2 && exerciseMuscleGroup.count > 0 {
+                // Sub muscle group
+                for group in muscleGroups {
+                    if group.mainGroup == exerciseMuscleGroup[0] {
+                        // This is the selected main group
+                        return group.subGroups.count
+                    }
+                }
             }
         }
+        return 1
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -257,14 +274,27 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             default: return 44
             }
         } else {
-            switch indexPath.section {
-            case 0: return 44
-            case 1: return 44
-            case 2: return 54
-            case 3: return 150
-            case 4: return 85
-            case 5: return 85
-            default: return 44
+            if exerciseMuscleGroup.count > 0 {
+                switch indexPath.section {
+                case 0: return 44
+                case 1: return 44
+                case 2: return 44
+                case 3: return 54
+                case 4: return 150
+                case 5: return 85
+                case 6: return 85
+                default: return 44
+                }
+            } else {
+                switch indexPath.section {
+                case 0: return 44
+                case 1: return 44
+                case 2: return 54
+                case 3: return 150
+                case 4: return 85
+                case 5: return 85
+                default: return 44
+                }
             }
         }
     }
@@ -310,6 +340,74 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 return cell
             }
         } else {
+            // Not adding from workout, muscle group selection is enabled
+            if exerciseMuscleGroup.count > 0 {
+                // Main muscle group selection made - display sub-groups
+                switch indexPath.section {
+                case 0:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                    return cell
+                case 1:
+                    let cell = UITableViewCell()
+                    cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
+                    cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
+                    if exerciseMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup) {
+                        cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                    }
+                    return cell
+                case 2:
+                    // Sub muscle group
+                    let cell = UITableViewCell()
+                    for group in muscleGroups {
+                        if group.mainGroup == exerciseMuscleGroup[0] {
+                            // This is the selected main group
+                            let subGroup = group.subGroups[indexPath.row]
+                            if indexPath.row == 0 && exerciseMuscleGroup.count == 1 {
+                                // Select 'All'
+                                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                            }
+                            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
+                            cell.textLabel?.text = subGroup
+                            if exerciseMuscleGroup.contains(subGroup) {
+                                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                            }
+                        }
+                    }
+                    return cell
+                case 3:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
+                    cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.exerciseImage.image = image
+                    return cell
+                case 4:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
+                    return cell
+                case 5:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
+                    cell.heavyStepper.tag = 0
+                    cell.enduranceStepper.tag = 1
+                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    return cell
+                case 6:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
+                    cell.heavyStepper.tag = 2
+                    cell.enduranceStepper.tag = 3
+                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    return cell
+                default:
+                    let cell = UITableViewCell()
+                    cell.textLabel?.text = "There was an error, please try reloading the page."
+                    return cell
+                }
+
+            }
+            
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
@@ -420,8 +518,49 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if addingFromWorkout == false && indexPath.section == 1 {
-            // Deselct all other rows
+        if !addingFromWorkout {
+            if indexPath.section == 1 {
+                // Main muscle group
+                let muscleGroup = muscleGroups[indexPath.row].mainGroup
+                if exerciseMuscleGroup.contains(muscleGroup) {
+                    // Was previously selected - remove from array and deselect it
+                    guard let index = exerciseMuscleGroup.indexOf(muscleGroup) else {return}
+                    exerciseMuscleGroup.removeAtIndex(index)
+                } else {
+                    // Add to array and add checkmark
+                    exerciseMuscleGroup.removeAll()
+                    exerciseMuscleGroup.append(muscleGroup)
+                }
+            } else if exerciseMuscleGroup.count > 0 && indexPath.section == 2 {
+                if indexPath.row == 0 {
+                    // 'All selected'
+                    // Deselect all other rows
+                    while exerciseMuscleGroup.count > 1 {
+                        exerciseMuscleGroup.popLast()
+                    }
+                } else {
+                    // Something other than 'All' selected
+                    for group in muscleGroups {
+                        if group.mainGroup == exerciseMuscleGroup[0] {
+                            // This is the selected main group
+                            let subGroup = group.subGroups[indexPath.row]
+                            if exerciseMuscleGroup.contains(subGroup) {
+                                // Remove it
+                                guard let index = exerciseMuscleGroup.indexOf(subGroup) else {return}
+                                exerciseMuscleGroup.removeAtIndex(index)
+                            } else {
+                                // Add it
+                                exerciseMuscleGroup.append(subGroup)
+                            }
+                        }
+                    }
+                }
+            }
+            tableView.reloadData()
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+            
+            /*// Deselct all other rows
             for i in 0...self.muscleGroups.count - 1{
                 let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 1))
                 cell?.accessoryType = UITableViewCellAccessoryType.None
@@ -431,7 +570,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
             exerciseMuscleGroup.append((cell?.textLabel?.text)!)
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)*/
         }
     }
     
