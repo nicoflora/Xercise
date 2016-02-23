@@ -293,16 +293,19 @@ class MyXercisesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedIndex = indexPath
-        if indexPath.section == 0 && workouts.count > 0 {
-            // Display workout
-            self.performSegueWithIdentifier("displayWorkoutFromSaved", sender: self)
-        } else if exercises.count > 0 {
+        if indexPath.section == 0 {
+            if workouts.count > 0 {
+                // Display workout
+                self.performSegueWithIdentifier("displayWorkoutFromSaved", sender: self)
+            }
+        } else {
+            if exercises.count > 0 {
             // Display an exercise
-            if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
-                self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
+                if exercisesByGroup[indexPath.section - 1].exercises.count > 0 {
+                    self.performSegueWithIdentifier("displayExerciseFromSaved", sender: self)
+                }
             }
         }
-        
     }
     
     func presentAlert(alertTitle : String, alertMessage : String) {

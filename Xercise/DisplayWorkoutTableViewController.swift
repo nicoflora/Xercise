@@ -83,7 +83,6 @@ class DisplayWorkoutTableViewController: UITableViewController {
                         self.showPopup("This workout has already been saved in your 'My Xercises' page.")
                     } else {
                         // Workout has not been saved to device, save it
-                        let exerciseIDs = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
                         self.dataMgr.saveWorkoutToDevice(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
                             if success {
                                 //self.presentAlert("Saved!", message: "The workout has been saved to 'My Xercises'!")
