@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -19,22 +19,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iTunesArtwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="AG7-fK-JdN">
-                                <rect key="frame" x="62" y="209" width="250" height="250"/>
-                                <animations/>
+                                <rect key="frame" x="87" y="234" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="KMW-pY-k6F"/>
+                                    <constraint firstAttribute="width" constant="200" id="gFy-29-wJD"/>
+                                </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Xercise Fitness" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Kw-gj-LNj">
+                                <rect key="frame" x="47" y="158" width="280" height="68"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="68" id="Bq6-9v-rdY"/>
+                                    <constraint firstAttribute="width" constant="280" id="vfg-9T-lOg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AG7-fK-JdN" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="189" id="4JT-hk-3Pu"/>
+                            <constraint firstItem="AG7-fK-JdN" firstAttribute="top" secondItem="9Kw-gj-LNj" secondAttribute="bottom" constant="8" id="QL3-8P-o2P"/>
                             <constraint firstItem="AG7-fK-JdN" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="TfS-Dz-Pql"/>
                             <constraint firstItem="AG7-fK-JdN" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="46" id="Uv7-qC-4YO"/>
+                            <constraint firstItem="9Kw-gj-LNj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="W9r-J2-9FU"/>
                             <constraint firstItem="AG7-fK-JdN" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="d4H-bG-MXi"/>
                             <constraint firstItem="AG7-fK-JdN" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="rzX-xX-7CD"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="4JT-hk-3Pu"/>
                                 <exclude reference="TfS-Dz-Pql"/>
+                                <exclude reference="Uv7-qC-4YO"/>
                             </mask>
                         </variation>
                     </view>

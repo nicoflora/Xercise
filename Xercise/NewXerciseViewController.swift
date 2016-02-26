@@ -37,7 +37,7 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     override func viewWillAppear(animated: Bool) {
         // Check user login
         if PFUser.currentUser() == nil {
-            //If not logged in, display Parse login view controller
+            //If not logged in, display login view controller
             presentLoginVC()
         }
     }
@@ -213,33 +213,8 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     
     
     func presentLoginVC() {
-        
-        let loginVC = LoginViewController()
-        loginVC.delegate = self
-        
-        let signupVC = PFSignUpViewController()
-        signupVC.delegate = self
-        
-        let logo = UIImageView(image: UIImage(named: "loginImage"))
-        logo.contentMode = UIViewContentMode.ScaleAspectFill
-        logo.sizeToFit()
-        signupVC.signUpView?.logo = logo
-        
-        loginVC.signUpController = signupVC
-        
-        loginVC.logInView?.dismissButton?.removeFromSuperview()
-        
-        let logo2 = UIImageView(image: UIImage(named: "loginImage"))
-        //logo2.contentMode = UIViewContentMode.ScaleAspectFill
-        logo2.sizeToFit()
-        loginVC.logInView?.logo = logo2
-        
-        loginVC.facebookPermissions = ["public_profile", "user_friends", "email"]
-        loginVC.fields = [PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.Facebook, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten]
-        
-        
-        self.presentViewController(loginVC, animated: true, completion: nil)
-
+        guard let loginVC = self.storyboard?.instantiateInitialViewController() else {return}
+        self.presentViewController(loginVC, animated: false, completion: nil)
     }
     
     func displayErrorAlert() {
