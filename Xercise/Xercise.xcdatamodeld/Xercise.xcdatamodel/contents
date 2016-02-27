@@ -13,9 +13,10 @@
         <attribute name="proteins" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Macro_Meal" syncable="YES">
-        <attribute name="attribute" optional="YES" syncable="YES"/>
         <attribute name="carbs" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="expiration" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="fats" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proteins" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Workout" syncable="YES">
@@ -25,12 +26,11 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publicWorkout" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="workoutCode" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" syncable="YES"/>
     </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="Macro_Goal" positionX="-36" positionY="54" width="128" height="90"/>
-        <element name="Macro_Meal" positionX="0" positionY="90" width="128" height="105"/>
-        <element name="Workout" positionX="-54" positionY="27" width="128" height="150"/>
+        <element name="Macro_Meal" positionX="0" positionY="90" width="128" height="120"/>
+        <element name="Workout" positionX="-54" positionY="27" width="128" height="135"/>
     </elements>
 </model>

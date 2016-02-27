@@ -25,8 +25,6 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             popup.layer.borderWidth = 3.0
             popup.layer.borderColor =  UIColor(hexString: "#0f3878").CGColor
             popup.layer.cornerRadius = 10
-           // popup.saveMealButton.layer.cornerRadius = 10
-        
             self.view.addSubview(popup)
         }
     }
@@ -45,14 +43,12 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         let macro = Macro(name: name, carbs: carbsNum, fats: fatsNum, proteins: proteinsNum, expiration: NSDate())
         
         macroMeals.append(macro)
-        
         tableView.reloadData()
+        popup.removeFromSuperview()
         
         dataMGR.saveMacrosToDevice(macro) { (success) -> Void in
             print("Saved meal")
         }
-        
-        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
@@ -145,6 +141,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             //if indexPath.row < macroMeals.count{
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
+                cell.backgroundColor = UIColor.whiteColor()
                 cell.mealName.text = macroMeals[indexPath.row-1].name
                 cell.mealCarbs.text =  "\(macroMeals[indexPath.row-1].carbs)g"
                 cell.mealFats.text = "\(macroMeals[indexPath.row-1].fats)g"
