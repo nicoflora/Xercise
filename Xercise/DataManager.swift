@@ -130,6 +130,58 @@ class DataManager {
         return workouts
     }
     
+    func getMyMacros() -> [Macro]? {
+        
+        var macros = [Macro]()
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestMacro = NSFetchRequest(entityName: "Macro_Meal")
+        requestMacro.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestMacro)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return nil}
+                for result in results {
+                    guard let name = result.valueForKey("name") as? String else {continue}
+                    guard let expiration = result.valueForKey("expiration") as? NSDate else {continue}
+                    guard let carbs = result.valueForKey("carbs") as? Int else {continue}
+                    guard let fats = result.valueForKey("fats") as? Int else {continue}
+                    guard let proteins = result.valueForKey("proteins") as? Int else {continue}
+                  
+                    
+                    macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration))
+                }
+                guard macros.count > 0 else {return nil}
+                return macros
+                
+            }
+        } catch {
+            print("There was an error fetching exercises")
+        }
+        
+        
+        return nil
+    }
+    
+    func saveMacrosToDevice(macro : Macro, completion : (success : Bool) -> Void) {
+        
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let newMacro = NSEntityDescription.insertNewObjectForEntityForName("Macro_Meal", inManagedObjectContext: context)
+        newMacro.setValue(macro.name, forKey: "name")
+        newMacro.setValue(macro.carbs, forKey: "carbs")
+        newMacro.setValue(macro.fats, forKey: "fats")
+        newMacro.setValue(macro.proteins, forKey: "proteins")
+        newMacro.setValue(macro.expiration, forKey: "expiration")
+        
+        do {
+            try context.save()
+            completion(success: true)
+        } catch {
+            print("There was an error saving the macro")
+            completion(success: false)
+        }
+    }
+
+    
     func getMyExercises() -> [Entry] {
         
         var exercises = [Entry]()
