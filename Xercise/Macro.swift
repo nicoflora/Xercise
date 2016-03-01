@@ -15,13 +15,15 @@ class Macro{
     var fats : Int
     var proteins : Int
     var expiration : NSDate
+    var id : String
     
-    init(name : String, carbs : Int, fats : Int, proteins: Int, expiration : NSDate){
+    init(name : String, carbs : Int, fats : Int, proteins: Int, expiration : NSDate, id : String){
         self.name = name
         self.carbs = carbs
         self.fats = fats
         self.proteins = proteins
         self.expiration = expiration
+        self.id = id
     }
     
     

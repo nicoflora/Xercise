@@ -13,20 +13,10 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     var popup : UIViewMacro?
     var macroMeals = [Macro]()
     let dataMGR = DataManager()
+    var goal : MacroGoal?
 
     @IBAction func addNewMeal(sender: AnyObject) {
-        if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
-            self.popup = popup
-            popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
-            popup.mealCarbs.delegate = self
-            popup.mealFats.delegate = self
-            popup.mealProteins.delegate = self
-            popup.saveMealButton.addTarget(self, action: Selector("saveMealData"), forControlEvents: UIControlEvents.TouchUpInside)
-            popup.layer.borderWidth = 3.0
-            popup.layer.borderColor =  UIColor(hexString: "#0f3878").CGColor
-            popup.layer.cornerRadius = 10
-            self.view.addSubview(popup)
-        }
+        showNewMealPopup(nil, row : nil, goal: false)
     }
     
     func saveMealData(){
@@ -40,15 +30,29 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         guard let fatsNum = Int (fats) else {return}
         guard let proteinsNum = Int (proteins) else {return}
         
-        let macro = Macro(name: name, carbs: carbsNum, fats: fatsNum, proteins: proteinsNum, expiration: NSDate())
+        let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil)) as String
         
-        macroMeals.append(macro)
+        let macro = Macro(name: name, carbs: carbsNum, fats: fatsNum, proteins: proteinsNum, expiration: NSDate(), id: uuid)
+        
+        if let row = popup.updateRow{
+            if row == -1 {
+                dataMGR.saveMacroGoalToDevice(MacroGoal(carbs: carbsNum, fats: fatsNum, proteins: proteinsNum))
+                goal = MacroGoal(carbs: carbsNum, fats: fatsNum, proteins: proteinsNum)
+                tableView.reloadData()
+            }else{
+                macroMeals[row] = macro
+                dataMGR.updateMacrosToDevice(macro)
+            }
+        }else{
+            macroMeals.append(macro)
+            dataMGR.saveMacrosToDevice(macro) { (success) -> Void in
+                print("Saved meal")
+            }
+        }
         tableView.reloadData()
         popup.removeFromSuperview()
         
-        dataMGR.saveMacrosToDevice(macro) { (success) -> Void in
-            print("Saved meal")
-        }
+        
         
     }
     
@@ -84,7 +88,10 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             tableView.reloadData()
         }
         
-        
+        if let goal = dataMGR.getMyGoal(){
+            self.goal = goal
+            tableView.reloadData()
+        }
         
     }
 
@@ -96,83 +103,219 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return macroMeals.count+3
+        switch section
+        {
+        case 0:
+            return 1
+        case 1:
+            if macroMeals.count>0{
+                return macroMeals.count
+            }
+            else{
+                return 1
+            }
+        case 2:
+            return 2
+        default:
+            return 1
+        }
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0 {
+        switch indexPath.section{
+        case 0:
             return 25
-        }else{
+        default:
             return 50
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if indexPath.row == 0 {
+    
+        switch indexPath.section{
+        case 0:
             let cell = tableView.dequeueReusableCellWithIdentifier("macroHeader", forIndexPath: indexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
-        }else if indexPath.row == macroMeals.count+1{
-            let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            cell.backgroundColor = UIColor.greenColor()
-            cell.mealName.text = "Total"
-            cell.mealName.font = UIFont.systemFontOfSize(15)
-            cell.mealCarbs.text = "23g"
-            cell.mealFats.text = "18g"
-            cell.mealProteins.text = "7g"
-            return cell
-        }else if indexPath.row == macroMeals.count+2{
-            let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            cell.backgroundColor = UIColor.purpleColor()
-            cell.mealName.text = "Goal"
-            cell.mealName.font = UIFont.systemFontOfSize(15)
-            cell.mealCarbs.text = "23g"
-            cell.mealFats.text = "18g"
-            cell.mealProteins.text = "7g"
-            return cell
-        }else {
-            //if indexPath.row < macroMeals.count{
+        case 1:
+            if macroMeals.count > 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
                 cell.backgroundColor = UIColor.whiteColor()
-                cell.mealName.text = macroMeals[indexPath.row-1].name
-                cell.mealCarbs.text =  "\(macroMeals[indexPath.row-1].carbs)g"
-                cell.mealFats.text = "\(macroMeals[indexPath.row-1].fats)g"
-                cell.mealProteins.text = "\(macroMeals[indexPath.row-1].proteins)g"
+                cell.mealName.text = macroMeals[indexPath.row].name
+                cell.mealCarbs.text =  "\(macroMeals[indexPath.row].carbs)g"
+                cell.mealFats.text = "\(macroMeals[indexPath.row].fats)g"
+                cell.mealProteins.text = "\(macroMeals[indexPath.row].proteins)g"
                 return cell
-           // }
+            }else{
+                let cell = UITableViewCell()
+                cell.textLabel?.text = "Click + To Add New Meals!"
+                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 18)
+                return cell
+            }
+        case 2:
+            if indexPath.row == 0
+            {
+                let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                cell.backgroundColor = UIColor.greenColor()
+                cell.mealName.text = "Total"
+                cell.mealName.font = UIFont.systemFontOfSize(15)
+                if macroMeals.count > 0 {
+                    var carbs = 0
+                    var fats = 0
+                    var proteins = 0
+                    for meal in macroMeals {
+                        carbs += meal.carbs
+                        fats += meal.fats
+                        proteins += meal.proteins
+                    }
+                    
+                    cell.mealCarbs.text = "\(carbs)g"
+                    cell.mealFats.text = "\(fats)g"
+                    cell.mealProteins.text = "\(proteins)g"
+                    
+                }else{
+                    cell.mealCarbs.text = "0g"
+                    cell.mealFats.text = "0g"
+                    cell.mealProteins.text = "0g"
+                }
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                cell.backgroundColor = UIColor(hexString: "#D3D3D3")
+                cell.mealName.text = "Goal"
+                cell.mealName.font = UIFont.systemFontOfSize(15)
+                if let goal = goal {
+                    cell.mealCarbs.text = "\(goal.carbs)g"
+                    cell.mealFats.text = "\(goal.fats)g"
+                    cell.mealProteins.text = "\(goal.proteins)g"
+                }else {
+                    cell.mealCarbs.text = "0g"
+                    cell.mealFats.text = "0g"
+                    cell.mealProteins.text = "0g"
+                }
+                
+                return cell
+            }
+        default:
+            return UITableViewCell()
+
         }
-        return UITableViewCell()
     }
 
 
-    /*
+
+
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        switch indexPath.section{
+        case 0:
+            return false
+        case 1:
+            if macroMeals.count > 0 {
+                return true
+            }else{
+                return false
+            }
+            
+        case 2:
+            if indexPath.row == 0{
+                return false
+            }else{
+                return true
+            }
+        default:
+            return false
+        }
+        
     }
-    */
+    
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "Delete") { (Action, indexPath) -> Void in
+            self.dataMGR.deleteMacrosFromDevice(self.macroMeals[indexPath.row])
+            self.macroMeals.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+        }
+        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit") { (Action, indexPath) -> Void in
+            if indexPath.section == 2 && indexPath.row == 1{
+                self.showNewMealPopup(nil, row : nil, goal : true)
+            }else {
+                self.showNewMealPopup(self.macroMeals[indexPath.row], row: indexPath.row, goal : false)
+
+            }
+        }
+        if indexPath.section == 1
+        {
+            return [deleteAction, editAction]
+        }else{
+            return [editAction]
+        }
     }
-    */
+    
+    func showNewMealPopup(meal : Macro?, row : Int?, goal : Bool){
+        tableView.setEditing(false, animated: true)
+    
+        if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
+            self.popup = popup
+            popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
+            popup.mealCarbs.delegate = self
+            popup.mealFats.delegate = self
+            popup.mealProteins.delegate = self
+            popup.cancelMealButton.layer.borderWidth = 1
+            popup.cancelMealButton.layer.borderColor = UIColor(hexString: "#0f3878").CGColor
+            popup.saveMealButton.addTarget(self, action: Selector("saveMealData"), forControlEvents: UIControlEvents.TouchUpInside)
+            popup.cancelMealButton.addTarget(self, action: Selector("cancelPopup"), forControlEvents: UIControlEvents.TouchUpInside)
+            popup.layer.borderWidth = 3.0
+            popup.layer.borderColor =  UIColor(hexString: "#0f3878").CGColor
+            popup.layer.cornerRadius = 10
+            if let meal = meal{
+                popup.popUpTitle.text = "Update Meal"
+                popup.mealName.text = meal.name
+                popup.mealCarbs.text = String(meal.carbs)
+                popup.mealFats.text = String(meal.fats)
+                popup.mealProteins.text = String(meal.proteins)
+                popup.updateRow = row
+            }else if goal {
+                popup.popUpTitle.text = "Edit Goal"
+                popup.mealName.hidden = true
+                popup.mealName.enabled = false
+                popup.mealNameLabel.hidden = true
+                popup.cancelMealButton.setTitle("Cancel", forState: UIControlState.Normal)
+                popup.saveMealButton.setTitle("Save", forState: UIControlState.Normal)
+                popup.updateRow = -1
+                popup.mealNameHeight.constant = 0
+                popup.mealNameTextBoxHeight.constant = 0
+                popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 200)
+                if let setGoal = self.goal {
+                    popup.mealCarbs.text = String(setGoal.carbs)
+                    popup.mealFats.text = String(setGoal.fats)
+                    popup.mealProteins.text = String(setGoal.proteins)
+                }
+                
+            }
+            self.view.addSubview(popup)
+        }
+    }
 
+    func cancelPopup(){
+        guard let popup = popup else {return}
+        popup.removeFromSuperview()
+    }
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {

@@ -148,9 +148,9 @@ class DataManager {
                     guard let carbs = result.valueForKey("carbs") as? Int else {continue}
                     guard let fats = result.valueForKey("fats") as? Int else {continue}
                     guard let proteins = result.valueForKey("proteins") as? Int else {continue}
-                  
+                    guard let id = result.valueForKey("id") as? String else {continue}
                     
-                    macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration))
+                    macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration, id : id))
                 }
                 guard macros.count > 0 else {return nil}
                 return macros
@@ -164,6 +164,80 @@ class DataManager {
         return nil
     }
     
+    func saveMacroGoalToDevice(goal : MacroGoal){
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let deleteMacroGoal = NSFetchRequest(entityName: "Macro_Goal")
+        deleteMacroGoal.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(deleteMacroGoal)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return}
+                for result in results{
+                     context.deleteObject(result)
+                }
+                try context.save()
+                print("delete successful")
+            }
+        }catch{
+            print("delete unsuccessful")
+        }
+
+        let newMacro = NSEntityDescription.insertNewObjectForEntityForName("Macro_Goal", inManagedObjectContext: context)
+        newMacro.setValue(goal.carbs, forKey: "carbs")
+        newMacro.setValue(goal.fats, forKey: "fats")
+        newMacro.setValue(goal.proteins, forKey: "proteins")
+        do {
+            try context.save()
+            print("save successful")
+        } catch {
+            print("There was an error saving the goal")
+        }
+    }
+    
+    func getMyGoal() -> MacroGoal?{
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestMacroGoal = NSFetchRequest(entityName: "Macro_Goal")
+        requestMacroGoal.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestMacroGoal)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return nil}
+                guard let result = results.first else {return nil}
+                guard let carbs = result.valueForKey("carbs") as? Int else {return nil}
+                guard let fats = result.valueForKey("fats") as? Int else {return nil}
+                guard let proteins = result.valueForKey("proteins") as? Int else {return nil}
+                return MacroGoal(carbs: carbs, fats: fats, proteins: proteins)
+            }
+        } catch {
+            print("There was an error fetching goal")
+        }
+        return nil
+    }
+    
+    func updateMacrosToDevice(macro : Macro){
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestMacro = NSFetchRequest(entityName: "Macro_Meal")
+        requestMacro.predicate = NSPredicate(format: "id = %@", macro.id)
+        requestMacro.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestMacro)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return}
+                guard let result = results.first else {return}
+                result.setValue(macro.name, forKey: "name")
+                result.setValue(macro.carbs, forKey: "carbs")
+                result.setValue(macro.fats, forKey: "fats")
+                result.setValue(macro.proteins, forKey: "proteins")
+                result.setValue(macro.expiration, forKey: "expiration")
+                try context.save()
+                print("update successful")
+            }
+        }catch{
+            print("update unsuccessful")
+        }
+
+    }
+    
     func saveMacrosToDevice(macro : Macro, completion : (success : Bool) -> Void) {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
@@ -173,13 +247,32 @@ class DataManager {
         newMacro.setValue(macro.fats, forKey: "fats")
         newMacro.setValue(macro.proteins, forKey: "proteins")
         newMacro.setValue(macro.expiration, forKey: "expiration")
-        
+        newMacro.setValue(macro.id, forKey: "id")
         do {
             try context.save()
             completion(success: true)
         } catch {
             print("There was an error saving the macro")
             completion(success: false)
+        }
+    }
+    
+    func deleteMacrosFromDevice(meal : Macro){
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestMacro = NSFetchRequest(entityName: "Macro_Meal")
+        requestMacro.predicate = NSPredicate(format: "id = %@", meal.id)
+        requestMacro.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestMacro)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return}
+                guard let result = results.first else {return}
+                context.deleteObject(result)
+                try context.save()
+                print("delete successful")
+            }
+        }catch{
+            print("delete unsuccessful")
         }
     }
 

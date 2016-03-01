@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UIViewMacro" customModule="Xercise" customModuleProvider="target"/>
@@ -11,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="225"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Meal Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Frf-74-ykR">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Meal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Frf-74-ykR">
                     <rect key="frame" x="80" y="8" width="141" height="21"/>
                     <animations/>
                     <constraints>
@@ -127,9 +128,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Yf-Ld-eBO">
-                    <rect key="frame" x="30" y="185" width="240" height="32"/>
+                    <rect key="frame" x="161" y="185" width="131" height="32"/>
                     <animations/>
                     <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="bry-re-Te9"/>
+                        <constraint firstAttribute="width" constant="131" id="zRE-lk-Hzv"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="18"/>
                     <state key="normal" title="Save Meal">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -150,9 +155,22 @@
                         </mask>
                     </variation>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A16-dm-aCG">
+                    <rect key="frame" x="8" y="185" width="131" height="32"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="Kt8-7x-tbQ"/>
+                        <constraint firstAttribute="width" constant="131" id="RQM-q6-32z"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="18"/>
+                    <state key="normal" title="Cancel Meal">
+                        <color key="titleColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
             </subviews>
             <animations/>
-            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Iq1-sR-ZzR" secondAttribute="trailing" constant="8" id="19K-nC-64Q"/>
                 <constraint firstAttribute="trailing" secondItem="oYp-wZ-vRI" secondAttribute="trailing" constant="8" id="7ah-k0-1f0"/>
@@ -161,6 +179,7 @@
                 <constraint firstItem="3Yf-Ld-eBO" firstAttribute="top" secondItem="Gpw-vM-yk7" secondAttribute="bottom" constant="8" id="DyA-1b-jfa"/>
                 <constraint firstItem="CSh-XR-vq1" firstAttribute="top" secondItem="2d3-TM-LEs" secondAttribute="bottom" constant="14" id="Fsa-T2-O8a"/>
                 <constraint firstAttribute="trailing" secondItem="lSV-Et-3vf" secondAttribute="trailing" constant="8" id="Hgy-Wb-RbF"/>
+                <constraint firstItem="A16-dm-aCG" firstAttribute="top" secondItem="LTE-P4-dOD" secondAttribute="bottom" constant="13" id="Ine-Ek-iNF"/>
                 <constraint firstItem="vNe-04-5hB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="It0-5C-SXM"/>
                 <constraint firstItem="2d3-TM-LEs" firstAttribute="top" secondItem="vQT-B5-e0X" secondAttribute="bottom" constant="12" id="Lae-NL-kcf"/>
                 <constraint firstItem="vNe-04-5hB" firstAttribute="top" secondItem="Frf-74-ykR" secondAttribute="bottom" constant="12" id="Leh-2c-CpF"/>
@@ -173,13 +192,14 @@
                 <constraint firstItem="Gpw-vM-yk7" firstAttribute="top" secondItem="P1w-S6-Avn" secondAttribute="bottom" constant="7" id="T5a-cq-1Bv"/>
                 <constraint firstItem="CSh-XR-vq1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="a4e-e7-Lcu"/>
                 <constraint firstItem="Iq1-sR-ZzR" firstAttribute="leading" secondItem="P1w-S6-Avn" secondAttribute="trailing" constant="8" id="aoZ-bR-zcx"/>
-                <constraint firstAttribute="trailing" secondItem="3Yf-Ld-eBO" secondAttribute="trailing" constant="30" id="bTv-YS-w5E"/>
+                <constraint firstAttribute="trailing" secondItem="3Yf-Ld-eBO" secondAttribute="trailing" constant="8" id="bTv-YS-w5E"/>
                 <constraint firstItem="lSV-Et-3vf" firstAttribute="top" secondItem="Iq1-sR-ZzR" secondAttribute="bottom" constant="16" id="cAe-DH-nkJ"/>
                 <constraint firstItem="oYp-wZ-vRI" firstAttribute="leading" secondItem="QaJ-jW-TFF" secondAttribute="trailing" constant="8" id="cx5-Wi-fAv"/>
                 <constraint firstItem="QaJ-jW-TFF" firstAttribute="top" secondItem="vQT-B5-e0X" secondAttribute="bottom" constant="8" id="dC7-1C-ILQ"/>
                 <constraint firstItem="Iq1-sR-ZzR" firstAttribute="top" secondItem="oYp-wZ-vRI" secondAttribute="bottom" constant="14" id="dom-2F-gAW"/>
                 <constraint firstItem="lSV-Et-3vf" firstAttribute="leading" secondItem="Gpw-vM-yk7" secondAttribute="trailing" constant="8" id="hxy-3q-air"/>
                 <constraint firstItem="LTE-P4-dOD" firstAttribute="top" secondItem="CSh-XR-vq1" secondAttribute="bottom" constant="16" id="jAA-xg-Jex"/>
+                <constraint firstItem="A16-dm-aCG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="l9F-Ts-yUl"/>
                 <constraint firstItem="2d3-TM-LEs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="mnP-hb-C0V"/>
                 <constraint firstItem="QaJ-jW-TFF" firstAttribute="leading" secondItem="2d3-TM-LEs" secondAttribute="trailing" constant="17" id="pq9-0G-pfP"/>
                 <constraint firstItem="P1w-S6-Avn" firstAttribute="leading" secondItem="CSh-XR-vq1" secondAttribute="trailing" constant="99" id="sHA-nk-ChA"/>
@@ -194,16 +214,22 @@
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="sHA-nk-ChA"/>
+                    <exclude reference="xzO-Eq-veB"/>
                 </mask>
             </variation>
             <connections>
+                <outlet property="cancelMealButton" destination="A16-dm-aCG" id="YfA-Ln-HZE"/>
                 <outlet property="mealCarbs" destination="QaJ-jW-TFF" id="ZVG-2G-IAq"/>
                 <outlet property="mealFats" destination="P1w-S6-Avn" id="JE2-AH-Tbb"/>
                 <outlet property="mealName" destination="vQT-B5-e0X" id="3p1-J2-MiX"/>
+                <outlet property="mealNameHeight" destination="IYZ-UH-SjD" id="Irs-Su-h8G"/>
+                <outlet property="mealNameLabel" destination="vNe-04-5hB" id="ENP-bw-TmA"/>
+                <outlet property="mealNameTextBoxHeight" destination="zeV-b5-Jng" id="9fD-1v-U7B"/>
                 <outlet property="mealProteins" destination="Gpw-vM-yk7" id="Umg-Va-fAc"/>
+                <outlet property="popUpTitle" destination="Frf-74-ykR" id="O40-Sc-Jhz"/>
                 <outlet property="saveMealButton" destination="3Yf-Ld-eBO" id="oMg-Vn-Ieb"/>
             </connections>
-            <point key="canvasLocation" x="572" y="384"/>
+            <point key="canvasLocation" x="572" y="383.5"/>
         </view>
     </objects>
 </document>

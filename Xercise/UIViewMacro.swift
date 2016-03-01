@@ -14,8 +14,13 @@ class UIViewMacro: UIView {
     @IBOutlet var mealCarbs: UITextField!
     @IBOutlet var mealFats: UITextField!
     @IBOutlet var mealProteins: UITextField!
-    
+    var updateRow : Int?
     @IBOutlet var saveMealButton: UIButton!
+    @IBOutlet var popUpTitle: UILabel!
    
+    @IBOutlet var mealNameLabel: UILabel!
 
+    @IBOutlet var mealNameHeight: NSLayoutConstraint!
+    @IBOutlet var mealNameTextBoxHeight: NSLayoutConstraint!
+    @IBOutlet var cancelMealButton: UIButton!
 }

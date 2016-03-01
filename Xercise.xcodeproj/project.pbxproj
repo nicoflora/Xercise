@@ -137,6 +137,12 @@
 		25EBC6021BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
 		25EBC6081BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
 		25EBC6091BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
+		2D29E0C21C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
+		2D29E0C31C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
+		2D29E0C41C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
+		2D29E0C61C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
+		2D29E0C71C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
+		2D29E0C81C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
 		2DD477141C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
 		2DD477151C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
 		2DD477161C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
@@ -227,6 +233,8 @@
 		25E1075B1C7F8A490032BDCA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyXercisesTableViewController.swift; sourceTree = "<group>"; };
+		2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MacroHeader.xib; sourceTree = "<group>"; };
+		2D29E0C51C860768003CA7D3 /* MacroGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacroGoal.swift; sourceTree = "<group>"; };
 		2DD477131C823C3E00943792 /* UIViewMacro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewMacro.swift; sourceTree = "<group>"; };
 		2DD477171C823CA200943792 /* AddMacroPopupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddMacroPopupView.xib; sourceTree = "<group>"; };
 		2DD4771B1C82490F00943792 /* Macro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Macro.swift; sourceTree = "<group>"; };
@@ -457,6 +465,7 @@
 				25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */,
 				25ACC23D1C4EACD2001040E8 /* Xercise-Bridging-Header.h */,
 				2DD4771B1C82490F00943792 /* Macro.swift */,
+				2D29E0C51C860768003CA7D3 /* MacroGoal.swift */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -486,6 +495,7 @@
 				25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */,
 				2DD477131C823C3E00943792 /* UIViewMacro.swift */,
 				2DD477171C823CA200943792 /* AddMacroPopupView.xib */,
+				2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */,
 			);
 			name = Macros;
 			sourceTree = "<group>";
@@ -605,6 +615,7 @@
 				2DD477181C823CA200943792 /* AddMacroPopupView.xib in Resources */,
 				25C225411BE48E3F00CA75C9 /* iTunesArtwork.png in Resources */,
 				251F1C001BDFD1DC00B1F3B0 /* Main.storyboard in Resources */,
+				2D29E0C21C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DD477191C823CA200943792 /* AddMacroPopupView.xib in Resources */,
+				2D29E0C31C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +633,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DD4771A1C823CA200943792 /* AddMacroPopupView.xib in Resources */,
+				2D29E0C41C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,6 +667,7 @@
 				2566DB781BE6776C0065507C /* InfoTableViewController.swift in Sources */,
 				25EBC6001BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */,
 				2566DB941BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
+				2D29E0C61C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				251F1BFD1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift in Sources */,
 				25C56BFA1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
 				25C56BF61BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
@@ -696,6 +710,7 @@
 				258BFDEE1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
 				2DD4771D1C82490F00943792 /* Macro.swift in Sources */,
 				2DD477151C823C3E00943792 /* UIViewMacro.swift in Sources */,
+				2D29E0C71C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				2566DB7D1BE677D50065507C /* XerciseConstants.swift in Sources */,
 				25D62D041BE83E0D00B8F276 /* DataManager.swift in Sources */,
 				25C2253A1BE4806A00CA75C9 /* LoginViewController.swift in Sources */,
@@ -738,6 +753,7 @@
 				258BFDEF1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
 				2DD4771E1C82490F00943792 /* Macro.swift in Sources */,
 				2DD477161C823C3E00943792 /* UIViewMacro.swift in Sources */,
+				2D29E0C81C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				2566DB7E1BE677D50065507C /* XerciseConstants.swift in Sources */,
 				25D62D051BE83E0D00B8F276 /* DataManager.swift in Sources */,
 				25C2253B1BE4806A00CA75C9 /* LoginViewController.swift in Sources */,
