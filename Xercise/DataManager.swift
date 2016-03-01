@@ -16,6 +16,8 @@ class DataManager {
     let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let defaults = NSUserDefaults.standardUserDefaults()
     
+    var updateXercisesDelegate : XercisesUpdatedDelegate?
+    
     // Arrays to cache Parse query results
     var exercisesForMuscleGroup = [String : [PFObject]]()
     var workoutsMatchingMuscleGroup = [String : [PFObject]]()
@@ -237,10 +239,18 @@ class DataManager {
         do {
             let results = try context.executeFetchRequest(requestExercise)
             if results.count > 0 {
-                let result = results[0] as! NSManagedObject
+                guard let result = results.first as? NSManagedObject else {return}
                 result.setValue(newId, forKey: "identifier")
                 if entityName == "Workout" {
                     result.setValue(true, forKey: "publicWorkout")
+                } else {
+                    // Check if this exercise is in any locally stored workouts
+                    guard let muscleGroups = result.valueForKey("muscle_group") as? NSData else {return}
+                    updateLocalExerciseIdentifiers(currentId, newID: newId, muscleGroup: muscleGroups)
+                    if let updateXercisesDelegate = self.updateXercisesDelegate {
+                        updateXercisesDelegate.updateXercises()
+                    }
+                    updateParseExerciseIdentifiers(currentId, newId: newId)
                 }
                 do {
                     try context.save()
@@ -250,6 +260,46 @@ class DataManager {
             }
         } catch {
             print("There was an error updating the local object's id")
+        }
+    }
+    
+    func updateLocalExerciseIdentifiers(currentId: String, newID: String, muscleGroup : NSData) {
+        //let archivedMuscleGroups = archiveArray(muscleGroup)
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestExercise = NSFetchRequest(entityName: "Workout")
+        //requestExercise.predicate = NSPredicate(format: "muscle_group = %@", muscleGroup)
+        requestExercise.returnsObjectsAsFaults = false
+        do {
+            guard let results = try context.executeFetchRequest(requestExercise) as? [NSManagedObject] else {return}
+            if results.count > 0 {
+                for result in results {
+                    guard let ids = result.valueForKey("exercise_ids") as? NSData else {continue}
+                    var unarchivedIds = self.unarchiveArray(ids)
+                    guard let index = unarchivedIds.indexOf(currentId) else {continue}
+                    unarchivedIds[index] = newID
+                    result.setValue(archiveArray(unarchivedIds), forKey: "exercise_ids")
+                    try context.save()
+                }
+            }
+        } catch {
+            print("There was an error updating the local exercise ids")
+        }
+    }
+    
+    func updateParseExerciseIdentifiers(prevId : String, newId: String) {
+        let query = PFQuery(className: "Workout")
+        query.whereKey("exercise_ids", equalTo: prevId)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            guard error == nil else {return}
+            guard let objects = objects else {return}
+            guard objects.count > 0 else {return}
+            for object in objects {
+                guard var exerciseIds = object.valueForKey("exercise_ids") as? [String] else {continue}
+                guard let index = exerciseIds.indexOf(prevId) else {continue}
+                exerciseIds[index] = newId
+                object["exercise_ids"] = exerciseIds
+                object.saveEventually()
+            }
         }
     }
     

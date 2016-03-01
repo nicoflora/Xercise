@@ -426,16 +426,93 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 2 {
-            if exercises.count > 0 {
-                return true
-            } else {
-                return false
+        if exercises.count > 0 {
+            if workoutMuscleGroup.count > 0 {
+                if indexPath.section == 3 {
+                    return true
+                }
+            } else if indexPath.section == 2 {
+                 return true
             }
-        } else {
-            return false
         }
+        return false
     }
+    
+    /*override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        // Check if the section is valid
+        var sectionValid = false
+        if workoutMuscleGroup.count > 0 && indexPath.section == 3 {
+            sectionValid = true
+        } else if workoutMuscleGroup.count == 0 && indexPath.section == 2 {
+            sectionValid = true
+        }
+        
+        if sectionValid {
+            if exercises.count > 0 {
+                var editAction : UITableViewRowAction?
+                
+                let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "Delete", handler: { (action, indexPath) -> Void in
+                    // Delete the row from the data source
+                    self.exercises.removeAtIndex(indexPath.row)
+                    // Update view
+                    if self.exercises.count == 0 {
+                        self.tableView.reloadData()
+                    } else {
+                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    }
+                    
+                })
+
+                if !tableView.editing {
+                    // stop editing
+                    editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Done", handler: { (action, indexPath) -> Void in
+                        self.tableView.editing = false
+                    })
+                } else {
+                    // Start editing
+                    editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit", handler: { (action, indexPath) -> Void in
+                        self.tableView.editing = true
+                    })
+                }
+                
+                if let editAction = editAction {
+                    return [deleteAction, editAction]
+                } else {
+                    return [deleteAction]
+                }
+            }
+        }
+        return nil
+    }*/
+    
+    /*override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        var sectionValid = false
+        if exercises.count > 0 {
+            if workoutMuscleGroup.count > 0 && indexPath.section == 3 {
+                sectionValid = true
+            } else if workoutMuscleGroup.count == 0 && indexPath.section == 2 {
+                sectionValid = true
+            }
+        }
+        return sectionValid
+    }
+    
+    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        var sectionValid = false
+        if exercises.count > 0 {
+            if workoutMuscleGroup.count > 0 && sourceIndexPath.section == 3 && destinationIndexPath.section == 3 {
+                sectionValid = true
+            } else if workoutMuscleGroup.count == 0 && sourceIndexPath.section == 2 && destinationIndexPath.section == 2 {
+                sectionValid = true
+            }
+        }
+        
+        if sectionValid {
+            let itemToMove = exercises[sourceIndexPath.row]
+            exercises.removeAtIndex(sourceIndexPath.row)
+            exercises.insert(itemToMove, atIndex: destinationIndexPath.row)
+        }
+    }*/
     
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

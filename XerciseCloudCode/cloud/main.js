@@ -12,6 +12,7 @@ Parse.Cloud.define("rate", function(request, response) {
     query.equalTo("identifier", request.params.id);
     query.first({
         success: function(object) {
+        	console.log('Successfully queried for the object');
             object.increment(request.params.rating);
             object.save(null, {
                 success:function() {

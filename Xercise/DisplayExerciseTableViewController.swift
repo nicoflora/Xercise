@@ -315,16 +315,13 @@ class DisplayExerciseTableViewController: UITableViewController {
 
     func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }))
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func displayErrorAlert() {
         let alert = UIAlertController(title: "Error", message: "There was an error loading your exercise. Please try again.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
             self.navigationController?.popViewControllerAnimated(true)
         }))
         self.presentViewController(alert, animated: true, completion: nil)
@@ -368,8 +365,17 @@ class DisplayExerciseTableViewController: UITableViewController {
             return cell
         case 1:
             let cell = UITableViewCell()
-            guard let group = exerciseToDisplay.muscleGroup.first else {return cell}
-            cell.textLabel?.text = "Muscle Group: \(group)"
+            var muscleGroupsString = ""
+            for group in exerciseToDisplay.muscleGroup {
+                if let lastGroup = exerciseToDisplay.muscleGroup.last {
+                    if group == lastGroup {
+                        muscleGroupsString += "\(group)"
+                    } else {
+                        muscleGroupsString += "\(group), "
+                    }
+                }
+            }
+            cell.textLabel?.text = "Muscle Group: \(muscleGroupsString)"
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
             cell.selectionStyle = UITableViewCellSelectionStyle.None

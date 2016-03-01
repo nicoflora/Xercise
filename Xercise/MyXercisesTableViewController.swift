@@ -9,7 +9,11 @@
 import UIKit
 import CoreData
 
-class MyXercisesTableViewController: UITableViewController {
+protocol XercisesUpdatedDelegate {
+    func updateXercises()
+}
+
+class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDelegate {
 
     var workouts = [Entry]()
     var exercises = [Entry]()
@@ -21,7 +25,7 @@ class MyXercisesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        dataMgr.updateXercisesDelegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -29,6 +33,9 @@ class MyXercisesTableViewController: UITableViewController {
         getMyXercises()
     }
     
+    func updateXercises() {
+        getMyXercises()
+    }
     
     func getMyXercises() {
         workouts = dataMgr.getMyWorkouts()

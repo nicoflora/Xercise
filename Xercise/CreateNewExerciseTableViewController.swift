@@ -49,22 +49,22 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         var dataValidated = false
         // Validate Data
         if exerciseTitle.characters.count > 3 {
-            if image != UIImage(named: "new_exercise_icon")! {
-                if exerciseDescription != constants.exerciseDescriptionText {
-                    if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
-
-                        // All validations passed
-                        dataValidated = true
-                        
-                        // Create identifier
-                        let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
-                        
-                        // Append reps to the description
-                        exerciseDescription += "\nSuggested heavy lift (sets X reps): \(heavySets) X \(heavyReps).\nSuggested endurance lift (sets X reps): \(enduranceSets) X \(enduranceReps). "
-                        
-                        if addingFromWorkout == false {
-                        
-                            if exerciseMuscleGroup.count > 0 {
+            if addingFromWorkout || exerciseMuscleGroup.count > 0 {
+                if image != UIImage(named: "new_exercise_icon")! {
+                    if exerciseDescription != constants.exerciseDescriptionText && exerciseDescription.characters.count > 10 && exerciseDescription.characters.count < 500 {
+                        if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
+                            
+                            // All validations passed
+                            dataValidated = true
+                            
+                            // Create identifier
+                            let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil))
+                            
+                            // Append reps to the description
+                            exerciseDescription += "\nSuggested heavy lift (sets X reps): \(heavySets) X \(heavyReps).\nSuggested endurance lift (sets X reps): \(enduranceSets) X \(enduranceReps). "
+                            
+                            if addingFromWorkout == false {
+                                
                                 // Just adding a single exercise
                                 // Prompt user for saving the exercise to the community or just on the device
                                 let publicActionSheet = UIAlertController(title: nil, message: "Would you like to allow this exercise to be publicly accessible by other members of the community, or keep the exercise private?", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -72,7 +72,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                     
                                     // Save the exercise to the device and Parse DB
                                     if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
-
+                                        
                                         // Save to core data
                                         //self.displayActivityIndicator()
                                         self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
@@ -140,28 +140,28 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 }))
                                 publicActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                 self.presentViewController(publicActionSheet, animated: true, completion: nil)
-                            }
-                        } else {
-                            // Adding an exercise inside of create workout
-                            // Just save exercise to device
-                            self.displayActivityIndicator()
-                            if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
-                                self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
-                                    self.removeActivityIndicator()
-                                    if success {
-                                        // Add to NSUserDefaults to get this exercise in Create New Workout
-                                        guard let mainMuscleGroup = self.exerciseMuscleGroup.first else {return}
-                                        let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String, muscle_group: mainMuscleGroup)
-                                        self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
-                                        // Present success alert and pop VC
-                                        //self.presentSucessAlert()
-                                        self.navigationController?.popViewControllerAnimated(true)
-                                    } else {
-                                        self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
-                                    }
-                                })
                             } else {
-                                self.presentAlert("Error", message: "There was an error with your image, please use a different one and try again.")
+                                // Adding an exercise inside of create workout
+                                // Just save exercise to device
+                                self.displayActivityIndicator()
+                                if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                    self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                        self.removeActivityIndicator()
+                                        if success {
+                                            // Add to NSUserDefaults to get this exercise in Create New Workout
+                                            guard let mainMuscleGroup = self.exerciseMuscleGroup.first else {return}
+                                            let newEntry = Entry(exerciseTitle: self.exerciseTitle, exerciseIdentifer: uuid as String, muscle_group: mainMuscleGroup)
+                                            self.dataMgr.storeEntriesInDefaults([newEntry], key: "addedExercise")
+                                            // Present success alert and pop VC
+                                            //self.presentSucessAlert()
+                                            self.navigationController?.popViewControllerAnimated(true)
+                                        } else {
+                                            self.presentAlert("Error", message: "There was an error saving your exercise. Please try again")
+                                        }
+                                    })
+                                } else {
+                                    self.presentAlert("Error", message: "There was an error with your image, please use a different one and try again.")
+                                }
                             }
                         }
                     }
@@ -514,7 +514,6 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         dismissViewControllerAnimated(true, completion: nil)
         self.image = image
         tableView.reloadData()
-        
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -558,27 +557,12 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             }
             tableView.reloadData()
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-
-            
-            /*// Deselct all other rows
-            for i in 0...self.muscleGroups.count - 1{
-                let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 1))
-                cell?.accessoryType = UITableViewCellAccessoryType.None
-                
-            }
-            // Add checkmark to the selected row and store muscle group
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            exerciseMuscleGroup.append((cell?.textLabel?.text)!)
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)*/
         }
     }
     
     func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }))
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
     

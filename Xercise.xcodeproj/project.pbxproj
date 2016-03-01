@@ -311,7 +311,7 @@
 			children = (
 				251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */,
 				25C56BE71BEE777F008D7C6B /* Login/SignUp */,
-				25C56BE81BEE77A0008D7C6B /* New Xercise */,
+				25C56BE81BEE77A0008D7C6B /* Home */,
 				25C56BE91BEE77E5008D7C6B /* My Xercises */,
 				25D63E951C7FD50400C457C7 /* Macros */,
 				25C56BEA1BEE7803008D7C6B /* Resources */,
@@ -335,6 +335,18 @@
 				251F1C1F1BDFD1DC00B1F3B0 /* Info.plist */,
 			);
 			path = XerciseUITests;
+			sourceTree = "<group>";
+		};
+		257417611C8559CC002C8BD4 /* TableView Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */,
+				2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */,
+				2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */,
+				2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */,
+				2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */,
+			);
+			name = "TableView Cells";
 			sourceTree = "<group>";
 		};
 		258BFDF01BF01C6800A6488A /* TableViewCells */ = {
@@ -407,7 +419,7 @@
 			name = Login/SignUp;
 			sourceTree = "<group>";
 		};
-		25C56BE81BEE77A0008D7C6B /* New Xercise */ = {
+		25C56BE81BEE77A0008D7C6B /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */,
@@ -415,7 +427,7 @@
 				258BFDF21BF01C9000A6488A /* Display Workout */,
 				258BFDF31BF01C9700A6488A /* Info */,
 			);
-			name = "New Xercise";
+			name = Home;
 			sourceTree = "<group>";
 		};
 		25C56BE91BEE77E5008D7C6B /* My Xercises */ = {
@@ -453,11 +465,7 @@
 			isa = PBXGroup;
 			children = (
 				2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */,
-				2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */,
-				2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */,
-				2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */,
-				2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */,
-				2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */,
+				257417611C8559CC002C8BD4 /* TableView Cells */,
 			);
 			name = "New Exercise";
 			sourceTree = "<group>";

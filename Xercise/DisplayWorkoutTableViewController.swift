@@ -9,11 +9,10 @@
 import UIKit
 import Social
 
-class DisplayWorkoutTableViewController: UITableViewController {
+class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedDelegate {
     
     let dataMgr = DataManager()
     let constants = XerciseConstants()
-    var titles = [String]()
     var workoutIdentifier = ""
     var workoutToDisplay = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
     var exerciseToDisplay = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
@@ -29,9 +28,22 @@ class DisplayWorkoutTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        exercises.removeAll()
+        dataMgr.updateXercisesDelegate = self
+
+        fetchWorkout()
+        
         self.clearsSelectionOnViewWillAppear = true
         
+    }
+    
+    func updateXercises() {
+        fetchWorkout()
+        tableView.reloadData()
+    }
+    
+    func fetchWorkout() {
+        exercises.removeAll()
+
         if workoutIdentifier != "" {
             // There is an identifier for the workout - displaying a saved workout
             let workout = dataMgr.getWorkoutByID(workoutIdentifier)
@@ -60,7 +72,7 @@ class DisplayWorkoutTableViewController: UITableViewController {
                 }
             }
         }
-        titles = constants.newWorkoutTitles
+ 
     }
 
     override func didReceiveMemoryWarning() {
@@ -154,10 +166,14 @@ class DisplayWorkoutTableViewController: UITableViewController {
                                 if success {
                                     // Exercise availability is complete, now get ObjectID
                                     if let identifier = identifier {
+                                        self.workoutIdentifier = identifier
+                                        self.fetchWorkout()
+                                        self.tableView.reloadData()
+                                        /*
                                         if let workout = self.dataMgr.getWorkoutByID(identifier) {
                                             self.workoutToDisplay = workout
                                             self.tableView.reloadData()
-                                        }
+                                        }*/
                                     }
                                 } else {
                                     error = true
@@ -250,9 +266,7 @@ class DisplayWorkoutTableViewController: UITableViewController {
     
     func presentAlert(title : String, message : String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }))
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -343,7 +357,7 @@ class DisplayWorkoutTableViewController: UITableViewController {
                 selectedIndex = indexPath.row
                 checkForExercise(exercises[selectedIndex].identifier)
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            } else if workoutToDisplay.publicWorkout {
+            } else if workoutToDisplay.publicWorkout && exercises.count > 0 {
                 copyText(workoutToDisplay.identifier)
             }
         }
