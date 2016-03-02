@@ -15,6 +15,13 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     let dataMGR = DataManager()
     var goal : MacroGoal?
 
+    @IBAction func resetMacrosButton(sender: AnyObject) {
+        macroMeals.removeAll()
+        tableView.reloadData()
+        dataMGR.resetMyMacros()
+    }
+    
+    
     @IBAction func addNewMeal(sender: AnyObject) {
         showNewMealPopup(nil, row : nil, goal: false)
     }
@@ -58,21 +65,24 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
-        if string != ""{
-            do {
-                let regex = try NSRegularExpression(pattern: ".*[^0-9].*", options: NSRegularExpressionOptions.CaseInsensitive)
-                if regex.firstMatchInString(string, options: NSMatchingOptions.Anchored, range: NSMakeRange(0, string.characters.count)) != nil {
+        if textField == popup?.mealName{
+            return true
+        }else{
+            if string != ""{
+                do {
+                    let regex = try NSRegularExpression(pattern: ".*[^0-9].*", options: NSRegularExpressionOptions.CaseInsensitive)
+                    if regex.firstMatchInString(string, options: NSMatchingOptions.Anchored, range: NSMakeRange(0, string.characters.count)) != nil {
+                        return false
+                    }
+                    if textField.text?.characters.count < 3{
+                        return true
+                    }else{
+                        return false
+                    }
+                } catch {
+                    print("Error initializing regex")
                     return false
                 }
-                if textField.text?.characters.count < 3{
-                    return true
-                }else{
-                    return false
-                }
-            } catch {
-                print("Error initializing regex")
-                return false
             }
         }
         return true
@@ -161,7 +171,9 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 return cell
             }else{
                 let cell = UITableViewCell()
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
                 cell.textLabel?.text = "Click + To Add New Meals!"
+                cell.textLabel?.textAlignment = NSTextAlignment.Center
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 18)
                 return cell
             }
@@ -170,9 +182,9 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             {
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-                cell.backgroundColor = UIColor.greenColor()
+                cell.backgroundColor = UIColor(hexString: "#D3D3D3")
+                cell.mealName.font = UIFont(name: "Marker Felt", size: 20)
                 cell.mealName.text = "Total"
-                cell.mealName.font = UIFont.systemFontOfSize(15)
                 if macroMeals.count > 0 {
                     var carbs = 0
                     var fats = 0
@@ -196,9 +208,10 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             }else{
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-                cell.backgroundColor = UIColor(hexString: "#D3D3D3")
+                cell.backgroundColor = UIColor.greenColor()
+                
+                cell.mealName.font = UIFont(name: "Marker Felt", size: 20)
                 cell.mealName.text = "Goal"
-                cell.mealName.font = UIFont.systemFontOfSize(15)
                 if let goal = goal {
                     cell.mealCarbs.text = "\(goal.carbs)g"
                     cell.mealFats.text = "\(goal.fats)g"
@@ -252,6 +265,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             tableView.reloadData()
         }
         let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit") { (Action, indexPath) -> Void in
+            
             if indexPath.section == 2 && indexPath.row == 1{
                 self.showNewMealPopup(nil, row : nil, goal : true)
             }else {
@@ -259,6 +273,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
 
             }
         }
+        editAction.backgroundColor = UIColor(hexString: "#007aff")
         if indexPath.section == 1
         {
             return [deleteAction, editAction]
@@ -273,6 +288,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
             self.popup = popup
             popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
+            popup.mealName.delegate = self
             popup.mealCarbs.delegate = self
             popup.mealFats.delegate = self
             popup.mealProteins.delegate = self
@@ -315,6 +331,17 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     func cancelPopup(){
         guard let popup = popup else {return}
         popup.removeFromSuperview()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        guard let popup = popup else {return true}
+        
+        if popup.mealName.editing{
+            popup.mealName.resignFirstResponder()
+            popup.mealCarbs.becomeFirstResponder()
+        }
+        
+        return true
     }
     /*
     // Override to support rearranging the table view.

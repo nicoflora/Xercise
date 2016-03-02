@@ -16,6 +16,9 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
     @IBOutlet var animationImage: UIImageView!
     @IBOutlet var selectMuscleGroupBtn: UIButton!
     
+    @IBOutlet var getWorkoutButton: UIButton!
+    @IBOutlet var getExerciseButton: UIButton!
+    
     let dataMgr = DataManager()
     var imageCounter = 1
     var isAnimatingImage = false
@@ -32,6 +35,11 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         let constants = XerciseConstants()
         muscleGroups = constants.muscleGroupsArray
         
+        getWorkoutButton.layer.cornerRadius = 10
+        getExerciseButton.layer.cornerRadius = 10
+        selectMuscleGroupBtn.layer.cornerRadius = 10
+        
+        print(selectMuscleGroupBtn.backgroundColor?.toHexString())
     }
     
     override func viewWillAppear(animated: Bool) {

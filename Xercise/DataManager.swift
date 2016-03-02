@@ -132,6 +132,27 @@ class DataManager {
         return workouts
     }
     
+    func resetMyMacros(){
+        var macros = [Macro]()
+        let context : NSManagedObjectContext = appDel.managedObjectContext
+        let requestMacro = NSFetchRequest(entityName: "Macro_Meal")
+        requestMacro.returnsObjectsAsFaults = false
+        do {
+            let results = try context.executeFetchRequest(requestMacro)
+            if results.count > 0 {
+                guard let results = results as? [NSManagedObject] else {return}
+                for result in results {
+                    context.deleteObject(result)
+                }
+                try context.save()
+            }
+        }catch{
+            print("Error resetting macros")
+            return
+        }
+
+    }
+    
     func getMyMacros() -> [Macro]? {
         
         var macros = [Macro]()
@@ -150,7 +171,31 @@ class DataManager {
                     guard let proteins = result.valueForKey("proteins") as? Int else {continue}
                     guard let id = result.valueForKey("id") as? String else {continue}
                     
-                    macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration, id : id))
+                    
+                    /* DATE EXPIRATION DOES NOT WORK FOR TIMEZONES
+                    let date = NSDate()
+                    let calendar = NSCalendar.currentCalendar()
+                    let components = calendar.components(NSCalendarUnit.Hour, fromDate: date)
+                    let hour = components.hour
+                    
+                    if let endOfDay = expiration.endOfDay {
+                        let endTime = endOfDay.addHours(3)
+                        //var componentsofEndOfDay = calendar.components(NSCalendarUnit.Hour, fromDate: endOfDay)
+                        //componentsofEndOfDay.hour += 3
+                        print("end day at 3 AM: \(endTime)")
+                        
+                        if date.isGreaterThanDate(endTime) {
+                            print("macro meal is expired")
+                        } else {
+                            print("meal not expired")
+                            macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration, id : id))
+                        }
+                        
+                        
+                    }*/
+                    
+                      macros.append(Macro(name: name, carbs: carbs, fats: fats, proteins: proteins, expiration: expiration, id : id))
+                    
                 }
                 guard macros.count > 0 else {return nil}
                 return macros
@@ -186,6 +231,7 @@ class DataManager {
         newMacro.setValue(goal.carbs, forKey: "carbs")
         newMacro.setValue(goal.fats, forKey: "fats")
         newMacro.setValue(goal.proteins, forKey: "proteins")
+        
         do {
             try context.save()
             print("save successful")
@@ -974,4 +1020,72 @@ class DataManager {
         completion(workout: workout)
     }
     
+}
+
+extension NSDate {
+    var startOfDay: NSDate {
+        return NSCalendar.currentCalendar().startOfDayForDate(self)
+    }
+    
+    var endOfDay: NSDate? {
+        let components = NSDateComponents()
+        components.day = 1
+        components.second = -1
+        return NSCalendar.currentCalendar().dateByAddingComponents(components, toDate: startOfDay, options: NSCalendarOptions())
+    }
+    
+    func isGreaterThanDate(dateToCompare: NSDate) -> Bool {
+        //Declare Variables
+        var isGreater = false
+        
+        //Compare Values
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedDescending {
+            isGreater = true
+        }
+        
+        //Return Result
+        return isGreater
+    }
+    
+    func isLessThanDate(dateToCompare: NSDate) -> Bool {
+        //Declare Variables
+        var isLess = false
+        
+        //Compare Values
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedAscending {
+            isLess = true
+        }
+        
+        //Return Result
+        return isLess
+    }
+    
+    func equalToDate(dateToCompare: NSDate) -> Bool {
+        //Declare Variables
+        var isEqualTo = false
+        
+        //Compare Values
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedSame {
+            isEqualTo = true
+        }
+        
+        //Return Result
+        return isEqualTo
+    }
+    
+    func addDays(daysToAdd: Int) -> NSDate {
+        let secondsInDays: NSTimeInterval = Double(daysToAdd) * 60 * 60 * 24
+        let dateWithDaysAdded: NSDate = self.dateByAddingTimeInterval(secondsInDays)
+        
+        //Return Result
+        return dateWithDaysAdded
+    }
+    
+    func addHours(hoursToAdd: Int) -> NSDate {
+        let secondsInHours: NSTimeInterval = Double(hoursToAdd) * 60 * 60
+        let dateWithHoursAdded: NSDate = self.dateByAddingTimeInterval(secondsInHours)
+        
+        //Return Result
+        return dateWithHoursAdded
+    }
 }
