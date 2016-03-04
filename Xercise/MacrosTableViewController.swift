@@ -16,9 +16,16 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     var goal : MacroGoal?
 
     @IBAction func resetMacrosButton(sender: AnyObject) {
-        macroMeals.removeAll()
-        tableView.reloadData()
-        dataMGR.resetMyMacros()
+        if macroMeals.count > 0 {
+            let alert = UIAlertController(title: "Reset Meals?", message: "Are you sure you want to remove all of your entered meals? This cannot be undone.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Reset", style: UIAlertActionStyle.Destructive, handler: { (action) -> Void in
+                self.macroMeals.removeAll()
+                self.tableView.reloadData()
+                self.dataMGR.resetMyMacros()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     

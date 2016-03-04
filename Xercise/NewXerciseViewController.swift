@@ -170,6 +170,9 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
                     self.updateImage(self)
                 }
             })
+        } else {
+            self.presentAlert("No Muscle Group", alertMessage: "There was no muscle group selected. Please choose one and try again.")
+            self.updateImage(self)
         }
 
     }

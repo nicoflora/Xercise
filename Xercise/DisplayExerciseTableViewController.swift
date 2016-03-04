@@ -176,6 +176,7 @@ class DisplayExerciseTableViewController: UITableViewController {
     }
     
     func changeExercise() {
+        hideRateFeatures = false
         removeActivityIndicator()
         tableView.reloadData()
     }
@@ -245,12 +246,13 @@ class DisplayExerciseTableViewController: UITableViewController {
         // Call to Parse Cloud Code to rate an exercise with a thumbs down
         let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Down_Rate"]
         PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
-            if error == nil {
+            self.rateCompleted()
+            /*if error == nil {
                 self.rateCompleted()
             } else {
                 self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
-            }
+            }*/
         }
     }
     
@@ -258,12 +260,13 @@ class DisplayExerciseTableViewController: UITableViewController {
         // Call to Parse Cloud Code to rate an exercise with a thumbs up
         let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Up_Rate"]
         PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
-            if error == nil {
+            self.rateCompleted()
+            /*if error == nil {
                 self.rateCompleted()
             } else {
                 self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
-            }
+            }*/
         }
     }
     
@@ -362,6 +365,7 @@ class DisplayExerciseTableViewController: UITableViewController {
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.textLabel?.numberOfLines = 2
             return cell
         case 1:
             let cell = UITableViewCell()
@@ -378,6 +382,7 @@ class DisplayExerciseTableViewController: UITableViewController {
             cell.textLabel?.text = "Muscle Group: \(muscleGroupsString)"
             cell.textLabel?.textAlignment = NSTextAlignment.Center
             cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
+            cell.textLabel?.numberOfLines = 2
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         case 2:

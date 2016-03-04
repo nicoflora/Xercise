@@ -119,7 +119,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                     }
                 }
                 let facebookShare = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                facebookShare.setInitialText("Checkout this awesome \(self.workoutToDisplay.muscleGroup) workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                facebookShare.setInitialText("Checkout this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
                 facebookShare.addImage(UIImage(named: "AppIcon"))
                 self.presentViewController(facebookShare, animated: true, completion: nil)
             } else {
@@ -138,7 +138,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                     }
                 }
                 let twitterShare = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                twitterShare.setInitialText("Checkout this awesome \(self.workoutToDisplay.muscleGroup) workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                twitterShare.setInitialText("Checkout this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
                 twitterShare.addImage(UIImage(named: "AppIcon"))
                 self.presentViewController(twitterShare, animated: true, completion: nil)
             } else {
@@ -312,6 +312,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                 cell.textLabel?.text = workoutToDisplay.name
                 cell.textLabel?.textAlignment = NSTextAlignment.Center
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
+                cell.textLabel?.numberOfLines = 2
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
             case 1:
                 var muscleGroupsString = ""
@@ -327,6 +328,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                 cell.textLabel?.text = "Muscle Groups: \(muscleGroupsString)"
                 cell.textLabel?.textAlignment = NSTextAlignment.Center
                 cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
+                cell.textLabel?.numberOfLines = 2
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
             case 2:
                 if exercises.count == 0 {
