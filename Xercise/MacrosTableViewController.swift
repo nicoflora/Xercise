@@ -36,6 +36,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     func saveMealData(){
         guard let popup = popup else {return}
         guard let name = popup.mealName.text else {return}
+        guard name.characters.count > 0 else {return}
         guard let carbs = popup.mealCarbs.text else {return}
         guard let fats = popup.mealFats.text else {return}
         guard let proteins = popup.mealProteins.text else {return}
