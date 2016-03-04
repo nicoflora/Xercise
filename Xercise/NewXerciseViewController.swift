@@ -8,10 +8,9 @@
 
 import UIKit
 import Parse
-import ParseUI
 //import ParseFacebookUtilsV4
 
-class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+class NewXerciseViewController: UIViewController {
     
     @IBOutlet var animationImage: UIImageView!
     @IBOutlet var selectMuscleGroupBtn: UIButton!
@@ -196,20 +195,6 @@ class NewXerciseViewController: UIViewController, PFLogInViewControllerDelegate,
         animationImage.image = UIImage(named: "animationFrame\(imageCounter)")
     }
     
-    
-    func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
-        let successAlert = UIAlertController(title: "Account Created", message: "Your account has been created!", preferredStyle: UIAlertControllerStyle.Alert)
-        successAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
-
-        }))
-        signUpController.presentViewController(successAlert, animated: true, completion: nil)
-    }
     
     @IBAction func logout(sender: AnyObject) {
         let confirmLogout = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.Alert)

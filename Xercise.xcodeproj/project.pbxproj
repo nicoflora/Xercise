@@ -78,12 +78,6 @@
 		25C2252F1BE47ED500CA75C9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2252E1BE47ED500CA75C9 /* SystemConfiguration.framework */; };
 		25C225311BE47EDD00CA75C9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C225301BE47EDD00CA75C9 /* libz.tbd */; };
 		25C225331BE47EED00CA75C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C225321BE47EED00CA75C9 /* libsqlite3.tbd */; };
-		25C225391BE4806A00CA75C9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225381BE4806A00CA75C9 /* LoginViewController.swift */; };
-		25C2253A1BE4806A00CA75C9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225381BE4806A00CA75C9 /* LoginViewController.swift */; };
-		25C2253B1BE4806A00CA75C9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225381BE4806A00CA75C9 /* LoginViewController.swift */; };
-		25C2253D1BE480F000CA75C9 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2253C1BE480F000CA75C9 /* ParseUI.framework */; };
-		25C2253E1BE480F000CA75C9 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2253C1BE480F000CA75C9 /* ParseUI.framework */; };
-		25C2253F1BE480F000CA75C9 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2253C1BE480F000CA75C9 /* ParseUI.framework */; };
 		25C225411BE48E3F00CA75C9 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C225401BE48E3F00CA75C9 /* iTunesArtwork.png */; };
 		25C225471BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */; };
 		25C225481BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */; };
@@ -132,9 +126,6 @@
 		25E1075E1C7F8A490032BDCA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E1075B1C7F8A490032BDCA /* InitialViewController.swift */; };
 		25E17B121C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
 		25E17B131C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
-		25EBC6001BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
-		25EBC6011BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
-		25EBC6021BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */; };
 		25EBC6081BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
 		25EBC6091BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
 		2D29E0C21C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
@@ -214,8 +205,6 @@
 		25C2252E1BE47ED500CA75C9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		25C225301BE47EDD00CA75C9 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		25C225321BE47EED00CA75C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		25C225381BE4806A00CA75C9 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		25C2253C1BE480F000CA75C9 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseUI.framework; path = "parse-library-1-2/ParseUI.framework"; sourceTree = "<group>"; };
 		25C225401BE48E3F00CA75C9 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iTunesArtwork.png; path = Resources/iTunesArtwork.png; sourceTree = "<group>"; };
 		25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedInfoViewController.swift; sourceTree = "<group>"; };
 		25C56BDF1BEE7664008D7C6B /* Exercise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
@@ -231,7 +220,6 @@
 		25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosTableViewCell.swift; sourceTree = "<group>"; };
 		25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosTableViewController.swift; sourceTree = "<group>"; };
 		25E1075B1C7F8A490032BDCA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
-		25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyXercisesTableViewController.swift; sourceTree = "<group>"; };
 		2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MacroHeader.xib; sourceTree = "<group>"; };
 		2D29E0C51C860768003CA7D3 /* MacroGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacroGoal.swift; sourceTree = "<group>"; };
@@ -258,7 +246,6 @@
 				25ACC24B1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */,
 				25C225191BE47E6700CA75C9 /* Parse.framework in Frameworks */,
 				25C2251D1BE47E7400CA75C9 /* Bolts.framework in Frameworks */,
-				25C2253D1BE480F000CA75C9 /* ParseUI.framework in Frameworks */,
 				25ACC22A1C4EAA97001040E8 /* ParseFacebookUtilsV4.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,7 +254,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C2253E1BE480F000CA75C9 /* ParseUI.framework in Frameworks */,
 				25ACC24C1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */,
 				25ACC23B1C4EAAF0001040E8 /* FBSDKLoginKit.framework in Frameworks */,
 				25C2251A1BE47E6700CA75C9 /* Parse.framework in Frameworks */,
@@ -280,7 +266,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C2253F1BE480F000CA75C9 /* ParseUI.framework in Frameworks */,
 				25ACC24D1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */,
 				25ACC23C1C4EAAF0001040E8 /* FBSDKLoginKit.framework in Frameworks */,
 				25C2251B1BE47E6700CA75C9 /* Parse.framework in Frameworks */,
@@ -400,7 +385,6 @@
 				25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */,
 				25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */,
 				25C225321BE47EED00CA75C9 /* libsqlite3.tbd */,
-				25C2253C1BE480F000CA75C9 /* ParseUI.framework */,
 				25C225301BE47EDD00CA75C9 /* libz.tbd */,
 				25C2252E1BE47ED500CA75C9 /* SystemConfiguration.framework */,
 				25C2252A1BE47EC800CA75C9 /* Security.framework */,
@@ -418,8 +402,6 @@
 		25C56BE71BEE777F008D7C6B /* Login/SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				25EBC5FF1BE5C75F00F63DF7 /* SignUpViewController.swift */,
-				25C225381BE4806A00CA75C9 /* LoginViewController.swift */,
 				251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */,
 				251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */,
 				25E1075B1C7F8A490032BDCA /* InitialViewController.swift */,
@@ -650,7 +632,6 @@
 				2DD477141C823C3E00943792 /* UIViewMacro.swift in Sources */,
 				25E1075C1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
 				25EBC6081BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */,
-				25C225391BE4806A00CA75C9 /* LoginViewController.swift in Sources */,
 				258BFDED1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
 				25C56BE01BEE7664008D7C6B /* Exercise.swift in Sources */,
 				25D62CFF1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
@@ -665,7 +646,6 @@
 				25D63E9B1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */,
 				2566DB801BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
 				2566DB781BE6776C0065507C /* InfoTableViewController.swift in Sources */,
-				25EBC6001BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */,
 				2566DB941BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
 				2D29E0C61C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				251F1BFD1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift in Sources */,
@@ -700,7 +680,6 @@
 				25B55C651C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
 				2566DB811BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
 				25D62D081BE842D700B8F276 /* Entry.swift in Sources */,
-				25EBC6011BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */,
 				2566DB951BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
 				25C56BFB1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
 				25D62D001BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
@@ -713,7 +692,6 @@
 				2D29E0C71C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				2566DB7D1BE677D50065507C /* XerciseConstants.swift in Sources */,
 				25D62D041BE83E0D00B8F276 /* DataManager.swift in Sources */,
-				25C2253A1BE4806A00CA75C9 /* LoginViewController.swift in Sources */,
 				25D63E991C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */,
 				2566DB851BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
 				25C225481BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
@@ -743,7 +721,6 @@
 				25B55C661C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
 				25D62CFC1BE82C2800B8F276 /* AppDelegate.swift in Sources */,
 				25D62D091BE842D700B8F276 /* Entry.swift in Sources */,
-				25EBC6021BE5C75F00F63DF7 /* SignUpViewController.swift in Sources */,
 				2566DB961BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
 				25C56BFC1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
 				25D62D011BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
@@ -756,7 +733,6 @@
 				2D29E0C81C860768003CA7D3 /* MacroGoal.swift in Sources */,
 				2566DB7E1BE677D50065507C /* XerciseConstants.swift in Sources */,
 				25D62D051BE83E0D00B8F276 /* DataManager.swift in Sources */,
-				25C2253B1BE4806A00CA75C9 /* LoginViewController.swift in Sources */,
 				25D63E9A1C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */,
 				2566DB861BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
 				25C225491BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
