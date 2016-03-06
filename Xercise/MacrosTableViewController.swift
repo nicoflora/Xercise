@@ -35,26 +35,45 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     
     func saveMealData(){
         guard let popup = popup else {return}
-        guard let name = popup.mealName.text else {return}
-        guard name.characters.count > 0 else {return}
-        guard let carbs = popup.mealCarbs.text else {return}
-        guard let fats = popup.mealFats.text else {return}
-        guard let proteins = popup.mealProteins.text else {return}
+        var mealName = ""
+        if let row = popup.updateRow{
+            // Editing a current meal or goal
+            if row != -1 {
+                guard let name = popup.mealName.text else {textFieldHasError(popup.mealName);return}
+                guard name.characters.count > 0 else {textFieldHasError(popup.mealName);return}
+                mealName = name
+                textFieldDoesNotHaveError(popup.mealName)
+            }
+        } else {
+            guard let name = popup.mealName.text else {textFieldHasError(popup.mealName);return}
+            guard name.characters.count > 0 else {textFieldHasError(popup.mealName);return}
+            mealName = name
+            textFieldDoesNotHaveError(popup.mealName)
+        }
+        guard let carbs = popup.mealCarbs.text else {textFieldHasError(popup.mealCarbs);return}
+        guard let fats = popup.mealFats.text else {textFieldHasError(popup.mealFats);return}
+        guard let proteins = popup.mealProteins.text else {textFieldHasError(popup.mealProteins);return}
         
-        guard let carbsNum = Int (carbs) else {return}
-        guard let fatsNum = Int (fats) else {return}
-        guard let proteinsNum = Int (proteins) else {return}
+        guard let carbsNum = Int (carbs) else {textFieldHasError(popup.mealCarbs);return}
+        textFieldDoesNotHaveError(popup.mealCarbs)
+        guard let fatsNum = Int (fats) else {textFieldHasError(popup.mealFats);return}
+        textFieldDoesNotHaveError(popup.mealFats)
+        guard let proteinsNum = Int (proteins) else {textFieldHasError(popup.mealProteins);return}
+        textFieldDoesNotHaveError(popup.mealProteins)
         
         let uuid = CFUUIDCreateString(nil, CFUUIDCreate(nil)) as String
         
-        let macro = Macro(name: name, carbs: carbsNum, fats: fatsNum, proteins: proteinsNum, expiration: NSDate(), id: uuid)
+        let macro = Macro(name: mealName, carbs: carbsNum, fats: fatsNum, proteins: proteinsNum, expiration: NSDate(), id: uuid)
         
         if let row = popup.updateRow{
+            // Editing a current meal or goal
             if row == -1 {
+                // Macro Goal
                 dataMGR.saveMacroGoalToDevice(MacroGoal(carbs: carbsNum, fats: fatsNum, proteins: proteinsNum))
                 goal = MacroGoal(carbs: carbsNum, fats: fatsNum, proteins: proteinsNum)
                 tableView.reloadData()
             }else{
+                //  Meal
                 macroMeals[row] = macro
                 dataMGR.updateMacrosToDevice(macro)
             }
@@ -67,8 +86,17 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.reloadData()
         popup.removeFromSuperview()
         
-        
-        
+    }
+    
+    func textFieldHasError(textField : UITextField) {
+        textField.shake()
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = UIColor.redColor().CGColor
+    }
+    
+    func textFieldDoesNotHaveError(textField : UITextField) {
+        textField.layer.borderWidth = 0.0
+        textField.layer.borderColor = nil
     }
     
     

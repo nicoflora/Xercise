@@ -20,7 +20,7 @@ class DataManager {
     
     // Arrays to cache Parse query results
     var exercisesForMuscleGroup = [String : [PFObject]]()
-    var workoutsMatchingMuscleGroup = [String : [PFObject]]()
+    var exercisesInWorkoutsMatchingMuscleGroup = [String : [PFObject]]()
     
     
     // MARK: - Utility Functions
@@ -849,7 +849,7 @@ class DataManager {
         }
     }
     
-    // MARK: - Cloud Code Functions
+    // MARK: - Generate exercise or workout functions
     
     func generateExercise(muscleGroup : String, previousIdentifiers : [String]?, completion : (exercise : Exercise?, resetPreviousIdentifiers : Bool) -> Void) {
         // Check if we have cached exercises for this muscle group
@@ -871,8 +871,6 @@ class DataManager {
                 guard let objects = objects else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
                 guard objects.count > 0 else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
                 
-                // ** HANDLE IF THERE IS ONLY ONE EXERCISE RETURNED **
-                
                 // Remove previously cached objects and cache this new set of objects
                 self.exercisesForMuscleGroup.removeAll()
                 self.exercisesForMuscleGroup[muscleGroup] = objects
@@ -889,7 +887,7 @@ class DataManager {
         }
     }
     
-    func isNewExercise(previousIdentifiers : [String], currentIdentifier : String) -> Bool {
+    func isNewIdentifier(previousIdentifiers : [String], currentIdentifier : String) -> Bool {
         if previousIdentifiers.contains(currentIdentifier) {
             return false
         } else {
@@ -910,9 +908,8 @@ class DataManager {
             if objects.count > previousIdentifiers.count {
                 var newExercise = false
                 while !newExercise {
-                    let id = object.valueForKey("objectId") as? String
-                    guard let identifier = id else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
-                    if !self.isNewExercise(previousIdentifiers, currentIdentifier: identifier) {
+                    guard let identifier = object.valueForKey("objectId") as? String else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
+                    if !self.isNewIdentifier(previousIdentifiers, currentIdentifier: identifier) {
                         // Get a new random number and object
                         randomNumber = Int(arc4random_uniform(UInt32(objects.count)))
                         object = objects[randomNumber]
@@ -959,65 +956,99 @@ class DataManager {
         })
     }
     
-    func generateWorkout(muscleGroup : String, completion : (workout : Workout?) -> Void) {
+    func generateWorkout(muscleGroup : String, previousIdentifiers : [String]?, completion : (workout : Workout?, resetPreviousIdentifiers : Bool) -> Void) {
         // Check if cached
-        
-        // Not cached, need to fetch from Parse
-        let query = PFQuery(className: "Workout")
-        query.whereKey("muscle_groups", equalTo: muscleGroup)
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            // Check that error is nil and object is not nil
-            guard error == nil else {completion(workout: nil);return}
-            guard let objects = objects else {completion(workout: nil);return}
-            guard objects.count > 0 else {completion(workout: nil);return}
-            
-            if objects.count > 1 {
-                // Remove previously cached objects and cache this new set of objects
-                self.exercisesForMuscleGroup.removeAll()
-                self.exercisesForMuscleGroup[muscleGroup] = objects
+        let objects : [PFObject]? = exercisesInWorkoutsMatchingMuscleGroup[muscleGroup]
+        if let objects = objects {
+            // Randomly get an individual workout from the cached list of workouts
+            self.getOneWorkoutFromResults(objects, previousIdentifiers: previousIdentifiers, oneObject: false, completion: { (workout, resetPreviousIdentifiers) -> Void in
+                if let workout = workout {
+                    completion(workout: workout, resetPreviousIdentifiers : resetPreviousIdentifiers)
+                } else {
+                    completion(workout: nil, resetPreviousIdentifiers : false)
+                }
+            })
+        } else {
+            // Not cached, need to fetch from Parse
+            let query = PFQuery(className: "Workout")
+            query.whereKey("muscle_groups", equalTo: muscleGroup)
+            query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+                // Check that error is nil and object is not nil
+                guard error == nil else {completion(workout: nil, resetPreviousIdentifiers : false);return}
+                guard let objects = objects else {completion(workout: nil, resetPreviousIdentifiers : false);return}
+                guard objects.count > 0 else {completion(workout: nil, resetPreviousIdentifiers : false);return}
                 
-                // Randomly get an individual workout from the returned list of workouts
-                self.getOneWorkoutFromResults(objects, oneObject: false, completion: { (workout) -> Void in
-                    if let workout = workout {
-                        completion(workout: workout)
-                    } else {
-                        completion(workout: nil)
-                    }
-                })
-            } else {
-                // Retrieve object fields and return this result
-                self.getOneWorkoutFromResults(objects, oneObject: true, completion: { (workout) -> Void in
-                    if let workout = workout {
-                        completion(workout: workout)
-                    } else {
-                        completion(workout: nil)
-                    }
-                })
+                if objects.count > 1 {
+                    // Remove previously cached objects and cache this new set of objects
+                    self.exercisesInWorkoutsMatchingMuscleGroup.removeAll()
+                    self.exercisesInWorkoutsMatchingMuscleGroup[muscleGroup] = objects
+                    
+                    // Randomly get an individual workout from the returned list of workouts
+                    self.getOneWorkoutFromResults(objects, previousIdentifiers: previousIdentifiers, oneObject: false, completion: { (workout, resetPreviousIdentifiers) -> Void in
+                        if let workout = workout {
+                            completion(workout: workout, resetPreviousIdentifiers: resetPreviousIdentifiers)
+                        } else {
+                            completion(workout: nil, resetPreviousIdentifiers : false)
+                        }
+                    })
+                } else {
+                    // Retrieve object fields and return this result
+                    self.getOneWorkoutFromResults(objects, previousIdentifiers: previousIdentifiers, oneObject: true, completion: { (workout, resetPreviousIdentifiers) -> Void in
+                        if let workout = workout {
+                            completion(workout: workout, resetPreviousIdentifiers : resetPreviousIdentifiers)
+                        } else {
+                            completion(workout: nil, resetPreviousIdentifiers : false)
+                        }
+                    })
+                }
             }
         }
     }
     
-    func getOneWorkoutFromResults(objects : [PFObject], oneObject : Bool, completion : (workout : Workout?) -> Void) {
+    func getOneWorkoutFromResults(objects : [PFObject], previousIdentifiers : [String]?, oneObject : Bool, completion : (workout : Workout?, resetPreviousIdentifiers : Bool) -> Void) {
         var object : PFObject
+        // Bool flag for resetting previous ids
+        var resetPreviousIds = false
+        
         if !oneObject {
             // create a random number
-            let randomNumber = Int(arc4random_uniform(UInt32(objects.count)))
+            var randomNumber = Int(arc4random_uniform(UInt32(objects.count)))
             object = objects[randomNumber]
+            
+            if let previousIdentifiers = previousIdentifiers {
+                // Passed previous identifiers, check that this ID is not in the passed array if there are sufficiently many workouts
+                if objects.count > previousIdentifiers.count {
+                    var newWorkout = false
+                    while !newWorkout {
+                        guard let identifier = object.valueForKey("objectId") as? String else {completion(workout: nil, resetPreviousIdentifiers : false);return}
+                        if !self.isNewIdentifier(previousIdentifiers, currentIdentifier: identifier) {
+                            // Get a new random number and object
+                            randomNumber = Int(arc4random_uniform(UInt32(objects.count)))
+                            object = objects[randomNumber]
+                        } else {
+                            newWorkout = true
+                        }
+                    }
+                } else {
+                    resetPreviousIds = true
+                }
+            }
         } else {
             // Only one object, retrieve workout fields and check that they are not nil
-            guard let firstWorkout = objects.first else {completion(workout: nil);return}
+            guard let firstWorkout = objects.first else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
             object = firstWorkout
         }
+        
         // Retrieve workout fields and check that they are not nil
-        guard let name = object.valueForKey("name") as? String else {completion(workout: nil);return}
-        guard let muscleGroup = object.valueForKey("muscle_groups") as? [String] else {completion(workout: nil);return}
-        guard let identifier = object.valueForKey("objectId") as? String else {completion(workout: nil);return}
-        guard let exercise_ids = object.valueForKey("exercise_ids") as? [String] else {completion(workout: nil);return}
-        guard let exercise_names = object.valueForKey("exercise_names") as? [String] else {completion(workout: nil);return}
+        guard let name = object.valueForKey("name") as? String else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
+        guard let muscleGroup = object.valueForKey("muscle_groups") as? [String] else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
+        guard let identifier = object.valueForKey("objectId") as? String else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
+        guard let exercise_ids = object.valueForKey("exercise_ids") as? [String] else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
+        guard let exercise_names = object.valueForKey("exercise_names") as? [String] else {completion(workout: nil, resetPreviousIdentifiers : resetPreviousIds);return}
         
         // Return this workout
         let workout = Workout(name: name, muscleGroup: muscleGroup, identifier: identifier, exerciseIds: exercise_ids, exerciseNames: exercise_names, publicWorkout: true, workoutCode: identifier)
-        completion(workout: workout)
+        completion(workout: workout, resetPreviousIdentifiers : resetPreviousIds)
     }
     
 }

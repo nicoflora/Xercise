@@ -13,7 +13,7 @@ import Social
 class DisplayExerciseTableViewController: UITableViewController {
 
     var exerciseIdentifier = ""
-    //var exerciseTitle = ""
+    var muscleGroup = ""
     var hideRateFeatures = false
     let dataMgr = DataManager()
     let constants = XerciseConstants()
@@ -110,8 +110,8 @@ class DisplayExerciseTableViewController: UITableViewController {
     
     func generateNewExercise(previousIdentifiers : [String]) {
         displayActivityIndicator()
-        guard let firstMuscleGroup = exerciseToDisplay.muscleGroup.first else {return}
-        dataMgr.generateExercise(firstMuscleGroup, previousIdentifiers: previousIdentifiers, completion: { (exercise, resetPreviousIdentifiers) -> Void in
+        guard muscleGroup != "" else {return}
+        dataMgr.generateExercise(muscleGroup, previousIdentifiers: previousIdentifiers, completion: { (exercise, resetPreviousIdentifiers) -> Void in
             if let exercise = exercise {
                 self.exerciseToDisplay = exercise
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in

@@ -23,7 +23,7 @@ class NewXerciseViewController: UIViewController {
     var isAnimatingImage = false
     var timer = NSTimer()
     var muscleGroups = [MuscleGroup]()
-    //var subMuscleGroups = [String]()
+    var previousWorkoutIdentifiers = [String]()
     var selectedMuscleGroup = ""
     var exercise = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
     var workout = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
@@ -156,10 +156,11 @@ class NewXerciseViewController: UIViewController {
         if selectedMuscleGroup != "" {
             // Begin ignoring interaction events
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-            dataMgr.generateWorkout(selectedMuscleGroup, completion: { (workout) -> Void in
+            dataMgr.generateWorkout(selectedMuscleGroup, previousIdentifiers: self.previousWorkoutIdentifiers, completion: { (workout, resetPreviousIdentifiers) -> Void in
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 if let workout = workout {
                     self.workout = workout
+                    self.previousWorkoutIdentifiers.append(workout.identifier)
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.performSegueWithIdentifier("getWorkout", sender: self)
                     })
@@ -167,6 +168,11 @@ class NewXerciseViewController: UIViewController {
                     // Present alert
                     self.presentAlert("Error", alertMessage: "There was an error loading your workout. Please try again.")
                     self.updateImage(self)
+                }
+                
+                // Check if the previousWorkoutIdentifiers need to be reset
+                if resetPreviousIdentifiers {
+                    self.previousWorkoutIdentifiers.removeAll()
                 }
             })
         } else {
@@ -233,6 +239,7 @@ class NewXerciseViewController: UIViewController {
             let destinationVC = segue.destinationViewController as! DisplayExerciseTableViewController
             destinationVC.displayingGeneratedExercise = true
             destinationVC.exerciseToDisplay = exercise
+            destinationVC.muscleGroup = selectedMuscleGroup
         } else if segue.identifier == "getWorkout" {
             let destinationVC = segue.destinationViewController as! DisplayWorkoutTableViewController
             destinationVC.workoutToDisplay = workout
