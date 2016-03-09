@@ -28,7 +28,7 @@ class XerciseConstants {
 
     let newWorkoutTitlesSubGroup = ["Name","Muscle Group","Muscle Sub-Group", "Exercises"]
     
-    let displayExerciseTitles = ["Name","Muscle Group","Image","Description", "Share"]
+    let displayExerciseTitles = ["Name","Muscle Group","Image","Reps X Sets","Description", "Rate"]
     
     let exerciseDescriptionText = "An exercise description should contain instructions for performing this exercise, including all equipment and movements. Also mention the skill level required for this exercise."
     

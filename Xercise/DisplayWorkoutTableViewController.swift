@@ -8,8 +8,9 @@
 
 import UIKit
 import Social
+import MessageUI
 
-class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedDelegate {
+class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedDelegate, MFMessageComposeViewControllerDelegate {
     
     let dataMgr = DataManager()
     let constants = XerciseConstants()
@@ -81,7 +82,15 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
     
 
     @IBAction func shareWithGroupButtonPressed(sender: AnyObject) {
-        
+        var commaSeparatedExercises = ""
+        for exercise in self.exercises {
+            if commaSeparatedExercises == "" {
+                commaSeparatedExercises += "\(exercise.title)"
+            } else {
+                commaSeparatedExercises += ", \(exercise.title)"
+            }
+        }
+
         // Share button pressed
         let shareActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         if displayingGeneratedWorkout {
@@ -110,16 +119,8 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
         shareActionSheet.addAction(UIAlertAction(title: "Share to Facebook", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Share to Facebook
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
-                var commaSeparatedExercises = ""
-                for exercise in self.exercises {
-                    if commaSeparatedExercises == "" {
-                        commaSeparatedExercises += "\(exercise.title)"
-                    } else {
-                        commaSeparatedExercises += ", \(exercise.title)"
-                    }
-                }
                 let facebookShare = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                facebookShare.setInitialText("Checkout this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                facebookShare.setInitialText("Check out this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
                 facebookShare.addImage(UIImage(named: "AppIcon"))
                 self.presentViewController(facebookShare, animated: true, completion: nil)
             } else {
@@ -129,22 +130,23 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
         shareActionSheet.addAction(UIAlertAction(title: "Share to Twitter", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             // Share to Twitter
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
-                var commaSeparatedExercises = ""
-                for exercise in self.exercises {
-                    if commaSeparatedExercises == "" {
-                        commaSeparatedExercises += "\(exercise.title)"
-                    } else {
-                        commaSeparatedExercises += ", \(exercise.title)"
-                    }
-                }
                 let twitterShare = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                twitterShare.setInitialText("Checkout this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
+                twitterShare.setInitialText("Check out this awesome workout I found on the Xercise Fitness iOS App! \n\nExercises: \(commaSeparatedExercises)")
                 twitterShare.addImage(UIImage(named: "AppIcon"))
                 self.presentViewController(twitterShare, animated: true, completion: nil)
             } else {
                 self.presentAlert("No Twitter Accounts", message: "Please login to a Twitter account in Settings to enable sharing to Twitter.")
             }
         }))
+        if MFMessageComposeViewController.canSendText() {
+            shareActionSheet.addAction(UIAlertAction(title: "Share with Message", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                let messageVC = MFMessageComposeViewController()
+                messageVC.messageComposeDelegate = self
+                messageVC.navigationBar.tintColor = UIColor.whiteColor()
+                messageVC.body = "Check out \(self.workoutToDisplay.name) on the Xercise Fitness iOS App!\n\nExercises in this workout: \(commaSeparatedExercises)"
+                self.presentViewController(messageVC, animated: true, completion: nil)
+            }))
+        }
         if !self.displayingGeneratedWorkout && !self.workoutToDisplay.publicWorkout {
             shareActionSheet.addAction(UIAlertAction(title: "Share with Group", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 
@@ -194,6 +196,10 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
         }
         shareActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         self.presentViewController(shareActionSheet, animated: true, completion: nil)
+    }
+    
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     

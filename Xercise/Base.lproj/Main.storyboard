@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LbE-Xb-DsU">
-                            <rect key="frame" x="0.0" y="161" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="97" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
@@ -28,7 +28,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroHeader" rowHeight="25" id="bl9-N2-5Re">
-                                <rect key="frame" x="0.0" y="92" width="375" height="25"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="25"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bl9-N2-5Re" id="GTp-Ap-LPE">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="24"/>
@@ -89,7 +89,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroMeal" id="Nlx-U1-gpz" customClass="MacrosTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="117" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nlx-U1-gpz" id="Yth-Ft-ybQ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -234,9 +234,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZQM-Fl-vB9">
-                            <rect key="frame" x="0.0" y="136" width="375" height="54"/>
+                            <rect key="frame" x="0.0" y="72" width="375" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Save Workout">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -247,7 +247,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="workoutTitle" id="E7E-Mt-RQN" customClass="ExerciseTitleTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E7E-Mt-RQN" id="5SF-hP-zBy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -256,7 +256,7 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rK6-Jj-SBK">
                                             <rect key="frame" x="8" y="7" width="359" height="30"/>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="18"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -321,9 +321,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="5my-GB-bjs">
-                            <rect key="frame" x="0.0" y="485" width="375" height="54"/>
+                            <rect key="frame" x="0.0" y="421" width="375" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Save Exercise">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -334,7 +334,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseTitle" id="rgG-5D-lnt" customClass="ExerciseTitleTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rgG-5D-lnt" id="cG6-DO-igM">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -343,7 +343,7 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LFz-Sv-SAv">
                                             <rect key="frame" x="8" y="7" width="359" height="30"/>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="18"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -357,7 +357,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseImage" rowHeight="54" id="HGR-e8-ciK" customClass="ExerciseImageTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="375" height="54"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HGR-e8-ciK" id="qae-vi-zlr">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
@@ -389,7 +389,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseDescription" rowHeight="125" id="LIF-ty-aWW" customClass="ExerciseDescriptionTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="190" width="375" height="125"/>
+                                <rect key="frame" x="0.0" y="126" width="375" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LIF-ty-aWW" id="7ye-sF-RiN">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
@@ -415,7 +415,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseReps" rowHeight="85" id="56R-cq-pFh" customClass="ExerciseRepsTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="315" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="251" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56R-cq-pFh" id="B6J-zY-hgg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -533,7 +533,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseSets" rowHeight="85" id="53q-HK-TKz" customClass="ExerciseSetsTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="400" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="336" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="53q-HK-TKz" id="lHJ-tX-40f">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -693,14 +693,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="animationFrame1" translatesAutoresizingMaskIntoConstraints="NO" id="FJc-CE-5ZJ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="animationFrame1" translatesAutoresizingMaskIntoConstraints="NO" id="FJc-CE-5ZJ">
                                 <rect key="frame" x="87" y="88" width="200" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="Z35-LY-9cT"/>
                                     <constraint firstAttribute="width" constant="200" id="wxM-Eg-pej"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pux-Uh-uyF">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pux-Uh-uyF">
                                 <rect key="frame" x="36" y="414" width="115" height="30"/>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -715,7 +715,7 @@
                                     <action selector="getExerciseButtonPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="7bV-Jq-Dt9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kb-4d-YAw">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kb-4d-YAw">
                                 <rect key="frame" x="224" y="414" width="115" height="30"/>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -730,7 +730,7 @@
                                     <action selector="getWorkoutButtonPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="fZj-KQ-j8a"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCp-Oq-XNz">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCp-Oq-XNz">
                                 <rect key="frame" x="36" y="339" width="303" height="37"/>
                                 <color key="backgroundColor" red="0.17254901960784313" green="0.29411764705882354" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -764,7 +764,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Xercise" id="vlh-e1-Bzo">
+                    <navigationItem key="navigationItem" title="Xercise Fitness" id="vlh-e1-Bzo">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="7AM-D5-8A8">
                             <connections>
                                 <action selector="logout:" destination="WOs-uM-HAx" id="aNt-j4-W1O"/>
@@ -799,9 +799,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WO9-e8-5hO">
+                            <rect key="frame" x="0.0" y="518" width="375" height="54"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
+                            <state key="normal" title="Share Exercise">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="shareExerciseButtonPressed:" destination="7Od-Tc-va4" eventType="touchUpInside" id="7HC-dZ-DWA"/>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseImage" rowHeight="230" id="pbc-lx-DUE" customClass="DisplayExerciseImageTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="230"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="230"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pbc-lx-DUE" id="spe-Mw-Lhg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="229"/>
@@ -825,7 +837,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseDescription" rowHeight="170" id="MWi-uO-haQ" customClass="DisplayExerciseDescriptionTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="322" width="375" height="170"/>
+                                <rect key="frame" x="0.0" y="258" width="375" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MWi-uO-haQ" id="zxe-by-uJv">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="169"/>
@@ -838,7 +850,7 @@
                                                 <constraint firstAttribute="height" constant="153" id="KaE-2J-Z3J"/>
                                             </constraints>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -859,21 +871,21 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseShare" rowHeight="90" id="EFd-C1-g97" customClass="DisplayExerciseShareTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="492" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="428" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EFd-C1-g97" id="g3u-vB-ABT">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZP-cD-gBS">
-                                            <rect key="frame" x="35" y="10" width="70" height="70"/>
+                                            <rect key="frame" x="55" y="10" width="70" height="70"/>
                                             <state key="normal" image="thumbs_up_icon"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xU-wl-Ypa">
-                                            <rect key="frame" x="270" y="10" width="70" height="70"/>
+                                            <rect key="frame" x="250" y="10" width="70" height="70"/>
                                             <state key="normal" image="thumbs_down_icon"/>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uu8-Yp-0fF">
+                                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uu8-Yp-0fF">
                                             <rect key="frame" x="150" y="30" width="75" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="J8k-WO-Kch"/>
@@ -891,9 +903,9 @@
                                         <constraint firstItem="fZP-cD-gBS" firstAttribute="leading" secondItem="g3u-vB-ABT" secondAttribute="leadingMargin" constant="27" id="OP9-sU-N4p"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5xU-wl-Ypa" secondAttribute="trailing" constant="27" id="XOF-ip-psO"/>
                                         <constraint firstItem="Uu8-Yp-0fF" firstAttribute="centerY" secondItem="g3u-vB-ABT" secondAttribute="centerY" id="bdy-2v-Juf"/>
-                                        <constraint firstItem="5xU-wl-Ypa" firstAttribute="leading" secondItem="Uu8-Yp-0fF" secondAttribute="trailing" constant="45" id="m4C-IE-6Qo"/>
+                                        <constraint firstItem="5xU-wl-Ypa" firstAttribute="leading" secondItem="Uu8-Yp-0fF" secondAttribute="trailing" constant="25" id="m4C-IE-6Qo"/>
                                         <constraint firstItem="5xU-wl-Ypa" firstAttribute="centerY" secondItem="g3u-vB-ABT" secondAttribute="centerY" id="uy2-Zp-6nB"/>
-                                        <constraint firstItem="Uu8-Yp-0fF" firstAttribute="leading" secondItem="fZP-cD-gBS" secondAttribute="trailing" constant="45" id="zz3-Zz-nki"/>
+                                        <constraint firstItem="Uu8-Yp-0fF" firstAttribute="leading" secondItem="fZP-cD-gBS" secondAttribute="trailing" constant="25" id="zz3-Zz-nki"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -979,7 +991,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="wLO-zh-to2">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wLO-zh-to2" id="5NR-5J-Ezm">
                                     <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1014,7 +1026,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-nZ-WRc">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-nZ-WRc">
                                 <rect key="frame" x="67" y="123" width="240" height="463"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1030,7 +1042,7 @@
                                     </mask>
                                 </variation>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expanded Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tzg-7v-E4R">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Expanded Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tzg-7v-E4R">
                                 <rect key="frame" x="106" y="79" width="164" height="29"/>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="22"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1073,11 +1085,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dOM-6e-fsC">
-                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="23"/>
                             <state key="normal" title="Share">
-                                <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="shareWithGroupButtonPressed:" destination="Bpm-05-4zj" eventType="touchUpInside" id="rOz-Bg-2sh"/>
@@ -1241,7 +1254,7 @@
                                     <constraint firstAttribute="height" constant="40" id="F8D-e7-e8t"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="25"/>
-                                <state key="normal" title="Create account">
+                                <state key="normal" title="Create Account">
                                     <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1599,10 +1612,10 @@
         <image name="thumbs_up_icon" width="70" height="70"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xot-8e-WTm"/>
-        <segue reference="tSD-4U-aQr"/>
+        <segue reference="3m8-as-ybQ"/>
         <segue reference="cMS-Lw-eUM"/>
-        <segue reference="WMk-xE-g5t"/>
+        <segue reference="tSD-4U-aQr"/>
+        <segue reference="Ai5-5F-ddJ"/>
         <segue reference="exV-KX-8yW"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Parse
 
-class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITabBarControllerDelegate, UITabBarDelegate {
+class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITabBarControllerDelegate, UITabBarDelegate, UITextFieldDelegate {
     
     var sectionTitles = [String]()
     var sectionTitlesAddingFromWorkout = [String]()
@@ -28,6 +28,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     let dataMgr = DataManager()
     var addingFromWorkout = false
     var unsavedData = false
+    var keyboardSize = CGSizeZero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +52,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         if exerciseTitle.characters.count > 3 {
             if addingFromWorkout || exerciseMuscleGroup.count > 0 {
                 if image != UIImage(named: "new_exercise_icon")! {
-                    if exerciseDescription != constants.exerciseDescriptionText && exerciseDescription.characters.count > 10 && exerciseDescription.characters.count < 500 {
+                    if exerciseDescription != constants.exerciseDescriptionText && exerciseDescription.characters.count > 10 && exerciseDescription.characters.count < 1000 {
                         if heavyReps != -1 && enduranceReps != -1 && heavySets != -1 && enduranceSets != -1 {
                             
                             // All validations passed
@@ -308,6 +309,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
                 cell.title.tag = 1
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                cell.title.delegate = self
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
@@ -347,6 +349,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 case 0:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
                     NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                    cell.title.delegate = self
                     return cell
                 case 1:
                     let cell = UITableViewCell()
@@ -406,58 +409,64 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                     return cell
                 }
 
-            }
-            
-            switch indexPath.section {
-            case 0:
-                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
-                return cell
-            case 1:
-                let cell = UITableViewCell()
-                cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
-                cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
-                if exerciseMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup) {
-                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            } else {
+                
+                switch indexPath.section {
+                case 0:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                    cell.title.delegate = self
+                    return cell
+                case 1:
+                    let cell = UITableViewCell()
+                    cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup
+                    cell.textLabel?.font = UIFont(name: "Marker Felt", size: 20)
+                    if exerciseMuscleGroup.contains(muscleGroups[indexPath.row].mainGroup) {
+                        cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                    }
+                    return cell
+                case 2:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
+                    cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.exerciseImage.image = image
+                    return cell
+                case 3:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+                    return cell
+                case 4:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
+                    cell.heavyStepper.tag = 0
+                    cell.enduranceStepper.tag = 1
+                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    return cell
+                case 5:
+                    let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
+                    cell.heavyStepper.tag = 2
+                    cell.enduranceStepper.tag = 3
+                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    return cell
+                default:
+                    let cell = UITableViewCell()
+                    cell.textLabel?.text = "There was an error, please try reloading the page."
+                    return cell
                 }
-                return cell
-            case 2:
-                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
-                cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.exerciseImage.image = image
-                return cell
-            case 3:
-                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
-                return cell
-            case 4:
-                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
-                cell.heavyStepper.tag = 0
-                cell.enduranceStepper.tag = 1
-                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                return cell
-            case 5:
-                let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
-                cell.heavyStepper.tag = 2
-                cell.enduranceStepper.tag = 3
-                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                return cell
-            default:
-                let cell = UITableViewCell()
-                cell.textLabel?.text = "There was an error, please try reloading the page."
-                return cell
             }
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func saveData(notif : NSNotification) {
-        
         unsavedData = true
-        
         if let textField = notif.object as? UITextField {
             // Saving title field
             exerciseTitle = textField.text!
@@ -468,10 +477,16 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     }
     
     func removePlaceholder(notif : NSNotification) {
+        // Remove placeholder if it exists
         if let textView = notif.object as? UITextView {
             if textView.textColor == UIColor.lightGrayColor() {
                 textView.text = nil
                 textView.textColor = UIColor.blackColor()
+                
+                // Set tableview content offset so description is visible
+                if self.keyboardSize != CGSizeZero {
+                    self.tableView.setContentOffset(CGPoint(x: 0, y: keyboardSize.height + 10), animated: true)
+                }
             }
         }
     }
@@ -483,6 +498,12 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 textView.textColor = UIColor.lightGrayColor()
             }
         }
+    }
+    
+    func keyboardWillShow(notif : NSNotification) {
+        guard let userInfo = notif.userInfo else {return}
+        guard let keyboardSize = userInfo[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue.size else {return}
+        self.keyboardSize = keyboardSize
     }
     
     func stepperValueChanged(sender: UIStepper) {

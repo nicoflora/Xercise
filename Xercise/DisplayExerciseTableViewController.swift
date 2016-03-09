@@ -9,8 +9,9 @@
 import UIKit
 import Parse
 import Social
+import MessageUI
 
-class DisplayExerciseTableViewController: UITableViewController {
+class DisplayExerciseTableViewController: UITableViewController, MFMessageComposeViewControllerDelegate {
 
     var exerciseIdentifier = ""
     var muscleGroup = ""
@@ -27,6 +28,7 @@ class DisplayExerciseTableViewController: UITableViewController {
     @IBOutlet var nextButton: UIBarButtonItem!
     var activityIndicator = UIActivityIndicatorView()
     var coverView = UIView()
+    var setsAndReps = ""
 
     
     override func viewDidLoad() {
@@ -63,11 +65,37 @@ class DisplayExerciseTableViewController: UITableViewController {
         } else if !displayingGeneratedExercise {
             removeNextButton()
         }
+        parseOutSetsAndReps()
     }
     
     override func viewDidDisappear(animated: Bool) {
         // Reset variable to hide rate features
         hideRateFeatures = false
+    }
+    
+    func parseOutSetsAndReps() {
+        var fullDesc = exerciseToDisplay.description
+        
+        // Get range of the start of the suggested sets and reps to remove from description later
+        guard let heavyRange = fullDesc.rangeOfString("Suggested heavy lift (sets X reps): ", options: NSStringCompareOptions.BackwardsSearch, range: nil, locale: nil) else {return}
+        
+        // Parse out heavy reps and sets
+        let descSplitByHeavy = fullDesc.componentsSeparatedByString("Suggested heavy lift (sets X reps): ")
+        guard let setsAndRepsString = descSplitByHeavy.last else {return}
+        let heavyRepsSetsArray = setsAndRepsString.componentsSeparatedByString("Suggested endurance lift (sets X reps): ")
+        guard var heavyReps = heavyRepsSetsArray.first else {return}
+        heavyReps = heavyReps.stringByReplacingOccurrencesOfString(".", withString: "")
+        
+        // Parse out endurance reps and sets
+        let descSplitByEndurance = setsAndRepsString.componentsSeparatedByString("Suggested endurance lift (sets X reps): ")
+        guard var enduranceReps = descSplitByEndurance.last else {return}
+        enduranceReps =  enduranceReps.stringByReplacingOccurrencesOfString(".", withString: "")
+        
+        setsAndReps = "Suggested sets X reps:\nHeavy lift: \(heavyReps)Endurance lift: \(enduranceReps)"
+        
+        // Fix description
+        fullDesc = fullDesc.substringToIndex(heavyRange.startIndex)
+        exerciseToDisplay.description = fullDesc
     }
     
     func imageResize(imageObj:UIImage, sizeChange:CGSize)-> UIImage {
@@ -107,6 +135,11 @@ class DisplayExerciseTableViewController: UITableViewController {
             generateNewExercise(previousExercises)
         }
     }
+    
+    @IBAction func shareExerciseButtonPressed(sender: AnyObject) {
+        shareAction()
+    }
+    
     
     func generateNewExercise(previousIdentifiers : [String]) {
         displayActivityIndicator()
@@ -177,6 +210,7 @@ class DisplayExerciseTableViewController: UITableViewController {
     
     func changeExercise() {
         hideRateFeatures = false
+        parseOutSetsAndReps()
         removeActivityIndicator()
         tableView.reloadData()
     }
@@ -220,7 +254,7 @@ class DisplayExerciseTableViewController: UITableViewController {
             // Share to Facebook
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 let facebookShare = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                facebookShare.setInitialText("Checkout this awesome exercise I found on the Xercise Fitness iOS App!\n\nName: \(self.exerciseToDisplay.name)\n\nDescription: \(self.exerciseToDisplay.description)")
+                facebookShare.setInitialText("Check out \(self.exerciseToDisplay.name) on the Xercise Fitness iOS App!\n\nDescription: \(self.exerciseToDisplay.description)")
                 facebookShare.addImage(self.exerciseToDisplay.image)
                 self.presentViewController(facebookShare, animated: true, completion: nil)
             } else {
@@ -231,15 +265,30 @@ class DisplayExerciseTableViewController: UITableViewController {
             // Share to Twitter
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let twitterShare = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                twitterShare.setInitialText("Checkout this awesome exercise I found on the Xercise Fitness iOS App!\n\nIt's called \(self.exerciseToDisplay.name)")
+                twitterShare.setInitialText("Check out \(self.exerciseToDisplay.name) on the Xercise Fitness iOS App!")
                 twitterShare.addImage(self.exerciseToDisplay.image)
                 self.presentViewController(twitterShare, animated: true, completion: nil)
             } else {
                 self.presentAlert("No Twitter Accounts", message: "Please login to a Twitter account in Settings to enable sharing to Twitter.")
             }
         }))
+        if MFMessageComposeViewController.canSendText() && MFMessageComposeViewController.canSendAttachments() {
+            shareActionSheet.addAction(UIAlertAction(title: "Share with Message", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                let messageVC = MFMessageComposeViewController()
+                messageVC.messageComposeDelegate = self
+                messageVC.navigationBar.tintColor = UIColor.whiteColor()
+                messageVC.body = "Check out \(self.exerciseToDisplay.name) on the Xercise Fitness iOS App!\n\nDescription: \(self.exerciseToDisplay.description)"
+                guard let imageData = UIImagePNGRepresentation(self.exerciseToDisplay.image) else {return}
+                messageVC.addAttachmentData(imageData, typeIdentifier: "kUTTypePNG", filename: "xerciseImage.png")
+                self.presentViewController(messageVC, animated: true, completion: nil)
+            }))
+        }
         shareActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         self.presentViewController(shareActionSheet, animated: true, completion: nil)
+    }
+    
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func thumbsDownRate() {
@@ -332,7 +381,11 @@ class DisplayExerciseTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 5
+        if hideRateFeatures {
+            return 5
+        } else {
+            return 6
+        }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -341,15 +394,13 @@ class DisplayExerciseTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0:
-            return 44
-        case 1:
-            return 44
         case 2:
             return 230
         case 3:
-            return 170
+            return 66
         case 4:
+            return 170
+        case 5:
             return 90
         default:
             return 44
@@ -390,43 +441,49 @@ class DisplayExerciseTableViewController: UITableViewController {
             cell.exerciseImage.image = imageResize(exerciseToDisplay.image, sizeChange: cell.exerciseImage.frame.size)
             return cell
         case 3:
+            let cell = UITableViewCell()
+            cell.textLabel?.numberOfLines = 3
+            if setsAndReps != "" {
+                cell.textLabel?.text = setsAndReps
+            } else {
+                cell.textLabel?.text = "Suggested sets X reps:\nHeavy lift: 6 X 6\nEndurance lift: 3 X 12"
+            }
+            cell.textLabel?.textAlignment = NSTextAlignment.Center
+            cell.textLabel?.font = UIFont(name: "Marker Felt", size: 15)
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            return cell
+        case 4:
             let cell = tableView.dequeueReusableCellWithIdentifier("displayExerciseDescription", forIndexPath: indexPath) as! DisplayExerciseDescriptionTableViewCell
             cell.exerciseDescription.text = exerciseToDisplay.description
             cell.exerciseDescription.textAlignment = NSTextAlignment.Center
-            cell.exerciseDescription.font = UIFont(name: "Marker Felt", size: 15)
+            cell.exerciseDescription.font = UIFont(name: "Marker Felt", size: 16)
             return cell
-        case 4:
-            let cell = tableView.dequeueReusableCellWithIdentifier("displayExerciseShare", forIndexPath: indexPath) as! DisplayExerciseShareTableViewCell
-            cell.shareButton.addTarget(self, action: "shareAction", forControlEvents: UIControlEvents.TouchUpInside)
-            
-            if hideRateFeatures {
-                cell.thumbsDownRate.enabled = false
-                cell.thumbsDownRate.hidden = true
-                cell.thumbsUpRate.enabled = false
-                cell.thumbsUpRate.hidden = true
+        case 5:
+            if !hideRateFeatures {
+                let cell = tableView.dequeueReusableCellWithIdentifier("displayExerciseShare", forIndexPath: indexPath) as! DisplayExerciseShareTableViewCell
+                //cell.shareButton.addTarget(self, action: "shareAction", forControlEvents: UIControlEvents.TouchUpInside)
+                
+                if hideRateFeatures {
+                    cell.thumbsDownRate.enabled = false
+                    cell.thumbsDownRate.hidden = true
+                    cell.thumbsUpRate.enabled = false
+                    cell.thumbsUpRate.hidden = true
+                } else {
+                    cell.thumbsDownRate.enabled = true
+                    cell.thumbsDownRate.hidden = false
+                    cell.thumbsUpRate.enabled = true
+                    cell.thumbsUpRate.hidden = false
+                    cell.thumbsDownRate.addTarget(self, action: "thumbsDownRate", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.thumbsUpRate.addTarget(self, action: "thumbsUpRate", forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                return cell
             } else {
-                cell.thumbsDownRate.enabled = true
-                cell.thumbsDownRate.hidden = false
-                cell.thumbsUpRate.enabled = true
-                cell.thumbsUpRate.hidden = false
-                cell.thumbsDownRate.addTarget(self, action: "thumbsDownRate", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.thumbsUpRate.addTarget(self, action: "thumbsUpRate", forControlEvents: UIControlEvents.TouchUpInside)
+                let cell = UITableViewCell()
+                return cell
             }
-            return cell
         default:
             let cell = UITableViewCell()
             return cell
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

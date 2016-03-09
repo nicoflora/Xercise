@@ -133,7 +133,6 @@ class DataManager {
     }
     
     func resetMyMacros(){
-        var macros = [Macro]()
         let context : NSManagedObjectContext = appDel.managedObjectContext
         let requestMacro = NSFetchRequest(entityName: "Macro_Meal")
         requestMacro.returnsObjectsAsFaults = false
