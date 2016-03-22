@@ -482,10 +482,16 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             if textView.textColor == UIColor.lightGrayColor() {
                 textView.text = nil
                 textView.textColor = UIColor.blackColor()
-                
-                // Set tableview content offset so description is visible
-                if self.keyboardSize != CGSizeZero {
-                    self.tableView.setContentOffset(CGPoint(x: 0, y: keyboardSize.height + 10), animated: true)
+
+                // Scroll the description cell to the top of the screen to not be hidden behind the keyboard
+                if addingFromWorkout {
+                    self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+                } else {
+                    if exerciseMuscleGroup.count > 0 {
+                        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 4), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+                    } else {
+                        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+                    }
                 }
             }
         }

@@ -13,5 +13,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "UITextField+Shake.h"
+#import "IGLDropDownItem.h"
+#import "IGLDropDownMenu.h"
 
 #endif

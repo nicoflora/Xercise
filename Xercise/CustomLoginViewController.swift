@@ -277,7 +277,13 @@ class CustomLoginViewController: UIViewController, FBSDKLoginButtonDelegate, UIT
     }
     
     func dismissLoginVC() {
-        self.performSegueWithIdentifier("successfulLogin", sender: self)
+        guard let initialVC = self.storyboard?.instantiateInitialViewController()
+            
+        else {
+            self.performSegueWithIdentifier("successfulLogin", sender: self)
+            return
+        }
+        self.presentViewController(initialVC, animated: false, completion: nil)
     }
 
     func appDelegate() -> AppDelegate {

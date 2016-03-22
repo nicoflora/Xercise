@@ -17,13 +17,18 @@ class InitialViewController: UIViewController {
         super.viewDidLoad()
 
         // Check if user is logged in
+        checkIfLoggedIn()
+    }
+    
+    func checkIfLoggedIn() {
         if PFUser.currentUser() != nil {
             loggedIn = true
         }
     }
     
-    
     override func viewDidAppear(animated: Bool) {
+        checkIfLoggedIn()
+        
         if loggedIn {
             self.performSegueWithIdentifier("loggedIn", sender: self)
         } else {

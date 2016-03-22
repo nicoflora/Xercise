@@ -138,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-extension UIColor {
+public extension UIColor {
     convenience init(hexString:String) {
         let hexString:NSString = hexString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
         let scanner = NSScanner(string: hexString as String)

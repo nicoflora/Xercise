@@ -8,9 +8,8 @@
 
 import UIKit
 import Parse
-//import ParseFacebookUtilsV4
 
-class NewXerciseViewController: UIViewController {
+class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
     
     @IBOutlet var animationImage: UIImageView!
     @IBOutlet var selectMuscleGroupBtn: UIButton!
@@ -38,7 +37,25 @@ class NewXerciseViewController: UIViewController {
         getExerciseButton.layer.cornerRadius = 10
         selectMuscleGroupBtn.layer.cornerRadius = 10
         
-        print(selectMuscleGroupBtn.backgroundColor?.toHexString())
+        // Different button styling
+        getExerciseButton.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        getExerciseButton.layer.borderWidth = 3.0
+        getExerciseButton.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
+        getExerciseButton.setTitleColor(UIColor(hexString: "#2c4b85"), forState: UIControlState.Normal)
+        getExerciseButton.layer.shadowColor = UIColor.grayColor().CGColor
+        getExerciseButton.layer.shadowOffset = CGSizeMake(0, 0)
+        getExerciseButton.layer.shadowOpacity = 0.5
+        
+        getWorkoutButton.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        getWorkoutButton.layer.borderWidth = 3.0
+        getWorkoutButton.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
+        getWorkoutButton.setTitleColor(UIColor(hexString: "#2c4b85"), forState: UIControlState.Normal)
+        getWorkoutButton.layer.shadowColor = UIColor.grayColor().CGColor
+        getWorkoutButton.layer.shadowOffset = CGSizeMake(0, 0)
+        getWorkoutButton.layer.shadowOpacity = 0.5
+        
+        selectMuscleGroupBtn.hidden = true
+        selectMuscleGroupBtn.enabled = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -47,11 +64,166 @@ class NewXerciseViewController: UIViewController {
             //If not logged in, display login view controller
             presentLoginVC()
         }
+        
+        setupDropDownMenu()
+
     }
     
     override func viewWillDisappear(animated: Bool) {
         isAnimatingImage = false
         timer.invalidate()
+        
+        if mainGroupDropDownMenu.expanding {
+            mainGroupDropDownMenu.toggleView()
+        }
+        if subGroupDropDownMenu.expanding {
+            subGroupDropDownMenu.toggleView()
+        }
+    }
+    
+    
+    // MARK: - Drop Down Functions
+    
+    var mainGroupDropDownMenu = IGLDropDownMenu()
+    var subGroupDropDownMenu = IGLDropDownMenu()
+    var selectedMainMuscleGroupIndex = -1
+    var selectedSubMuscleGroupIndex = -1
+    
+    func setupDropDownMenu() {
+        // Setup Main Group Dropdown
+        var dropdownItems = [IGLDropDownItem]()
+        for group in muscleGroups {
+            dropdownItems.append(createDropDownItem(group.mainGroup, dropDownHeader: false))
+        }
+        if selectedMainMuscleGroupIndex == -1 {
+            // Main Muscle Group NOT Selected
+            mainGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "Select a Main Muscle Group...", dropDownItems: dropdownItems)
+            subGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "All Sub Muscle Groups", dropDownItems: [createDropDownItem("All Sub Muscle Groups", dropDownHeader: false)])
+        } else if muscleGroups.count > selectedMainMuscleGroupIndex {
+            // Main Muscle Group Selected
+            mainGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: muscleGroups[selectedMainMuscleGroupIndex].mainGroup, dropDownItems: dropdownItems)
+            
+            // Setup Sub Group Dropdown
+            if muscleGroups[selectedMainMuscleGroupIndex].subGroups.count > selectedSubMuscleGroupIndex {
+                if selectedSubMuscleGroupIndex == -1 {
+                    // Sub group NOT selected
+                    subGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "All Sub Muscle Groups", dropDownItems: getSubMuscleGroupsForMainGroupAtIndex(selectedMainMuscleGroupIndex))
+                } else {
+                    // Sub group selected
+                    subGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: muscleGroups[selectedMainMuscleGroupIndex].subGroups[selectedSubMuscleGroupIndex], dropDownItems: getSubMuscleGroupsForMainGroupAtIndex(selectedMainMuscleGroupIndex))
+                }
+            }
+        }
+        var firstDropDownYValue : CGFloat = 64
+        if let navBarHeight = self.navigationController?.navigationBar.frame.maxY {
+            firstDropDownYValue = navBarHeight
+        }
+        mainGroupDropDownMenu.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 275) / 2, firstDropDownYValue + 15, 275, 40)
+        self.view.addSubview(mainGroupDropDownMenu)
+        mainGroupDropDownMenu.reloadView()
+
+        subGroupDropDownMenu.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 250) / 2, mainGroupDropDownMenu.frame.maxY + 15, 250, 40)
+        self.view.addSubview(subGroupDropDownMenu)
+        subGroupDropDownMenu.reloadView()
+    }
+    
+    func createDropDownItem(menuText : String, dropDownHeader : Bool) -> IGLDropDownItem {
+        let dropDownItem = IGLDropDownItem()
+        dropDownItem.text = menuText
+        dropDownItem.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        
+        if dropDownHeader {
+            // Apply special styling for header
+            /*
+            // Styling with blue background - white text
+            dropDownItem.backgroundColor = UIColor(hexString: "#2c4b85")
+            dropDownItem.textLabel.textColor = UIColor.whiteColor()
+            */
+            
+            // Styling with gray background, blue text and blue border
+            dropDownItem.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            dropDownItem.layer.borderWidth = 3.0
+            dropDownItem.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
+            dropDownItem.layer.cornerRadius = 10
+            dropDownItem.textLabel.textColor = UIColor(hexString: "#2c4b85")
+            
+        }
+        return dropDownItem
+    }
+    
+    func createDropDownMenu(frame : CGRect, menuButtonTitle : String, dropDownItems : [IGLDropDownItem]) -> IGLDropDownMenu {
+        let dropDownMenu = IGLDropDownMenu()
+        dropDownMenu.frame = frame
+        dropDownMenu.menuButton = createDropDownItem(menuButtonTitle, dropDownHeader: true)
+        dropDownMenu.menuText = menuButtonTitle
+        dropDownMenu.dropDownItems = dropDownItems
+        dropDownMenu.type = IGLDropDownMenuType.FlipVertical
+        dropDownMenu.itemAnimationDelay = 0
+        //dropDownMenu.animationDuration =
+        dropDownMenu.delegate = self
+        return dropDownMenu
+    }
+    
+    func dropDownMenu(dropDownMenu: IGLDropDownMenu!, selectedItemAtIndex index: Int) {
+        if dropDownMenu == mainGroupDropDownMenu  {
+            // Main Group selection made - set class-level variables
+            selectedMainMuscleGroupIndex = index
+            selectedSubMuscleGroupIndex = -1
+            self.selectedMuscleGroup = self.muscleGroups[index].mainGroup
+
+            // Update sub groups
+            subGroupDropDownMenu.enabled = false
+            subGroupDropDownMenu.menuText = "All Sub Muscle Groups"
+            subGroupDropDownMenu.dropDownItems = getSubMuscleGroupsForMainGroupAtIndex(index)
+            subGroupDropDownMenu.reloadView()
+            subGroupDropDownMenu.enabled = true
+            
+        } else if dropDownMenu == subGroupDropDownMenu {
+            // Sub group selection made
+            if index > 0 {
+                if selectedMainMuscleGroupIndex != -1 && muscleGroups.count > selectedMainMuscleGroupIndex {
+                    if self.muscleGroups[selectedMainMuscleGroupIndex].subGroups.count > index {
+                        self.selectedMuscleGroup = self.muscleGroups[selectedMainMuscleGroupIndex].subGroups[index]
+                        selectedSubMuscleGroupIndex = index
+                    }
+                }
+            } else {
+                // All option chosen - reset to main muscle group
+                if selectedMainMuscleGroupIndex != -1 && self.muscleGroups.count > selectedMainMuscleGroupIndex {
+                    selectedSubMuscleGroupIndex = -1
+                    self.selectedMuscleGroup = self.muscleGroups[selectedMainMuscleGroupIndex].mainGroup
+                }
+            }
+        }
+    }
+    
+    func dropDownMenu(dropDownMenu: IGLDropDownMenu!, expandingChanged isExpending: Bool) {
+        if isExpending {
+            // Check to collapse & hide other dropdowns
+            if dropDownMenu == mainGroupDropDownMenu {
+                self.view.bringSubviewToFront(dropDownMenu)
+                if subGroupDropDownMenu.expanding {
+                    subGroupDropDownMenu.toggleView()
+                }
+            } else if dropDownMenu == subGroupDropDownMenu {
+                if mainGroupDropDownMenu.expanding {
+                    mainGroupDropDownMenu.toggleView()
+                }
+            }
+        }
+    }
+    
+    func getSubMuscleGroupsForMainGroupAtIndex(index : Int) -> [IGLDropDownItem] {
+        var subMuscleGroupDropDownItems = [IGLDropDownItem]()
+        for (subIndex, _) in muscleGroups[index].subGroups.enumerate() {
+            let subDropDownItem = IGLDropDownItem()
+            subDropDownItem.text = muscleGroups[index].subGroups[subIndex]
+            subDropDownItem.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            subDropDownItem.textLabel.textColor = UIColor(hexString: "#0f3878")
+            subDropDownItem.textLabel.font = UIFont(name: "Marker Felt", size: 18)
+            subMuscleGroupDropDownItems.append(subDropDownItem)
+        }
+        return subMuscleGroupDropDownItems
     }
     
     func requestSubMuscleGroup(index : Int) {

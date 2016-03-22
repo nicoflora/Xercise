@@ -23,6 +23,12 @@
 		251F1C081BDFD1DC00B1F3B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 251F1C061BDFD1DC00B1F3B0 /* LaunchScreen.storyboard */; };
 		251F1C131BDFD1DC00B1F3B0 /* XerciseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1C121BDFD1DC00B1F3B0 /* XerciseTests.swift */; };
 		251F1C1E1BDFD1DC00B1F3B0 /* XerciseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1C1D1BDFD1DC00B1F3B0 /* XerciseUITests.swift */; };
+		25300A7D1C9BB1280085F98E /* IGLDropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */; };
+		25300A7E1C9BB1280085F98E /* IGLDropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */; };
+		25300A7F1C9BB1280085F98E /* IGLDropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */; };
+		25300A801C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
+		25300A811C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
+		25300A821C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
 		25598D211C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
 		25598D221C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
 		25598D231C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
@@ -182,6 +188,10 @@
 		251F1C191BDFD1DC00B1F3B0 /* XerciseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XerciseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		251F1C1D1BDFD1DC00B1F3B0 /* XerciseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XerciseUITests.swift; sourceTree = "<group>"; };
 		251F1C1F1BDFD1DC00B1F3B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		25300A791C9BB1280085F98E /* IGLDropDownItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLDropDownItem.h; sourceTree = "<group>"; };
+		25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLDropDownItem.m; sourceTree = "<group>"; };
+		25300A7B1C9BB1280085F98E /* IGLDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLDropDownMenu.h; sourceTree = "<group>"; };
+		25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLDropDownMenu.m; sourceTree = "<group>"; };
 		25598D1D1C8B9F5000A20EC5 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
 		25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Shake.m"; sourceTree = "<group>"; };
 		2566DB771BE6776C0065507C /* InfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewController.swift; sourceTree = "<group>"; };
@@ -335,6 +345,18 @@
 			path = XerciseUITests;
 			sourceTree = "<group>";
 		};
+		25300A781C9BB1280085F98E /* IGLDropDownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				25300A791C9BB1280085F98E /* IGLDropDownItem.h */,
+				25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */,
+				25300A7B1C9BB1280085F98E /* IGLDropDownMenu.h */,
+				25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */,
+			);
+			name = IGLDropDownMenu;
+			path = Xercise/IGLDropDownMenu;
+			sourceTree = "<group>";
+		};
 		257417611C8559CC002C8BD4 /* TableView Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +408,7 @@
 		25C225171BE47DEF00CA75C9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25300A781C9BB1280085F98E /* IGLDropDownMenu */,
 				25ACC24A1C4EAFCC001040E8 /* FBSDKCoreKit.framework */,
 				25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */,
 				25ACC2291C4EAA97001040E8 /* ParseFacebookUtilsV4.framework */,
@@ -645,6 +668,7 @@
 				25D62CFF1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
 				25B55C641C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
 				25D62CF81BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25300A7D1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
 				25979FA21C73861F00D58B2F /* MuscleGroup.swift in Sources */,
 				2566DB901BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */,
 				25D62D031BE83E0D00B8F276 /* DataManager.swift in Sources */,
@@ -652,6 +676,7 @@
 				2566DB881BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */,
 				251E74031C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */,
 				25D63E9B1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */,
+				25300A801C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
 				2566DB801BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
 				2566DB781BE6776C0065507C /* InfoTableViewController.swift in Sources */,
 				2566DB941BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
@@ -687,6 +712,7 @@
 				25D62CFB1BE82C2700B8F276 /* AppDelegate.swift in Sources */,
 				25C56BE11BEE7664008D7C6B /* Exercise.swift in Sources */,
 				25B55C651C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
+				25300A7E1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
 				2566DB811BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
 				25D62D081BE842D700B8F276 /* Entry.swift in Sources */,
 				2566DB951BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
@@ -694,6 +720,7 @@
 				25D62D001BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
 				25E1075D1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
 				25C56BF71BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25300A811C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
 				251E74071C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */,
 				258BFDEE1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
 				2DD4771D1C82490F00943792 /* Macro.swift in Sources */,
@@ -729,6 +756,7 @@
 				2566DB821BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
 				25C56BE21BEE7664008D7C6B /* Exercise.swift in Sources */,
 				25B55C661C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
+				25300A7F1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
 				25D62CFC1BE82C2800B8F276 /* AppDelegate.swift in Sources */,
 				25D62D091BE842D700B8F276 /* Entry.swift in Sources */,
 				2566DB961BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
@@ -736,6 +764,7 @@
 				25D62D011BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
 				25E1075E1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
 				25C56BF81BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25300A821C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
 				251E74081C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */,
 				258BFDEF1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
 				2DD4771E1C82490F00943792 /* Macro.swift in Sources */,

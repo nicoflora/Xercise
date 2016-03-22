@@ -444,7 +444,6 @@ class DataManager {
     
     func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], publicWorkout : Bool, completion : (success : Bool) -> Void) {
         
-        let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let context : NSManagedObjectContext = appDel.managedObjectContext
         let newWorkout = NSEntityDescription.insertNewObjectForEntityForName("Workout", inManagedObjectContext: context)
         let archivedMuscleGroups = archiveArray(workoutMuscleGroup)
@@ -471,31 +470,31 @@ class DataManager {
     func getWorkoutByID(id : String) -> Workout? {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        var entryFound = false
         var entryToReturn = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
-        let requestExercise = NSFetchRequest(entityName: "Workout")
-        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
-        requestExercise.returnsObjectsAsFaults = false
+        let requestWorkout = NSFetchRequest(entityName: "Workout")
+        requestWorkout.predicate = NSPredicate(format: "identifier = %@", id)
+        requestWorkout.returnsObjectsAsFaults = false
         do {
-            let results = try context.executeFetchRequest(requestExercise)
+            let fetchedResults = try context.executeFetchRequest(requestWorkout)
+            guard let results = fetchedResults as? [NSManagedObject] else {return nil}
+            guard let result = results.first else {return nil}
             
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    entryFound = true
-                    // Unarchive exercise IDs
-                    let exercises : [String] =  unarchiveArray(result.valueForKey("exercise_ids")! as! NSData)
-                    let muscleGroup : [String] =  unarchiveArray(result.valueForKey("muscle_group")! as! NSData)
-                    
-                    // Create the workout object to be returned
-                    entryToReturn = Workout(name: result.valueForKey("name")! as! String, muscleGroup: muscleGroup, identifier: result.valueForKey("identifier")! as! String, exerciseIds: exercises, exerciseNames : nil, publicWorkout: result.valueForKey("publicWorkout") as! Bool, workoutCode: result.valueForKey("workoutCode") as! String?)
-                }
-            }
-        } catch {
-            print("There was an error fetching the workout by ID")
-        }
-        if entryFound {
+            // Get all values and check that they are not nil
+            guard let exercise_ids = result.valueForKey("exercise_ids") as? NSData else {return nil}
+            guard let muscle_group = result.valueForKey("muscle_group") as? NSData else {return nil}
+            guard let exercises : [String] =  unarchiveArray(exercise_ids) else {return nil}
+            guard let muscleGroup : [String] =  unarchiveArray(muscle_group) else {return nil}
+            guard let name = result.valueForKey("name") as? String else {return nil}
+            guard let identifier = result.valueForKey("identifier") as? String else {return nil}
+            guard let publicWorkout = result.valueForKey("publicWorkout") as? Bool else {return nil}
+            guard let workoutCode = result.valueForKey("workoutCode") as? String? else {return nil}
+            
+            // Create the workout object to be returned
+            entryToReturn = Workout(name: name, muscleGroup: muscleGroup, identifier: identifier, exerciseIds: exercises, exerciseNames : nil, publicWorkout: publicWorkout, workoutCode: workoutCode)
+            //}
             return entryToReturn
-        } else {
+        } catch {
+            //print("There was an error fetching the workout by ID")
             return nil
         }
     }
@@ -503,29 +502,29 @@ class DataManager {
     func getExerciseByID(id : String) -> Exercise? {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        var entryFound = false
         var entryToReturn = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
         let requestExercise = NSFetchRequest(entityName: "Exercise")
         requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
         requestExercise.returnsObjectsAsFaults = false
         do {
-            let results = try context.executeFetchRequest(requestExercise)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    entryFound = true
-                    // Create image from NSData stored in Core Data
-                    let image : UIImage = UIImage(data: result.valueForKey("image")! as! NSData)!
-                    let muscleGroup : [String] =  unarchiveArray(result.valueForKey("muscle_group")! as! NSData)
-                    // Create the Exercise object to be returned
-                    entryToReturn = Exercise(name: result.valueForKey("name")! as! String, muscleGroup: muscleGroup, identifier: result.valueForKey("identifier")! as! String, description: result.valueForKey("exercise_desc")! as! String, image: image)
-                }
-            }
-        } catch {
-            print("There was an error fetching the workout by ID")
-        }
-        if entryFound {
+            let fetchedResults = try context.executeFetchRequest(requestExercise)
+            guard let results = fetchedResults as? [NSManagedObject] else {return nil}
+            guard let result = results.first else {return nil}
+            
+            // Get all values and check that they are not nil
+            guard let imageData = result.valueForKey("image") as? NSData else {return nil}
+            guard let muscle_group = result.valueForKey("muscle_group") as? NSData else {return nil}
+            guard let image : UIImage = UIImage(data: imageData) else {return nil}
+            guard let muscleGroup : [String] =  unarchiveArray(muscle_group) else {return nil}
+            guard let name = result.valueForKey("name") as? String else {return nil}
+            guard let identifier = result.valueForKey("identifier") as? String else {return nil}
+            guard let exercise_desc = result.valueForKey("exercise_desc") as? String else {return nil}
+
+            // Create the Exercise object to be returned
+            entryToReturn = Exercise(name: name, muscleGroup: muscleGroup, identifier: identifier, description: exercise_desc, image: image)
             return entryToReturn
-        } else {
+        } catch {
+            //print("There was an error fetching the workout by ID")
             return nil
         }
     }
@@ -544,29 +543,9 @@ class DataManager {
                 completion(success: false)
             }
         } catch {
-            print("There was an error fetching the \(entityName) by ID")
+            //print("There was an error fetching the \(entityName) by ID")
             completion(success: false)
         }
-    }
-
-    func queryForWorkoutCode(id : String) -> String {
-        
-        let context : NSManagedObjectContext = appDel.managedObjectContext
-        var groupCode = ""
-        let requestExercise = NSFetchRequest(entityName: "Workout")
-        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
-        requestExercise.returnsObjectsAsFaults = false
-        do {
-            let results = try context.executeFetchRequest(requestExercise)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    groupCode = result.valueForKey("workoutCode")! as! String
-                }
-            }
-        } catch {
-            print("There was an error fetching the workout code by ID")
-        }
-        return groupCode
     }
 
     func addGroupCodeByID(id : String, code : String, completion : (success : Bool) -> Void) {
@@ -575,48 +554,48 @@ class DataManager {
         requestWorkout.predicate = NSPredicate(format: "identifier = %@", id)
         requestWorkout.returnsObjectsAsFaults = false
         do {
-            let results = try context.executeFetchRequest(requestWorkout)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    result.setValue(code, forKey: "workoutCode")
-                    result.setValue(true, forKey: "publicWorkout")
-                    do {
-                        try context.save()
-                        completion(success: true)
-                    } catch {
-                        completion(success: false)
-                    }
-                    
+            let fetchedResults = try context.executeFetchRequest(requestWorkout)
+            guard let results = fetchedResults as? [NSManagedObject] else {completion(success: false);return}
+            guard results.count > 0 else {completion(success: false);return}
+            for result in results {
+                result.setValue(code, forKey: "workoutCode")
+                result.setValue(true, forKey: "publicWorkout")
+                do {
+                    try context.save()
+                    completion(success: true)
+                } catch {
+                    completion(success: false)
                 }
             }
         } catch {
-            print("There was an error adding the group code by ID")
+            //print("There was an error adding the group code by ID")
             completion(success: false)
         }
     }
     
     func deleteItemByID(id : String, entityName : String, completion : (success : Bool) -> Void) {
         let context : NSManagedObjectContext = appDel.managedObjectContext
-        let requestExercise = NSFetchRequest(entityName: entityName)
-        requestExercise.predicate = NSPredicate(format: "identifier = %@", id)
-        requestExercise.returnsObjectsAsFaults = false
+        let request = NSFetchRequest(entityName: entityName)
+        request.predicate = NSPredicate(format: "identifier = %@", id)
+        request.returnsObjectsAsFaults = false
         do {
-            let results = try context.executeFetchRequest(requestExercise)
-            if results.count > 0 {
-                for result in results as! [NSManagedObject] {
-                    // Delete from Core Data
-                    context.deleteObject(result)
-                    do {
-                        try context.save()
-                        completion(success: true)
-                    } catch {
-                        print("There was an error saving after delection of a \(entityName)")
-                        completion(success: false)
-                    }
+            let fetchedResults = try context.executeFetchRequest(request)
+            guard let results = fetchedResults as? [NSManagedObject] else {completion(success: false);return}
+            guard results.count > 0 else {completion(success: false);return}
+            for result in results {
+                // Delete from Core Data
+                context.deleteObject(result)
+                do {
+                    try context.save()
+                    completion(success: true)
+                } catch {
+                    //print("There was an error saving after delection of a \(entityName)")
+                    completion(success: false)
                 }
+                
             }
         } catch {
-            print("There was an error deleting the \(entityName) by ID")
+            //print("There was an error deleting the \(entityName) by ID")
             completion(success: false)
         }
     }
@@ -633,6 +612,7 @@ class DataManager {
         exercise["exercise_desc"] = exerciseDescription
         exercise["thumbs_Down_Rate"] = 0
         exercise["thumbs_Up_Rate"] = 0
+        exercise["approved"] = false
         let imageFile = PFFile(name: "image.jpeg", data: image)
         exercise["image"] = imageFile
         exercise.saveInBackgroundWithBlock { (success, error) -> Void in
@@ -661,6 +641,7 @@ class DataManager {
         workout["exercise_ids"] = exerciseIDs
         workout["muscle_groups"] = workoutMuscleGroup
         workout["exercise_names"] = exerciseNames
+        workout["approved"] = false
         workout.saveInBackgroundWithBlock { (success, error) -> Void in
             if error == nil {
                 if success {
@@ -698,26 +679,20 @@ class DataManager {
         query.whereKey("objectId", equalTo: id)
         query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
             guard error == nil else {completion(success: false);return}
-            if let objects = objects {
-                if objects.count == 0 {
-                    // Not in Parse database, add to Parse
-                    if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
-                        // Got Exercise from Core Data - now add to Parse
-                        if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
-                            self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
-                                if success {
-                                    completion(success: true)
-                                } else {
-                                    completion(success: false)
-                                }
-                            })
-                        } else {
+            guard let objects = objects else {completion(success: true);return}
+            guard objects.count == 0 else {completion(success: true);return}
+            // Not in Parse database, add to Parse
+            if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
+                // Got Exercise from Core Data - now add to Parse
+                if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
+                    self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
+                        if success {
                             completion(success: true)
+                        } else {
+                            completion(success: false)
                         }
-                    }  else {
-                        completion(success: true)
-                    }
-                }  else {
+                    })
+                } else {
                     completion(success: true)
                 }
             }  else {
@@ -729,6 +704,7 @@ class DataManager {
     func queryParseForWorkoutFromGroupCode(code : String, completion : (workoutFromCode : Workout?) -> Void) { //) -> Workout? {
         let query = PFQuery(className: "Workout")
         query.whereKey("objectId", equalTo: code)
+        query.whereKey("approved", equalTo: true)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             guard error == nil else {completion(workoutFromCode: nil);return}
             guard let objects = objects else {completion(workoutFromCode: nil);return}
@@ -750,52 +726,46 @@ class DataManager {
     }
 
     func queryParseForExercisesFromGroupCode(ids : [String], completion : (success : Bool) -> Void) {
-        var failure = false
-        var successes = 0
+        //var failure = false
+        //var successes = 0
+        var wasSuccessful = false
         for id in ids {
             // Check to see if this exercise is already stored on the device
             self.queryForItemByID(id, entityName: "Exercise", completion: { (success) -> Void in
                 if success {
-                   successes += 1
-                    
-                    if !failure && successes == ids.count {
+                   //successes += 1
+                    wasSuccessful = true
+                    /*if !failure && successes == ids.count {
                         completion(success: true)
                         return
                     } else if failure {
                         completion(success: false)
                         return
-                    }
+                    }*/
                 } else {
                     // Exercise not stored on device - query for it
                     let query = PFQuery(className: "Exercise")
                     query.whereKey("objectId", equalTo: id)
+                    query.whereKey("approved", equalTo: true)
                     query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                        guard error == nil else {failure = true;return}
-                        guard let objects = objects else {failure = true;return}
-                        guard let firstObject = objects.first else {failure = true;return}
+                        guard error == nil else {return}
+                        guard let objects = objects else {return}
+                        guard let firstObject = objects.first else {return}
                         // Get image data and save to device
-                        guard let picture = firstObject.valueForKey("image") as? PFFile else {failure = true;return}
+                        guard let picture = firstObject.valueForKey("image") as? PFFile else {return}
                         picture.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-                            guard error == nil else {failure = true;return}
-                            guard let imageData = imageData else {failure = true;return}
-                            guard let name = firstObject.valueForKey("name") as? String else {failure = true;return}
-                            guard let identifier = firstObject.valueForKey("objectId") as? String else {failure = true;return}
-                            guard let muscleGroup = firstObject.valueForKey("muscle_groups") as? [String] else {failure = true;return}
-                            guard let description = firstObject.valueForKey("exercise_desc") as? String else {failure = true;return}
+                            guard error == nil else {return}
+                            guard let imageData = imageData else {return}
+                            guard let name = firstObject.valueForKey("name") as? String else {return}
+                            guard let identifier = firstObject.valueForKey("objectId") as? String else {return}
+                            guard let muscleGroup = firstObject.valueForKey("muscle_groups") as? [String] else {return}
+                            guard let description = firstObject.valueForKey("exercise_desc") as? String else {return}
                             self.saveExerciseToDevice(name, id: identifier, muscleGroup: muscleGroup, image: imageData, exerciseDescription: description, completion: { (success) -> Void in
-                                if !success {
-                                   print("Error saving exercise to device")
-                                    failure = true
-                                } else {
-                                    successes += 1
+                                if success {
+                                    if !wasSuccessful {
+                                        wasSuccessful = true
+                                    }
                                 }
-                                
-                                if !failure && successes == ids.count {
-                                    completion(success: true)
-                                } else if failure {
-                                    completion(success: false)
-                                }
-                                
                             })
                         })
                         
@@ -803,48 +773,31 @@ class DataManager {
                 }
             })
         }
+        completion(success: wasSuccessful)
     }
     
     func queryForExerciseFromParse(id : String, completion : (exercise : Exercise?) -> Void) {
         let query = PFQuery(className: "Exercise")
         query.whereKey("objectId", equalTo: id)
+        query.whereKey("approved", equalTo: true)
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if error == nil {
-                if let objects = objects {
-                    // Retrieved an exercise
-                    if objects.count == 1 {
-                        let first = objects.first
-                        if let first = first {
-                            let imageFile = first.valueForKey("image") as! PFFile
-                            imageFile.getDataInBackgroundWithBlock({ (data, error) -> Void in
-                                if error == nil {
-                                    if let data = data {
-                                        let image = UIImage(data: data)
-                                        if let image = image {
-                                            let exercise = Exercise(name: first.valueForKey("name") as! String, muscleGroup: first.valueForKey("muscle_groups") as! [String], identifier: id, description: first.valueForKey("exercise_desc") as! String, image: image)
-                                            completion(exercise: exercise)
-                                        } else {
-                                            completion(exercise: nil)
-                                        }
-                                    } else {
-                                        completion(exercise: nil)
-                                    }
-                                } else {
-                                    completion(exercise: nil)
-                                }
-                            })
-                        } else {
-                            completion(exercise: nil)
-                        }
-                    } else {
-                        completion(exercise: nil)
-                    }
-                } else {
-                    completion(exercise: nil)
-                }
-            } else {
-                completion(exercise: nil)
-            }
+            guard error == nil else {completion(exercise: nil);return}
+            guard let objects = objects else {completion(exercise: nil);return}
+            guard let object = objects.first else {completion(exercise: nil);return}
+            guard let imageFile = object.valueForKey("image") as? PFFile else {completion(exercise: nil);return}
+            imageFile.getDataInBackgroundWithBlock({ (data, error) -> Void in
+                guard error == nil else {completion(exercise: nil);return}
+                guard let data = data else {completion(exercise: nil);return}
+                
+                // Get all fields and check that they are not nil
+                guard let image = UIImage(data: data) else {completion(exercise: nil);return}
+                guard let name = object.valueForKey("name") as? String else {completion(exercise: nil);return}
+                guard let muscleGroup = object.valueForKey("muscle_groups") as? [String] else {completion(exercise: nil);return}
+                guard let description = object.valueForKey("exercise_desc") as? String else {completion(exercise: nil);return}
+                
+                let exercise = Exercise(name: name, muscleGroup: muscleGroup, identifier: id, description: description, image: image)
+                completion(exercise: exercise)
+            })
         }
     }
     
@@ -865,6 +818,7 @@ class DataManager {
             // Query Parse for all objects matching this muscle group
             let query = PFQuery(className: "Exercise")
             query.whereKey("muscle_groups", equalTo: muscleGroup)
+            query.whereKey("approved", equalTo: true)
             query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                 guard error == nil else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
                 guard let objects = objects else {completion(exercise: nil, resetPreviousIdentifiers: false);return}
@@ -971,6 +925,7 @@ class DataManager {
             // Not cached, need to fetch from Parse
             let query = PFQuery(className: "Workout")
             query.whereKey("muscle_groups", equalTo: muscleGroup)
+            query.whereKey("approved", equalTo: true)
             query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                 // Check that error is nil and object is not nil
                 guard error == nil else {completion(workout: nil, resetPreviousIdentifiers : false);return}

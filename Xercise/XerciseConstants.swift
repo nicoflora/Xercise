@@ -32,7 +32,7 @@ class XerciseConstants {
     
     let exerciseDescriptionText = "An exercise description should contain instructions for performing this exercise, including all equipment and movements. Also mention the skill level required for this exercise."
     
-    let muscleGroupsArray : [MuscleGroup] = [MuscleGroup(mainGroup : "Abs", muscleSubGroups : ["All", "Obliques", "Upper Abs", "Lower Abs"]), MuscleGroup(mainGroup : "Arms", muscleSubGroups : ["All","Biceps", "Triceps", "Forearms"]), MuscleGroup(mainGroup : "Back", muscleSubGroups : ["All", "Lats", "Middle Back", "Lower Back"]), MuscleGroup(mainGroup : "Chest", muscleSubGroups : ["All", "Upper Chest", "Middle Chest", "Lower Chest"]), MuscleGroup(mainGroup : "Legs", muscleSubGroups : ["All", "Glutes", "Hamstrings", "Quadriceps", "Calves"]), MuscleGroup(mainGroup : "Shoulders", muscleSubGroups : ["All", "Front Deltoids", "Side Deltoids", "Traps"])]
+    let muscleGroupsArray : [MuscleGroup] = [MuscleGroup(mainGroup : "Core", muscleSubGroups : ["All Sub Muscle Groups", "Abs", "Obliques"]), MuscleGroup(mainGroup : "Arms", muscleSubGroups : ["All Sub Muscle Groups","Biceps", "Triceps", "Forearms"]), MuscleGroup(mainGroup : "Back", muscleSubGroups : ["All Sub Muscle Groups", "Lats", "Middle Back", "Lower Back"]), MuscleGroup(mainGroup : "Chest", muscleSubGroups : ["All Sub Muscle Groups", "Upper Chest", "Middle Chest", "Lower Chest"]), MuscleGroup(mainGroup : "Legs", muscleSubGroups : ["All Sub Muscle Groups", "Glutes", "Hamstrings", "Quadriceps", "Calves"]), MuscleGroup(mainGroup : "Shoulders", muscleSubGroups : ["All Sub Muscle Groups", "Front Deltoids", "Side Deltoids", "Rear Deltoids", "Traps"])]
     
     let muscleGroups = ["Abs", "Arms", "Back", "Chest", "Legs", "Shoulders"]
     
