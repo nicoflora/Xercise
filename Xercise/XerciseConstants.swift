@@ -10,6 +10,8 @@ import Foundation
 
 class XerciseConstants {
     
+    static let sharedInstance = XerciseConstants()
+    
     let infoCategories = ["Heavy Weight","Endurance","Macro Nutrient"]
     
     let macroInfo = "Macronutrients are nutrients that provide calories or energy. Nutrients are substances needed for growth, metabolism, and for other body functions. Since 'macro' means large macronutrients are nutrients needed in large amounts. There are three macronutrients: Carbohydrates, Proteins, Fats"

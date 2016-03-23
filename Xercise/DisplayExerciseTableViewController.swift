@@ -16,8 +16,8 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
     var exerciseIdentifier = ""
     var muscleGroup = ""
     var hideRateFeatures = false
-    let dataMgr = DataManager()
-    let constants = XerciseConstants()
+    let dataMgr = DataManager.sharedInstance
+    let constants = XerciseConstants.sharedInstance
     var titles = [String]()
     var exerciseToDisplay = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
     var displayingGeneratedExercise = false
@@ -187,7 +187,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                         self.downloadedExercises.append(exercise)
                         self.changeExercise()
                     } else {
-                        print("Error fetching exercise from Parse")
+                        //print("Error fetching exercise from Parse")
                         self.presentAlert("Error", message: "There was an error retrieving this exercise, please make sure you are connected to the internet and try again.")
                     }
                     if self.activityIndicator.isAnimating() {
@@ -330,7 +330,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
     func showPopup(message : String) {
         let popup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
         self.presentViewController(popup, animated: true, completion: nil)
-        self.performSelector("hidePopup", withObject: nil, afterDelay: 1.0)
+        self.performSelector(#selector(DisplayExerciseTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
     }
     
     func hidePopup() {
@@ -473,8 +473,8 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                     cell.thumbsDownRate.hidden = false
                     cell.thumbsUpRate.enabled = true
                     cell.thumbsUpRate.hidden = false
-                    cell.thumbsDownRate.addTarget(self, action: "thumbsDownRate", forControlEvents: UIControlEvents.TouchUpInside)
-                    cell.thumbsUpRate.addTarget(self, action: "thumbsUpRate", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.thumbsDownRate.addTarget(self, action: #selector(DisplayExerciseTableViewController.thumbsDownRate), forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.thumbsUpRate.addTarget(self, action: #selector(DisplayExerciseTableViewController.thumbsUpRate), forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 return cell
             } else {

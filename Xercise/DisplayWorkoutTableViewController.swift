@@ -12,8 +12,8 @@ import MessageUI
 
 class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedDelegate, MFMessageComposeViewControllerDelegate {
     
-    let dataMgr = DataManager()
-    let constants = XerciseConstants()
+    let dataMgr = DataManager.sharedInstance
+    let constants = XerciseConstants.sharedInstance
     var workoutIdentifier = ""
     var workoutToDisplay = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
     var exerciseToDisplay = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
@@ -248,7 +248,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                             // Cache exercise
                             self.downloadedExercises.append(exercise)
                         } else {
-                            print("Error fetching exercise from Parse")
+                            //print("Error fetching exercise from Parse")
                             self.presentAlert("Error", message: "There was an error retrieving this exercise, please make sure you are connected to the internet and try again.")
                         }
                         self.removeActivityIndicator()
@@ -384,7 +384,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
     func showPopup(message : String) {
         let copyPopup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
         self.presentViewController(copyPopup, animated: true, completion: nil)
-        self.performSelector("hidePopup", withObject: nil, afterDelay: 1.0)
+        self.performSelector(#selector(DisplayWorkoutTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
 
     }
     
@@ -405,9 +405,16 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
             // Get next exercise identifiers
             if exercises.count > selectedIndex + 1 {
                 var nextExercises = [String]()
+                var i = selectedIndex + 1
+                while i < exercises.count {
+                    nextExercises.append(exercises[i].identifier)
+                    i += 1
+                }
+                /*
+                // Depreciated in Swift 2.2
                 for var i = selectedIndex + 1; i < exercises.count; i++ {
                     nextExercises.append(exercises[i].identifier)
-                }
+                }*/
                 destinationVC.nextExercises = nextExercises
             }
             destinationVC.displayingExerciseInWorkout = true

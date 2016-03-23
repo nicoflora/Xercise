@@ -11,7 +11,7 @@ import UIKit
 class ExerciseDescriptionTableViewCell: UITableViewCell {
 
     @IBOutlet var exerciseDescription: UITextView!
-    let constants = XerciseConstants()
+    let constants = XerciseConstants.sharedInstance
     
     var exerciseDescriptionText : String {
         get {

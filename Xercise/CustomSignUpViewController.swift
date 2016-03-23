@@ -22,7 +22,7 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
     @IBOutlet var createAccountButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    let dataMgr = DataManager()
+    let dataMgr = DataManager.sharedInstance
     var facebookButton = FBSDKLoginButton(frame: CGRectZero)
     var signupActive = false
     var pointsPushedUp : CGFloat = 0
@@ -42,10 +42,10 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
         confirmPasswordTextField.delegate = self
         
         // Add keyboard observers
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CustomSignUpViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CustomSignUpViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("tapRecognized"))
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(CustomSignUpViewController.tapRecognized))
         self.view.addGestureRecognizer(tapRecognizer)
 
     }
@@ -141,7 +141,7 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        print("logged out")
+        //print("logged out")
     }
     
     func validateText(option : validateOption) -> String? {
@@ -183,7 +183,7 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
             }
             return true
         } catch {
-            print("Error initializing regex")
+            //print("Error initializing regex")
             return false
         }
     }
@@ -242,7 +242,7 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
             if user != nil {
                 self.dismissSignupVC()
             } else {
-                print(error)
+               // print(error)
                 self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
             }
         }

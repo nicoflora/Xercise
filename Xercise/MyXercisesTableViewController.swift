@@ -17,8 +17,8 @@ class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDeleg
 
     var workouts = [Entry]()
     var exercises = [Entry]()
-    let dataMgr = DataManager()
-    let constants = XerciseConstants()
+    let dataMgr = DataManager.sharedInstance
+    let constants = XerciseConstants.sharedInstance
     var selectedIndex : NSIndexPath?
     var activityIndicator = UIActivityIndicatorView()
     var exercisesByGroup = [ExercisesByMuscleGroup]()

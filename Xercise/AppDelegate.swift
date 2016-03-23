@@ -36,11 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
         
-        /* // Example of how to call cloud code
-        PFCloud.callFunctionInBackground("hello", withParameters: nil) { (object, error) -> Void in
-            print(object!)
-        }*/
-        
         return true
     }
     

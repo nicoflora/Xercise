@@ -14,9 +14,9 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
     
     var exercises = [Entry]()
     let defaults = NSUserDefaults.standardUserDefaults()
-    let constants = XerciseConstants()
+    let constants = XerciseConstants.sharedInstance
     var muscleGroups = [MuscleGroup]()
-    let dataMgr = DataManager()
+    let dataMgr = DataManager.sharedInstance
     var workoutMuscleGroup = [String]()
     var workoutName = ""
     var activityIndicator = UIActivityIndicatorView()
@@ -324,7 +324,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
         case 0:
             let titleCell = tableView.dequeueReusableCellWithIdentifier("workoutTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
             titleCell.title.tag = 0
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewWorkoutTableViewController.saveData(_:)), name: UITextFieldTextDidChangeNotification, object: nil)
             return titleCell
         case 1:
             cell.textLabel?.text = muscleGroups[indexPath.row].mainGroup

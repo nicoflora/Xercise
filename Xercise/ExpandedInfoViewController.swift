@@ -17,7 +17,7 @@ class ExpandedInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let constants = XerciseConstants()
+        let constants = XerciseConstants.sharedInstance
         infoCategories = constants.infoCategories
         if selectedCategory != -1 {
             self.navigationItem.title = infoCategories[selectedCategory]

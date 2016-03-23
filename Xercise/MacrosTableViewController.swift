@@ -12,7 +12,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     
     var popup : UIViewMacro?
     var macroMeals = [Macro]()
-    let dataMGR = DataManager()
+    let dataMGR = DataManager.sharedInstance
     var goal : MacroGoal?
 
     @IBAction func resetMacrosButton(sender: AnyObject) {
@@ -80,12 +80,11 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         }else{
             macroMeals.append(macro)
             dataMGR.saveMacrosToDevice(macro) { (success) -> Void in
-                print("Saved meal")
+                //print("Saved meal")
             }
         }
         tableView.reloadData()
-        popup.removeFromSuperview()
-        
+        cancelPopup()
     }
     
     func textFieldHasError(textField : UITextField) {
@@ -116,17 +115,14 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                         return false
                     }
                 } catch {
-                    print("Error initializing regex")
+                    //print("Error initializing regex")
                     return false
                 }
             }
         }
         return true
     }
-    
-    
    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let myMacros = dataMGR.getMyMacros(){
@@ -204,6 +200,11 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 cell.mealCarbs.text =  "\(macroMeals[indexPath.row].carbs)g"
                 cell.mealFats.text = "\(macroMeals[indexPath.row].fats)g"
                 cell.mealProteins.text = "\(macroMeals[indexPath.row].proteins)g"
+                cell.percentageGoalAchievedView.backgroundColor = UIColor.whiteColor()
+                cell.mealName.font = UIFont(name: "Marker Felt", size: 16)
+                cell.mealCarbs.font = UIFont(name: "Marker Felt", size: 15)
+                cell.mealFats.font = UIFont(name: "Marker Felt", size: 15)
+                cell.mealProteins.font = UIFont(name: "Marker Felt", size: 15)
                 return cell
             }else{
                 let cell = UITableViewCell()
@@ -214,11 +215,10 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 return cell
             }
         case 2:
-            if indexPath.row == 0
-            {
+            if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-                cell.backgroundColor = UIColor(hexString: "#D3D3D3")
+                //cell.backgroundColor = UIColor(hexString: "#D3D3D3")
                 cell.mealName.font = UIFont(name: "Marker Felt", size: 20)
                 cell.mealName.text = "Total"
                 if macroMeals.count > 0 {
@@ -240,11 +240,22 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                     cell.mealFats.text = "0g"
                     cell.mealProteins.text = "0g"
                 }
+                cell.percentageGoalAchievedView.backgroundColor = UIColor(hexString: "#D3D3D3")
+                cell.percentageGoalAchievedViewConstraint.constant = 0
                 return cell
-            }else{
+            } else {
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-                cell.backgroundColor = UIColor.greenColor()
+                // ** Testing filling up cell
+                cell.backgroundColor = nil //UIColor.greenColor()
+                var totalCount = 0
+                if macroMeals.count > 0 {
+                    for meal in macroMeals {
+                        totalCount += meal.carbs
+                        totalCount += meal.fats
+                        totalCount += meal.proteins
+                    }
+                }
                 
                 cell.mealName.font = UIFont(name: "Marker Felt", size: 20)
                 cell.mealName.text = "Goal"
@@ -252,6 +263,19 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                     cell.mealCarbs.text = "\(goal.carbs)g"
                     cell.mealFats.text = "\(goal.fats)g"
                     cell.mealProteins.text = "\(goal.proteins)g"
+                    
+                    // ** Testing filling up cell
+                    let goalCount = goal.carbs + goal.fats + goal.proteins
+                    let percentageComplete = Double(totalCount) / Double(goalCount)
+                    UIView.animateWithDuration(0.3, animations: {
+                        //cell.percentageGoalAchievedView.frame = CGRectMake(0,0,cell.bounds.width * CGFloat(percentageComplete),cell.bounds.height)
+                        if percentageComplete > 1 {
+                            cell.percentageGoalAchievedViewConstraint.constant = 0
+                        } else {
+                            cell.percentageGoalAchievedViewConstraint.constant = cell.bounds.width - (cell.bounds.width * CGFloat(percentageComplete))
+                        }
+                        cell.percentageGoalAchievedView.backgroundColor = UIColor.greenColor()
+                    })
                 }else {
                     cell.mealCarbs.text = "0g"
                     cell.mealFats.text = "0g"
@@ -319,19 +343,19 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func showNewMealPopup(meal : Macro?, row : Int?, goal : Bool){
-        tableView.setEditing(false, animated: true)
     
         if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
             self.popup = popup
-            popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
+            // ** Testing popup sliding in
+            popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, 300, 225) //CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
             popup.mealName.delegate = self
             popup.mealCarbs.delegate = self
             popup.mealFats.delegate = self
             popup.mealProteins.delegate = self
             popup.cancelMealButton.layer.borderWidth = 1
             popup.cancelMealButton.layer.borderColor = UIColor(hexString: "#0f3878").CGColor
-            popup.saveMealButton.addTarget(self, action: Selector("saveMealData"), forControlEvents: UIControlEvents.TouchUpInside)
-            popup.cancelMealButton.addTarget(self, action: Selector("cancelPopup"), forControlEvents: UIControlEvents.TouchUpInside)
+            popup.saveMealButton.addTarget(self, action: #selector(MacrosTableViewController.saveMealData), forControlEvents: UIControlEvents.TouchUpInside)
+            popup.cancelMealButton.addTarget(self, action: #selector(MacrosTableViewController.cancelPopup), forControlEvents: UIControlEvents.TouchUpInside)
             popup.layer.borderWidth = 3.0
             popup.layer.borderColor =  UIColor(hexString: "#0f3878").CGColor
             popup.layer.cornerRadius = 10
@@ -352,7 +376,9 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 popup.updateRow = -1
                 popup.mealNameHeight.constant = 0
                 popup.mealNameTextBoxHeight.constant = 0
-                popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, 300, 200)
+                popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, 300, 200) //CGRectMake((self.view.bounds.width-300)/2, 25, 300, 200)
+                // ** Testing popup sliding in
+                //popup.frame.origin.y = -400
                 if let setGoal = self.goal {
                     popup.mealCarbs.text = String(setGoal.carbs)
                     popup.mealFats.text = String(setGoal.fats)
@@ -361,12 +387,25 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 
             }
             self.view.addSubview(popup)
+            
+            // ** Testing popup sliding in
+            UIView.animateWithDuration(0.3, animations: {
+                popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, popup.bounds.width, popup.bounds.height)
+            }) { (completed) in
+                self.tableView.setEditing(false, animated: true)
+            }
         }
     }
 
     func cancelPopup(){
         guard let popup = popup else {return}
-        popup.removeFromSuperview()
+        // ** Testing popup sliding in
+        UIView.animateWithDuration(0.3, animations: {
+            popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, popup.bounds.width, popup.bounds.height)
+
+            }) { (completed) in
+                popup.removeFromSuperview()
+        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -379,29 +418,4 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         
         return true
     }
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -13,6 +13,8 @@ import Parse
 
 class DataManager {
     
+    static let sharedInstance = DataManager()
+    
     let appDel : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let defaults = NSUserDefaults.standardUserDefaults()
     
@@ -65,15 +67,15 @@ class DataManager {
     }
     
     func downloadImage(url: NSURL, completion : (image : UIImage?) -> Void) {
-        print("Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+        //print("Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
         getDataFromUrl(url) { (data, response, error)  in
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 guard let data = data where error == nil else {
-                    print(error?.localizedDescription)
+                    //print(error?.localizedDescription)
                     completion(image: nil)
                     return
                 }
-                print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+                //print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
                 completion(image: UIImage(data: data)!)
             }
         }
@@ -100,7 +102,7 @@ class DataManager {
                     return Entry(exerciseTitle: title, exerciseIdentifer: id, muscle_group: mainMuscleGroup)
                 }
             } catch {
-                print("There was an error fetching the entry by ID")
+                //print("There was an error fetching the entry by ID")
             }
         }
         return nil
@@ -127,7 +129,7 @@ class DataManager {
                 }
             }
         } catch {
-            print("There was an error fetching the workouts")
+            //print("There was an error fetching the workouts")
         }
         return workouts
     }
@@ -146,7 +148,7 @@ class DataManager {
                 try context.save()
             }
         }catch{
-            print("Error resetting macros")
+            //print("Error resetting macros")
             return
         }
 
@@ -201,7 +203,7 @@ class DataManager {
                 
             }
         } catch {
-            print("There was an error fetching exercises")
+            //print("There was an error fetching exercises")
         }
         
         
@@ -220,10 +222,10 @@ class DataManager {
                      context.deleteObject(result)
                 }
                 try context.save()
-                print("delete successful")
+                //print("delete successful")
             }
         }catch{
-            print("delete unsuccessful")
+            //print("delete unsuccessful")
         }
 
         let newMacro = NSEntityDescription.insertNewObjectForEntityForName("Macro_Goal", inManagedObjectContext: context)
@@ -233,9 +235,9 @@ class DataManager {
         
         do {
             try context.save()
-            print("save successful")
+            //print("save successful")
         } catch {
-            print("There was an error saving the goal")
+            //print("There was an error saving the goal")
         }
     }
     
@@ -254,7 +256,7 @@ class DataManager {
                 return MacroGoal(carbs: carbs, fats: fats, proteins: proteins)
             }
         } catch {
-            print("There was an error fetching goal")
+            //print("There was an error fetching goal")
         }
         return nil
     }
@@ -275,10 +277,10 @@ class DataManager {
                 result.setValue(macro.proteins, forKey: "proteins")
                 result.setValue(macro.expiration, forKey: "expiration")
                 try context.save()
-                print("update successful")
+                //print("update successful")
             }
         }catch{
-            print("update unsuccessful")
+           // print("update unsuccessful")
         }
 
     }
@@ -297,7 +299,7 @@ class DataManager {
             try context.save()
             completion(success: true)
         } catch {
-            print("There was an error saving the macro")
+            //print("There was an error saving the macro")
             completion(success: false)
         }
     }
@@ -314,10 +316,10 @@ class DataManager {
                 guard let result = results.first else {return}
                 context.deleteObject(result)
                 try context.save()
-                print("delete successful")
+                //print("delete successful")
             }
         }catch{
-            print("delete unsuccessful")
+            //print("delete unsuccessful")
         }
     }
 
@@ -343,7 +345,7 @@ class DataManager {
                 }
             }
         } catch {
-            print("There was an error fetching exercises")
+            //print("There was an error fetching exercises")
         }
         return exercises
     }
@@ -363,7 +365,7 @@ class DataManager {
             try context.save()
             completion(success: true)
         } catch {
-            print("There was an error saving the exercise")
+            //print("There was an error saving the exercise")
             completion(success: false)
         }
     }
@@ -393,11 +395,11 @@ class DataManager {
                 do {
                     try context.save()
                 } catch _ {
-                    print("error")
+                    //print("error")
                 }
             }
         } catch {
-            print("There was an error updating the local object's id")
+            //print("There was an error updating the local object's id")
         }
     }
     
@@ -420,7 +422,7 @@ class DataManager {
                 }
             }
         } catch {
-            print("There was an error updating the local exercise ids")
+            //print("There was an error updating the local exercise ids")
         }
     }
     

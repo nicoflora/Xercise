@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cjY-5V-uUy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cjY-5V-uUy">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -95,6 +95,10 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBy-D6-jGq">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="888g" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZ0-aY-wZ0">
                                             <rect key="frame" x="239" y="11" width="46" height="21"/>
                                             <constraints>
@@ -136,8 +140,12 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="gBy-D6-jGq" secondAttribute="bottom" id="HGa-LL-PFm"/>
                                         <constraint firstItem="qDl-Bn-K1x" firstAttribute="trailing" secondItem="Yth-Ft-ybQ" secondAttribute="trailingMargin" id="IeR-vP-3OZ"/>
                                         <constraint firstItem="fZ0-aY-wZ0" firstAttribute="centerY" secondItem="Yth-Ft-ybQ" secondAttribute="centerY" id="LEg-GP-LQ7"/>
+                                        <constraint firstItem="gBy-D6-jGq" firstAttribute="leading" secondItem="Yth-Ft-ybQ" secondAttribute="leading" id="UTV-fb-BaB"/>
+                                        <constraint firstItem="gBy-D6-jGq" firstAttribute="top" secondItem="Yth-Ft-ybQ" secondAttribute="top" id="fXf-n2-ogn"/>
+                                        <constraint firstAttribute="trailing" secondItem="gBy-D6-jGq" secondAttribute="trailing" id="feo-hy-beA"/>
                                         <constraint firstItem="rhk-o7-zUg" firstAttribute="centerY" secondItem="Yth-Ft-ybQ" secondAttribute="centerY" id="iMR-Wq-LsK"/>
                                         <constraint firstItem="fZ0-aY-wZ0" firstAttribute="leading" secondItem="rhk-o7-zUg" secondAttribute="trailing" constant="20" id="j7y-0Q-zI5"/>
                                         <constraint firstItem="qDl-Bn-K1x" firstAttribute="leading" secondItem="fZ0-aY-wZ0" secondAttribute="trailing" constant="20" id="kAj-iK-2sR"/>
@@ -152,6 +160,8 @@
                                     <outlet property="mealFats" destination="fZ0-aY-wZ0" id="2UA-7J-QrW"/>
                                     <outlet property="mealName" destination="coZ-k2-JyM" id="hhh-s2-6Gh"/>
                                     <outlet property="mealProteins" destination="qDl-Bn-K1x" id="bxz-ch-Ic1"/>
+                                    <outlet property="percentageGoalAchievedView" destination="gBy-D6-jGq" id="qum-DP-e1N"/>
+                                    <outlet property="percentageGoalAchievedViewConstraint" destination="feo-hy-beA" id="Inm-59-MQi"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -716,21 +726,6 @@
                                     <action selector="getExerciseButtonPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="7bV-Jq-Dt9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCp-Oq-XNz">
-                                <rect key="frame" x="36" y="447" width="303" height="37"/>
-                                <color key="backgroundColor" red="0.17254901960784313" green="0.29411764705882354" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="303" id="45F-Un-Mzc"/>
-                                    <constraint firstAttribute="height" constant="37" id="u2x-iD-2Hq"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="18"/>
-                                <state key="normal" title="Select a Muscle Group...">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="selectMuscleGroupBtnPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="Fq8-U1-SLH"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kb-4d-YAw">
                                 <rect key="frame" x="224" y="392" width="115" height="40"/>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -754,21 +749,15 @@
                             <constraint firstItem="9Kb-4d-YAw" firstAttribute="top" secondItem="FJc-CE-5ZJ" secondAttribute="bottom" constant="20" id="DPv-DQ-Zgu"/>
                             <constraint firstItem="FJc-CE-5ZJ" firstAttribute="centerX" secondItem="xXq-pE-lGO" secondAttribute="centerX" id="EHb-mT-Ah8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9Kb-4d-YAw" secondAttribute="trailing" constant="37" id="MhW-tj-6jY"/>
-                            <constraint firstItem="MCp-Oq-XNz" firstAttribute="centerX" secondItem="xXq-pE-lGO" secondAttribute="centerX" id="MvK-ic-5g7"/>
-                            <constraint firstItem="Pux-Uh-uyF" firstAttribute="top" secondItem="MCp-Oq-XNz" secondAttribute="bottom" constant="38" id="O4O-V9-XMs"/>
-                            <constraint firstItem="MCp-Oq-XNz" firstAttribute="top" secondItem="FJc-CE-5ZJ" secondAttribute="bottom" constant="75" id="TPP-nP-IcZ"/>
                             <constraint firstItem="FJc-CE-5ZJ" firstAttribute="top" secondItem="eme-qh-I5u" secondAttribute="bottom" constant="24" id="Y5O-4W-QXe"/>
                             <constraint firstItem="Pux-Uh-uyF" firstAttribute="top" secondItem="FJc-CE-5ZJ" secondAttribute="bottom" constant="20" id="YLG-fF-usn"/>
                             <constraint firstItem="FJc-CE-5ZJ" firstAttribute="top" secondItem="eme-qh-I5u" secondAttribute="bottom" constant="108" id="qus-th-rq0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9Kb-4d-YAw" secondAttribute="trailing" constant="20" id="rcU-Jp-cN1"/>
-                            <constraint firstItem="9Kb-4d-YAw" firstAttribute="top" secondItem="MCp-Oq-XNz" secondAttribute="bottom" constant="38" id="zhI-LG-O0s"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Y5O-4W-QXe"/>
-                                <exclude reference="O4O-V9-XMs"/>
                                 <exclude reference="MhW-tj-6jY"/>
-                                <exclude reference="zhI-LG-O0s"/>
                             </mask>
                         </variation>
                     </view>
@@ -789,7 +778,6 @@
                         <outlet property="animationImage" destination="FJc-CE-5ZJ" id="dfI-ea-CuV"/>
                         <outlet property="getExerciseButton" destination="Pux-Uh-uyF" id="uP7-1i-nh2"/>
                         <outlet property="getWorkoutButton" destination="9Kb-4d-YAw" id="mxJ-gv-oIP"/>
-                        <outlet property="selectMuscleGroupBtn" destination="MCp-Oq-XNz" id="3XY-Mh-mA0"/>
                         <segue destination="Bpm-05-4zj" kind="show" identifier="getWorkout" id="tSD-4U-aQr"/>
                         <segue destination="7Od-Tc-va4" kind="show" identifier="getExercise" id="WMk-xE-g5t"/>
                         <segue destination="Xwe-Jo-fUc" kind="show" identifier="showLogin" id="cMS-Lw-eUM"/>

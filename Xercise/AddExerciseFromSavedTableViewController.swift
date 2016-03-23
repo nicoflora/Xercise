@@ -13,7 +13,7 @@ class AddExerciseFromSavedTableViewController: UITableViewController {
     
     var exercisesToAdd = [Entry]()
     var savedExercises = [Entry]()
-    let dataMgr = DataManager()
+    let dataMgr = DataManager.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()

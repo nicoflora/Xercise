@@ -16,7 +16,7 @@ class InfoTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let constants = XerciseConstants()
+        let constants = XerciseConstants.sharedInstance
         infoCategories = constants.infoCategories
     }
 

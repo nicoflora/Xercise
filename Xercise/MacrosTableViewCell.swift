@@ -14,6 +14,8 @@ class MacrosTableViewCell: UITableViewCell {
     @IBOutlet var mealCarbs: UILabel!
     @IBOutlet var mealFats: UILabel!
     @IBOutlet var mealProteins: UILabel!
+    @IBOutlet var percentageGoalAchievedView: UIView!
+    @IBOutlet var percentageGoalAchievedViewConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

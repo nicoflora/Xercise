@@ -24,8 +24,8 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
     var heavySets = -1
     var enduranceSets = -1
     var activityIndicator = UIActivityIndicatorView()
-    let constants = XerciseConstants()
-    let dataMgr = DataManager()
+    let constants = XerciseConstants.sharedInstance
+    let dataMgr = DataManager.sharedInstance
     var addingFromWorkout = false
     var unsavedData = false
     var keyboardSize = CGSizeZero
@@ -308,33 +308,33 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
                 cell.title.tag = 1
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextFieldTextDidChangeNotification, object: nil)
                 cell.title.delegate = self
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
-                cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.addImageButton.addTarget(self, action: #selector(CreateNewExerciseTableViewController.addImage(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.exerciseImage.image = image
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextViewTextDidChangeNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.removePlaceholder(_:)), name: UITextViewTextDidBeginEditingNotification, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.replacePlaceholder(_:)), name: UITextViewTextDidEndEditingNotification, object: nil)
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
                 cell.heavyStepper.tag = 0
                 cell.enduranceStepper.tag = 1
-                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                 return cell
             case 4:
                 let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
                 cell.heavyStepper.tag = 2
                 cell.enduranceStepper.tag = 3
-                cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                 return cell
             default:
                 let cell = UITableViewCell()
@@ -348,7 +348,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 switch indexPath.section {
                 case 0:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextFieldTextDidChangeNotification, object: nil)
                     cell.title.delegate = self
                     return cell
                 case 1:
@@ -380,28 +380,28 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                     return cell
                 case 3:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
-                    cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.addImageButton.addTarget(self, action: #selector(CreateNewExerciseTableViewController.addImage(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                     cell.exerciseImage.image = image
                     return cell
                 case 4:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextViewTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.removePlaceholder(_:)), name: UITextViewTextDidBeginEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.replacePlaceholder(_:)), name: UITextViewTextDidEndEditingNotification, object: nil)
                     return cell
                 case 5:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
                     cell.heavyStepper.tag = 0
                     cell.enduranceStepper.tag = 1
-                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                     return cell
                 case 6:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
                     cell.heavyStepper.tag = 2
                     cell.enduranceStepper.tag = 3
-                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                     return cell
                 default:
                     let cell = UITableViewCell()
@@ -414,7 +414,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                 switch indexPath.section {
                 case 0:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseTitle", forIndexPath: indexPath) as! ExerciseTitleTableViewCell
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextFieldTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextFieldTextDidChangeNotification, object: nil)
                     cell.title.delegate = self
                     return cell
                 case 1:
@@ -427,29 +427,29 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                     return cell
                 case 2:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseImage", forIndexPath: indexPath) as! ExerciseImageTableViewCell
-                    cell.addImageButton.addTarget(self, action: "addImage:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell.addImageButton.addTarget(self, action: #selector(CreateNewExerciseTableViewController.addImage(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                     cell.exerciseImage.image = image
                     return cell
                 case 3:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseDescription", forIndexPath: indexPath) as! ExerciseDescriptionTableViewCell
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "saveData:", name: UITextViewTextDidChangeNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePlaceholder:", name: UITextViewTextDidBeginEditingNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "replacePlaceholder:", name: UITextViewTextDidEndEditingNotification, object: nil)
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.saveData(_:)), name: UITextViewTextDidChangeNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.removePlaceholder(_:)), name: UITextViewTextDidBeginEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.replacePlaceholder(_:)), name: UITextViewTextDidEndEditingNotification, object: nil)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CreateNewExerciseTableViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
                     return cell
                 case 4:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseReps", forIndexPath: indexPath) as! ExerciseRepsTableViewCell
                     cell.heavyStepper.tag = 0
                     cell.enduranceStepper.tag = 1
-                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                     return cell
                 case 5:
                     let cell = tableView.dequeueReusableCellWithIdentifier("exerciseSets", forIndexPath: indexPath) as! ExerciseSetsTableViewCell
                     cell.heavyStepper.tag = 2
                     cell.enduranceStepper.tag = 3
-                    cell.heavyStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-                    cell.enduranceStepper.addTarget(self, action: "stepperValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+                    cell.heavyStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                    cell.enduranceStepper.addTarget(self, action: #selector(CreateNewExerciseTableViewController.stepperValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
                     return cell
                 default:
                     let cell = UITableViewCell()

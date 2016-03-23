@@ -9,15 +9,13 @@
 import UIKit
 import Parse
 
-class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
+class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITabBarControllerDelegate {
     
     @IBOutlet var animationImage: UIImageView!
-    @IBOutlet var selectMuscleGroupBtn: UIButton!
-    
     @IBOutlet var getWorkoutButton: UIButton!
     @IBOutlet var getExerciseButton: UIButton!
     
-    let dataMgr = DataManager()
+    let dataMgr = DataManager.sharedInstance
     var imageCounter = 1
     var isAnimatingImage = false
     var timer = NSTimer()
@@ -26,18 +24,23 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
     var selectedMuscleGroup = ""
     var exercise = Exercise(name: "", muscleGroup: [String](), identifier: "", description: "", image: UIImage())
     var workout = Workout(name: "", muscleGroup: [String](), identifier: "", exerciseIds: [""], exerciseNames: nil, publicWorkout: false, workoutCode: nil)
+    var disclaimerAccepted = false
+    let coverView = UIView(frame: UIScreen.mainScreen().bounds)
+    var mainGroupDropDownMenu = IGLDropDownMenu()
+    var subGroupDropDownMenu = IGLDropDownMenu()
+    var selectedMainMuscleGroupIndex = -1
+    var selectedSubMuscleGroupIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let constants = XerciseConstants()
+        let constants = XerciseConstants.sharedInstance
         muscleGroups = constants.muscleGroupsArray
         
         getWorkoutButton.layer.cornerRadius = 10
         getExerciseButton.layer.cornerRadius = 10
-        selectMuscleGroupBtn.layer.cornerRadius = 10
         
-        // Different button styling
+        // Style Get Exercise and Get Workout buttons
         getExerciseButton.backgroundColor = UIColor.groupTableViewBackgroundColor()
         getExerciseButton.layer.borderWidth = 3.0
         getExerciseButton.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
@@ -54,8 +57,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
         getWorkoutButton.layer.shadowOffset = CGSizeMake(0, 0)
         getWorkoutButton.layer.shadowOpacity = 0.5
         
-        selectMuscleGroupBtn.hidden = true
-        selectMuscleGroupBtn.enabled = false
+        checkForDisclaimerAcceptance()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,11 +67,14 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
             presentLoginVC()
         }
         
+        tabBarController?.delegate = self
         setupDropDownMenu()
 
     }
     
     override func viewWillDisappear(animated: Bool) {
+        tabBarController?.delegate = nil
+        
         isAnimatingImage = false
         timer.invalidate()
         
@@ -83,11 +88,6 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
     
     
     // MARK: - Drop Down Functions
-    
-    var mainGroupDropDownMenu = IGLDropDownMenu()
-    var subGroupDropDownMenu = IGLDropDownMenu()
-    var selectedMainMuscleGroupIndex = -1
-    var selectedSubMuscleGroupIndex = -1
     
     func setupDropDownMenu() {
         // Setup Main Group Dropdown
@@ -159,7 +159,9 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
         dropDownMenu.dropDownItems = dropDownItems
         dropDownMenu.type = IGLDropDownMenuType.FlipVertical
         dropDownMenu.itemAnimationDelay = 0
-        //dropDownMenu.animationDuration =
+        dropDownMenu.layer.shadowColor = UIColor.grayColor().CGColor
+        dropDownMenu.layer.shadowOffset = CGSizeMake(0, 0)
+        dropDownMenu.layer.shadowOpacity = 0.5
         dropDownMenu.delegate = self
         return dropDownMenu
     }
@@ -226,49 +228,69 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
         return subMuscleGroupDropDownItems
     }
     
-    func requestSubMuscleGroup(index : Int) {
-        let subGroupActionSheet = UIAlertController(title: nil, message: "Select a sub-muscle group:", preferredStyle: UIAlertControllerStyle.ActionSheet)
-        for (subIndex, _) in muscleGroups[index].subGroups.enumerate() {
-            subGroupActionSheet.addAction(createActionSheetAction(index, subIndex: subIndex))
-        }
-        subGroupActionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-        self.presentViewController(subGroupActionSheet, animated: true, completion: nil)
-    }
     
-    func createActionSheetAction(index : Int, subIndex : Int?) -> UIAlertAction {
-        if let subIndex = subIndex {
-            // Sub index was passed, sub muscle group
-            return UIAlertAction(title: muscleGroups[index].subGroups[subIndex], style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                if subIndex == 0 {
-                    self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].mainGroup)", forState: UIControlState.Normal)
-                } else {
-                    self.selectedMuscleGroup = self.muscleGroups[index].subGroups[subIndex]
-                    self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].subGroups[subIndex])", forState: UIControlState.Normal)
-                }
-            })
-        } else {
-            // Main muscle group
-            return UIAlertAction(title: muscleGroups[index].mainGroup, style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                self.selectedMuscleGroup = self.muscleGroups[index].mainGroup
-                self.selectMuscleGroupBtn.setTitle("Muscle Group: \(self.muscleGroups[index].mainGroup)", forState: UIControlState.Normal)
-                self.requestSubMuscleGroup(index)
-            })
-        }
-    }
+    // MARK: - Disclaimer Function
     
-    @IBAction func selectMuscleGroupBtnPressed(sender: AnyObject) {
-        
-        if muscleGroups.count > 0 {
-            let actionSheet = UIAlertController(title: nil, message: "Select a muscle group:", preferredStyle: UIAlertControllerStyle.ActionSheet)
+    func checkForDisclaimerAcceptance() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        //defaults.setBool(false, forKey: "acceptedDisclaimer") // ** Testing only
+        if !defaults.boolForKey("acceptedDisclaimer") {
+            // Add cover view
+            //let coverView = UIView(frame: UIScreen.mainScreen().bounds)
+            coverView.backgroundColor = UIColor.darkGrayColor()
+            coverView.alpha = 1
             
-            for (index, _) in muscleGroups.enumerate() {
-                actionSheet.addAction(createActionSheetAction(index, subIndex: nil))
+            let touchRecognizer = UITapGestureRecognizer(target: self, action: #selector(NewXerciseViewController.disclaimerDeniedTouches(_:)))
+            coverView.addGestureRecognizer(touchRecognizer)
+            
+            let label = UILabel(frame: CGRectMake(0,0,300,90))
+            label.numberOfLines = 3
+            label.textAlignment = NSTextAlignment.Center
+            label.text = "You must accept the Disclaimer before using the App!"
+            label.font = UIFont(name: "Marker Felt", size: 20)
+            label.textColor = UIColor.whiteColor()
+            label.center = coverView.center
+            coverView.addSubview(label)
+            guard let navigationController = navigationController else {return}
+            
+            if !navigationController.view.subviews.contains(coverView) {
+            navigationController.view.addSubview(coverView)
             }
-            actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(actionSheet, animated: true, completion: nil)
+        
+            // Show alert
+            let alert = UIAlertController(title: "Disclaimer", message: "By using this application, you hereby accept the Privacy Policy of Xercise Fitness, and accept that you perform any exercise or workout obtained from the app at your own risk. Xercise Fitness recommends that you consult with a doctor prior to participating in any physical activity.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Don't Accept", style: UIAlertActionStyle.Default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Read Privacy Policy", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                guard let url = NSURL(string: "http://aristotleii.monmouth.edu/~s0874982/Xercise/mobile-privacy-policy.html") else {return}
+                UIApplication.sharedApplication().openURL(url)
+            }))
+            alert.addAction(UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                defaults.setBool(true, forKey: "acceptedDisclaimer")
+                UIView.animateWithDuration(1.0, animations: { () -> Void in
+                    self.coverView.removeFromSuperview()
+                })
+                self.disclaimerAccepted = true
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            disclaimerAccepted = true
         }
+        
     }
     
+    func disclaimerDeniedTouches(gesture : UITapGestureRecognizer) {
+        checkForDisclaimerAcceptance()
+    }
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        if !disclaimerAccepted {
+            return false
+        }
+        return true
+    }
+    
+    
+    // MARK: - IBAction Functions
     
     @IBAction func getExerciseButtonPressed(sender: AnyObject) {
         // Start animation
@@ -307,15 +329,15 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
     }
     
     func downloadImage(url: NSURL, completion : (image : UIImage?) -> Void) {
-        print("Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+        //"Started downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
         getDataFromUrl(url) { (data, response, error)  in
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 guard let data = data where error == nil else {
-                    print(error?.localizedDescription)
+                    //print(error?.localizedDescription)
                     completion(image: nil)
                     return
                 }
-                print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
+                //print("Finished downloading \"\(url.URLByDeletingPathExtension!.lastPathComponent!)\".")
                 completion(image: UIImage(data: data)!)
             }
         }
@@ -356,7 +378,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
     
     func updateImage(sender: AnyObject) {
         if isAnimatingImage == false {
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("animateImage"), userInfo: nil, repeats: true)
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(NewXerciseViewController.animateImage), userInfo: nil, repeats: true)
             isAnimatingImage = true
         } else {
             isAnimatingImage = false
@@ -368,7 +390,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate {
         if imageCounter == 9 {
             imageCounter = 1
         } else {
-            imageCounter++
+            imageCounter += 1
         }
         animationImage.image = UIImage(named: "animationFrame\(imageCounter)")
     }
