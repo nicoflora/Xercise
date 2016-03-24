@@ -34,17 +34,8 @@ class XerciseConstants {
     
     let exerciseDescriptionText = "An exercise description should contain instructions for performing this exercise, including all equipment and movements. Also mention the skill level required for this exercise."
     
-    let muscleGroupsArray : [MuscleGroup] = [MuscleGroup(mainGroup : "Core", muscleSubGroups : ["All Sub Muscle Groups", "Abs", "Obliques"]), MuscleGroup(mainGroup : "Arms", muscleSubGroups : ["All Sub Muscle Groups","Biceps", "Triceps", "Forearms"]), MuscleGroup(mainGroup : "Back", muscleSubGroups : ["All Sub Muscle Groups", "Lats", "Middle Back", "Lower Back"]), MuscleGroup(mainGroup : "Chest", muscleSubGroups : ["All Sub Muscle Groups", "Upper Chest", "Middle Chest", "Lower Chest"]), MuscleGroup(mainGroup : "Legs", muscleSubGroups : ["All Sub Muscle Groups", "Glutes", "Hamstrings", "Quadriceps", "Calves"]), MuscleGroup(mainGroup : "Shoulders", muscleSubGroups : ["All Sub Muscle Groups", "Front Deltoids", "Side Deltoids", "Rear Deltoids", "Traps"])]
+    let muscleGroupsArray : [MuscleGroup] = [MuscleGroup(mainGroup : "Arms", muscleSubGroups : ["All Sub Muscle Groups","Biceps", "Triceps", "Forearms"]), MuscleGroup(mainGroup : "Back", muscleSubGroups : ["All Sub Muscle Groups", "Lats", "Middle Back", "Lower Back"]), MuscleGroup(mainGroup : "Chest", muscleSubGroups : ["All Sub Muscle Groups", "Upper Chest", "Middle Chest", "Lower Chest"]), MuscleGroup(mainGroup : "Core", muscleSubGroups : ["All Sub Muscle Groups", "Abs", "Obliques"]), MuscleGroup(mainGroup : "Legs", muscleSubGroups : ["All Sub Muscle Groups", "Glutes", "Hamstrings", "Quadriceps", "Calves"]), MuscleGroup(mainGroup : "Shoulders", muscleSubGroups : ["All Sub Muscle Groups", "Front Deltoids", "Side Deltoids", "Rear Deltoids", "Traps"])]
     
-    let muscleGroups = ["Abs", "Arms", "Back", "Chest", "Legs", "Shoulders"]
+    let muscleGroups = ["Arms", "Back", "Chest", "Core", "Legs", "Shoulders"]
     
-}
-
-enum mainMuscleGroup {
-    case abs
-    case arms
-    case back
-    case chest
-    case legs
-    case shoulders
 }
