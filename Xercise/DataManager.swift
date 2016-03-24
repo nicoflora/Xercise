@@ -728,54 +728,75 @@ class DataManager {
     }
 
     func queryParseForExercisesFromGroupCode(ids : [String], completion : (success : Bool) -> Void) {
-        //var failure = false
-        //var successes = 0
+        var exercisesToFetch = [String]()
         var wasSuccessful = false
+        var attempts = 0
+        // Check if any exercises are already saved to the device
         for id in ids {
             // Check to see if this exercise is already stored on the device
             self.queryForItemByID(id, entityName: "Exercise", completion: { (success) -> Void in
                 if success {
-                   //successes += 1
+                    attempts += 1
                     wasSuccessful = true
-                    /*if !failure && successes == ids.count {
+                    
+                    if attempts == ids.count {
+                        // All exercises were saved to device
                         completion(success: true)
                         return
-                    } else if failure {
-                        completion(success: false)
-                        return
-                    }*/
-                } else {
-                    // Exercise not stored on device - query for it
-                    let query = PFQuery(className: "Exercise")
-                    query.whereKey("objectId", equalTo: id)
-                    query.whereKey("approved", equalTo: true)
-                    query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-                        guard error == nil else {return}
-                        guard let objects = objects else {return}
-                        guard let firstObject = objects.first else {return}
-                        // Get image data and save to device
-                        guard let picture = firstObject.valueForKey("image") as? PFFile else {return}
-                        picture.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-                            guard error == nil else {return}
-                            guard let imageData = imageData else {return}
-                            guard let name = firstObject.valueForKey("name") as? String else {return}
-                            guard let identifier = firstObject.valueForKey("objectId") as? String else {return}
-                            guard let muscleGroup = firstObject.valueForKey("muscle_groups") as? [String] else {return}
-                            guard let description = firstObject.valueForKey("exercise_desc") as? String else {return}
-                            self.saveExerciseToDevice(name, id: identifier, muscleGroup: muscleGroup, image: imageData, exerciseDescription: description, completion: { (success) -> Void in
-                                if success {
-                                    if !wasSuccessful {
-                                        wasSuccessful = true
-                                    }
-                                }
-                            })
-                        })
-                        
                     }
+                } else {
+                    exercisesToFetch.append(id)
                 }
             })
         }
-        completion(success: wasSuccessful)
+        
+        // Fetch all exercises which are not saved to the device
+        let query = PFQuery(className: "Exercise")
+        query.whereKey("objectId", containedIn: exercisesToFetch)
+        query.whereKey("approved", equalTo: true)
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            guard error == nil else {completion(success: wasSuccessful);return}
+            guard let objects = objects else {completion(success: wasSuccessful);return}
+            for object in objects {
+                // Check number of attempts
+                if attempts == ids.count {
+                    // Attempted to get every exercise - return completion handler
+                    completion(success: wasSuccessful)
+                    return
+                }
+                
+                // Try to get each exercise's data and save to device
+                guard let picture = object.valueForKey("image") as? PFFile else {attempts += 1;continue}
+                picture.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
+                    guard error == nil else {attempts += 1;return}
+                    guard let imageData = imageData else {attempts += 1;return}
+                    guard let name = object.valueForKey("name") as? String else {attempts += 1;return}
+                    guard let identifier = object.valueForKey("objectId") as? String else {attempts += 1;return}
+                    guard let muscleGroup = object.valueForKey("muscle_groups") as? [String] else {attempts += 1;return}
+                    guard let description = object.valueForKey("exercise_desc") as? String else {attempts += 1;return}
+                    self.saveExerciseToDevice(name, id: identifier, muscleGroup: muscleGroup, image: imageData, exerciseDescription: description, completion: { (success) -> Void in
+                        attempts += 1
+                        if success {
+                            if !wasSuccessful {
+                                wasSuccessful = true
+                            }
+                        }
+                        // Check number of attempts
+                        if attempts == ids.count {
+                            // Attempted to get every exercise - return completion handler
+                            completion(success: wasSuccessful)
+                            return
+                        }
+                    })
+                })
+            }
+            // Check number of attempts
+            if attempts == ids.count {
+                // Attempted to get every exercise - return completion handler
+                completion(success: wasSuccessful)
+                return
+            }
+        }
     }
     
     func queryForExerciseFromParse(id : String, completion : (exercise : Exercise?) -> Void) {

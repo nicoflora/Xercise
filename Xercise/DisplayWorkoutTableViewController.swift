@@ -25,6 +25,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
     var displayingGeneratedWorkout = false
     var activityIndicator = UIActivityIndicatorView()
     @IBOutlet var shareWithGroupButton: UIButton!
+    var copyPopup = UIAlertController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,6 +210,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
         activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
@@ -367,6 +369,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
             } else if workoutToDisplay.publicWorkout && exercises.count > 0 {
                 copyText(workoutToDisplay.identifier)
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
             }
         }
     }
@@ -390,9 +393,6 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
     
     func hidePopup() {
         self.dismissViewControllerAnimated(true, completion: nil)
-        if exercises.count > 0 && tableView.numberOfRowsInSection(2) == exercises.count + 1 {
-            tableView.deselectRowAtIndexPath(NSIndexPath(forRow: exercises.count + 1, inSection: 2), animated: true)
-        }
     }
 
     

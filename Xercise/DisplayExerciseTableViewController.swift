@@ -351,7 +351,8 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
         activityIndicator.hidesWhenStopped = true
         activityIndicator.alpha = 1.0
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.backgroundColor = UIColor.blackColor()
+        activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         self.view.addSubview(activityIndicator)
         self.view.bringSubviewToFront(activityIndicator)
         activityIndicator.startAnimating()

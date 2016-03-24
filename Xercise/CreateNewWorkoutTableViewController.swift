@@ -210,6 +210,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
         activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()

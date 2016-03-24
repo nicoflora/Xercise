@@ -30,6 +30,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
     var subGroupDropDownMenu = IGLDropDownMenu()
     var selectedMainMuscleGroupIndex = -1
     var selectedSubMuscleGroupIndex = -1
+    var tapGesture = UITapGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,8 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         getWorkoutButton.layer.shadowOpacity = 0.5
         
         checkForDisclaimerAcceptance()
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(NewXerciseViewController.handleTapGesture(_:)))
+        tapGesture.cancelsTouchesInView = false
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -91,6 +94,9 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
     
     func setupDropDownMenu() {
         // Setup Main Group Dropdown
+        mainGroupDropDownMenu.removeFromSuperview()
+        subGroupDropDownMenu.removeFromSuperview()
+        
         var dropdownItems = [IGLDropDownItem]()
         for group in muscleGroups {
             dropdownItems.append(createDropDownItem(group.mainGroup, dropDownHeader: false))
@@ -121,7 +127,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         mainGroupDropDownMenu.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 275) / 2, firstDropDownYValue + 15, 275, 40)
         self.view.addSubview(mainGroupDropDownMenu)
         mainGroupDropDownMenu.reloadView()
-
+        
         subGroupDropDownMenu.frame = CGRectMake((UIScreen.mainScreen().bounds.width - 250) / 2, mainGroupDropDownMenu.frame.maxY + 15, 250, 40)
         self.view.addSubview(subGroupDropDownMenu)
         subGroupDropDownMenu.reloadView()
@@ -134,19 +140,12 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         
         if dropDownHeader {
             // Apply special styling for header
-            /*
-            // Styling with blue background - white text
-            dropDownItem.backgroundColor = UIColor(hexString: "#2c4b85")
-            dropDownItem.textLabel.textColor = UIColor.whiteColor()
-            */
-            
             // Styling with gray background, blue text and blue border
             dropDownItem.backgroundColor = UIColor.groupTableViewBackgroundColor()
             dropDownItem.layer.borderWidth = 3.0
             dropDownItem.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
             dropDownItem.layer.cornerRadius = 10
             dropDownItem.textLabel.textColor = UIColor(hexString: "#2c4b85")
-            
         }
         return dropDownItem
     }
@@ -201,6 +200,9 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
     
     func dropDownMenu(dropDownMenu: IGLDropDownMenu!, expandingChanged isExpending: Bool) {
         if isExpending {
+            // Add a tap gesture recognizer to monitor taps outside of the view
+            self.view.addGestureRecognizer(tapGesture)
+            
             // Check to collapse & hide other dropdowns
             if dropDownMenu == mainGroupDropDownMenu {
                 self.view.bringSubviewToFront(dropDownMenu)
@@ -212,6 +214,8 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
                     mainGroupDropDownMenu.toggleView()
                 }
             }
+        } else {
+            self.view.removeGestureRecognizer(tapGesture)
         }
     }
     
@@ -426,6 +430,21 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func handleTapGesture(gesture : UITapGestureRecognizer) {
+        let touchLocation = gesture.locationInView(self.view)
+        if mainGroupDropDownMenu.expanding {
+            if !mainGroupDropDownMenu.frame.contains(touchLocation) {
+                // Touches are outside of the dropdown - collapse it
+                mainGroupDropDownMenu.toggleView()
+            }
+        } else if subGroupDropDownMenu.expanding {
+            if !subGroupDropDownMenu.frame.contains(touchLocation) {
+                // Touches are outside of the dropdown - collapse it
+                subGroupDropDownMenu.toggleView()
+            }
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

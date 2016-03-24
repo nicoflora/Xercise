@@ -14,6 +14,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     var macroMeals = [Macro]()
     let dataMGR = DataManager.sharedInstance
     var goal : MacroGoal?
+    var tapGesture = UITapGestureRecognizer()
 
     @IBAction func resetMacrosButton(sender: AnyObject) {
         if macroMeals.count > 0 {
@@ -135,6 +136,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             tableView.reloadData()
         }
         
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(_:)))
     }
 
     override func didReceiveMemoryWarning() {
@@ -246,8 +248,8 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             } else {
                 let cell = tableView.dequeueReusableCellWithIdentifier("macroMeal", forIndexPath: indexPath) as! MacrosTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
-                // ** Testing filling up cell
-                cell.backgroundColor = nil //UIColor.greenColor()
+                // Fill up cell for goal completion
+                cell.percentageGoalAchievedView.backgroundColor = UIColor.whiteColor()
                 var totalCount = 0
                 if macroMeals.count > 0 {
                     for meal in macroMeals {
@@ -264,18 +266,20 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                     cell.mealFats.text = "\(goal.fats)g"
                     cell.mealProteins.text = "\(goal.proteins)g"
                     
-                    // ** Testing filling up cell
+                    // Fill up cell according to the percentage complete the goal is
                     let goalCount = goal.carbs + goal.fats + goal.proteins
-                    let percentageComplete = Double(totalCount) / Double(goalCount)
-                    UIView.animateWithDuration(0.3, animations: {
-                        //cell.percentageGoalAchievedView.frame = CGRectMake(0,0,cell.bounds.width * CGFloat(percentageComplete),cell.bounds.height)
-                        if percentageComplete > 1 {
-                            cell.percentageGoalAchievedViewConstraint.constant = 0
-                        } else {
-                            cell.percentageGoalAchievedViewConstraint.constant = cell.bounds.width - (cell.bounds.width * CGFloat(percentageComplete))
-                        }
-                        cell.percentageGoalAchievedView.backgroundColor = UIColor.greenColor()
-                    })
+                    if totalCount > 0 && goalCount > 0 {
+                        let percentageComplete = Double(totalCount) / Double(goalCount)
+                        UIView.animateWithDuration(0.3, animations: {
+                            //cell.percentageGoalAchievedView.frame = CGRectMake(0,0,cell.bounds.width * CGFloat(percentageComplete),cell.bounds.height)
+                            if percentageComplete > 1 {
+                                cell.percentageGoalAchievedViewConstraint.constant = 0
+                            } else {
+                                cell.percentageGoalAchievedViewConstraint.constant = cell.bounds.width - (cell.bounds.width * CGFloat(percentageComplete))
+                            }
+                            cell.percentageGoalAchievedView.backgroundColor = UIColor.greenColor()
+                        })
+                    }
                 }else {
                     cell.mealCarbs.text = "0g"
                     cell.mealFats.text = "0g"
@@ -290,9 +294,6 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-
-
-
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         switch indexPath.section{
@@ -306,7 +307,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
             }
             
         case 2:
-            if indexPath.row == 0{
+            if indexPath.row == 0 {
                 return false
             }else{
                 return true
@@ -320,18 +321,21 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "Delete") { (Action, indexPath) -> Void in
+            self.tableView.userInteractionEnabled = false
             self.dataMGR.deleteMacrosFromDevice(self.macroMeals[indexPath.row])
             self.macroMeals.removeAtIndex(indexPath.row)
             tableView.reloadData()
+            self.tableView.userInteractionEnabled = true
         }
         let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: "Edit") { (Action, indexPath) -> Void in
-            
+            self.tableView.userInteractionEnabled = false
             if indexPath.section == 2 && indexPath.row == 1{
                 self.showNewMealPopup(nil, row : nil, goal : true)
-            }else {
+            } else {
                 self.showNewMealPopup(self.macroMeals[indexPath.row], row: indexPath.row, goal : false)
 
             }
+            self.tableView.userInteractionEnabled = true
         }
         editAction.backgroundColor = UIColor(hexString: "#007aff")
         if indexPath.section == 1
@@ -343,10 +347,11 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     func showNewMealPopup(meal : Macro?, row : Int?, goal : Bool){
+        // If a popup is already being displayed, don't display another one
+        guard popup == nil else {return}
     
         if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
             self.popup = popup
-            // ** Testing popup sliding in
             popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, 300, 225) //CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
             popup.mealName.delegate = self
             popup.mealCarbs.delegate = self
@@ -366,7 +371,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 popup.mealFats.text = String(meal.fats)
                 popup.mealProteins.text = String(meal.proteins)
                 popup.updateRow = row
-            }else if goal {
+            } else if goal {
                 popup.popUpTitle.text = "Edit Goal"
                 popup.mealName.hidden = true
                 popup.mealName.enabled = false
@@ -377,18 +382,17 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
                 popup.mealNameHeight.constant = 0
                 popup.mealNameTextBoxHeight.constant = 0
                 popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, 300, 200) //CGRectMake((self.view.bounds.width-300)/2, 25, 300, 200)
-                // ** Testing popup sliding in
-                //popup.frame.origin.y = -400
                 if let setGoal = self.goal {
                     popup.mealCarbs.text = String(setGoal.carbs)
                     popup.mealFats.text = String(setGoal.fats)
                     popup.mealProteins.text = String(setGoal.proteins)
                 }
-                
             }
+            // Add the popup to the view and add a tapGestureRecognizer to cancel the popup
             self.view.addSubview(popup)
+            self.view.addGestureRecognizer(tapGesture)
             
-            // ** Testing popup sliding in
+            // Animate popup in
             UIView.animateWithDuration(0.3, animations: {
                 popup.frame = CGRectMake((self.view.bounds.width-300)/2, 25, popup.bounds.width, popup.bounds.height)
             }) { (completed) in
@@ -399,12 +403,23 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
 
     func cancelPopup(){
         guard let popup = popup else {return}
-        // ** Testing popup sliding in
+        // Animate popup out
         UIView.animateWithDuration(0.3, animations: {
             popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, popup.bounds.width, popup.bounds.height)
 
             }) { (completed) in
                 popup.removeFromSuperview()
+                self.popup = nil
+                self.view.removeGestureRecognizer(self.tapGesture)
+        }
+    }
+    
+    func handleTapGesture(gesture : UITapGestureRecognizer) {
+        let touchLocation = gesture.locationInView(self.view)
+        guard let popup = popup else {return}
+        if !popup.frame.contains(touchLocation) {
+            // Touches outside of the popup - cancel it
+            cancelPopup()
         }
     }
     
