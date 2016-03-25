@@ -18,24 +18,6 @@ class ExerciseRepsTableViewCell: UITableViewCell {
     var numberOfHeavyReps = -1
     var numberOfEnduranceReps = -1
     
-    var heavyRepCount : Int {
-        get {
-            return Int(heavyStepper.value) //Int(heavyReps.text!)!  //Int(heavyStepper.value)
-        }
-        set(reps) {
-            heavyRepCount = reps
-        }
-    }
-    
-    var enduranceRepCount : Int {
-        get {
-            return Int(enduranceReps.text!)! //Int(enduranceStepper.value)
-        }
-        set(reps) {
-            enduranceRepCount = reps
-        }
-    }
-    
     @IBAction func heavyStepperValueChanged(sender: UIStepper) {
         numberOfHeavyReps = Int(sender.value)
         heavyReps.text = Int(sender.value).description

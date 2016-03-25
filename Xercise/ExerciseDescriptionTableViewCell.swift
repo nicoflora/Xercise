@@ -11,12 +11,12 @@ import UIKit
 class ExerciseDescriptionTableViewCell: UITableViewCell {
 
     @IBOutlet var exerciseDescription: UITextView!
+    let constants = XerciseConstants.sharedInstance
     
     var exerciseDescriptionText : String {
         get {
             return exerciseDescription.text!
         }
-        
         set(text) {
             exerciseDescription.text = text
         }
@@ -24,11 +24,8 @@ class ExerciseDescriptionTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        
-        let constants = XerciseConstants()
-        
         exerciseDescription.text = constants.exerciseDescriptionText
+        exerciseDescription.textColor = UIColor.lightGrayColor()
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

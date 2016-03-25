@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15A284" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15A278b" minimumToolsVersion="Automatic">
     <entity name="Exercise" syncable="YES">
         <attribute name="exercise_desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="muscle_group" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="muscle_group" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="Macro_Days" syncable="YES">
-        <relationship name="meals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro_Meal" syncable="YES"/>
     </entity>
     <entity name="Macro_Goal" syncable="YES">
         <attribute name="carbs" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -17,22 +14,24 @@
     </entity>
     <entity name="Macro_Meal" syncable="YES">
         <attribute name="carbs" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="expiration" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="fats" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proteins" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="Macros" syncable="YES">
-        <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro_Goal" syncable="YES"/>
-    </entity>
     <entity name="Workout" syncable="YES">
-        <attribute name="muscle_group" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" syncable="YES"/>
+        <attribute name="exercise_ids" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="muscle_group" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicWorkout" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="workoutCode" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="Workout" positionX="-54" positionY="27" width="128" height="75"/>
-        <element name="Macros" positionX="-45" positionY="45" width="128" height="60"/>
         <element name="Macro_Goal" positionX="-36" positionY="54" width="128" height="90"/>
-        <element name="Macro_Days" positionX="-9" positionY="81" width="128" height="60"/>
-        <element name="Macro_Meal" positionX="0" positionY="90" width="128" height="90"/>
+        <element name="Macro_Meal" positionX="0" positionY="90" width="128" height="135"/>
+        <element name="Workout" positionX="-54" positionY="27" width="128" height="135"/>
     </elements>
 </model>

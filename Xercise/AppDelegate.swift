@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import Parse
+import FBSDKCoreKit
+import ParseFacebookUtilsV4
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("04vnOim3efwtboWA2ZFc8FNpaqQeiLhkN7GPBkAD",
             clientKey: "0JdrSyHoct17XvRnzlXqiIJzZuEknmIiUrAKPSZf")
         
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+
+        
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
@@ -30,10 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.tintColor = UIColor.whiteColor() //UIColor(red: 128, green: 175, blue: 220, alpha: 1)
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
-        //navigationBarAppearace.translucent = false
-        
         
         return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -52,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -123,5 +131,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+public extension UIColor {
+    convenience init(hexString:String) {
+        let hexString:NSString = hexString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let scanner = NSScanner(string: hexString as String)
+        
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        
+        var color:UInt32 = 0
+        scanner.scanHexInt(&color)
+        
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        
+        self.init(red:red, green:green, blue:blue, alpha:1)
+    }
+    
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return NSString(format:"#%06x", rgb) as String
+    }
 }
 
