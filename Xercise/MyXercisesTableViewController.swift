@@ -173,7 +173,7 @@ class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDeleg
                                             self.presentAlert("Duplicate Save", alertMessage: "This workout has already been saved to this device!")
                                         } else {
                                             self.displayActivityIndicator()
-                                            self.dataMgr.saveWorkoutToDevice(workout.name, workoutMuscleGroup: workout.muscleGroup, id: workout.identifier, exerciseIDs: workout.exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
+                                            self.dataMgr.saveWorkoutToDevice(false, workoutName: workout.name, workoutMuscleGroup: workout.muscleGroup, id: workout.identifier, exerciseIDs: workout.exerciseIDs, publicWorkout: true, completion: { (success) -> Void in
                                                 self.removeActivityIndicator()
                                                 if success {
                                                     // Workout has been saved to device, add group code to device

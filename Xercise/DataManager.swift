@@ -444,7 +444,7 @@ class DataManager {
     }
     
     
-    func saveWorkoutToDevice(workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], publicWorkout : Bool, completion : (success : Bool) -> Void) {
+    func saveWorkoutToDevice(creatingWorkout : Bool, workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], publicWorkout : Bool, completion : (success : Bool) -> Void) {
         
         let context : NSManagedObjectContext = appDel.managedObjectContext
         let newWorkout = NSEntityDescription.insertNewObjectForEntityForName("Workout", inManagedObjectContext: context)
@@ -457,13 +457,17 @@ class DataManager {
         newWorkout.setValue(publicWorkout, forKey: "publicWorkout")
         do {
             try context.save()
-            self.queryParseForExercisesFromGroupCode(exerciseIDs, completion: { (success) -> Void in
-                if success {
-                    completion(success: true)
-                } else {
-                    completion(success: false)
-                }
-            })
+            if !creatingWorkout {
+                self.queryParseForExercisesFromGroupCode(exerciseIDs, completion: { (success) -> Void in
+                    if success {
+                        completion(success: true)
+                    } else {
+                        completion(success: false)
+                    }
+                })
+            } else {
+                completion(success: true)
+            }
         } catch {
             completion(success: false)
         }

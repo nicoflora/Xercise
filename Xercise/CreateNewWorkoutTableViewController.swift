@@ -120,7 +120,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                 actionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     // Save to both device and Parse databases
                     
-                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: true, completion: { (success) -> Void in
+                    self.dataMgr.saveWorkoutToDevice(true, workoutName: self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: true, completion: { (success) -> Void in
                         if success {
                             // Saving to core data was successful, now try Parse
                             self.displayActivityIndicator()
@@ -176,7 +176,7 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                 }))
                 actionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     // Save to device database only
-                    self.dataMgr.saveWorkoutToDevice(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: false, completion: { (success) -> Void in
+                    self.dataMgr.saveWorkoutToDevice(true, workoutName: self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, publicWorkout: false, completion: { (success) -> Void in
                         if success {
                             // Remove exercises from defaults on success
                             self.defaults.removeObjectForKey("workoutExercises")
