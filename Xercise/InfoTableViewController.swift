@@ -43,11 +43,12 @@ class InfoTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true) {
-            if result == MFMailComposeResultSent {
-                let alert = UIAlertController(title: "Thank you!", message: "Thank you for your feedback. Our team will review your comments shortly!", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
+            //if result == MFMailComposeResult.sent {
+//            if result == MFMailComposeResultSent {
+//                let alert = UIAlertController(title: "Thank you!", message: "Thank you for your feedback. Our team will review your comments shortly!", preferredStyle: UIAlertControllerStyle.Alert)
+//                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+//                self.presentViewController(alert, animated: true, completion: nil)
+//            }
         }
     }
 

@@ -350,7 +350,7 @@ class MacrosTableViewController: UITableViewController, UITextFieldDelegate {
         // If a popup is already being displayed, don't display another one
         guard popup == nil else {return}
     
-        if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil).first as? UIViewMacro){
+        if let popup = (NSBundle.mainBundle().loadNibNamed("AddMacroPopupView", owner: UIViewMacro(), options: nil)!.first as? UIViewMacro){
             self.popup = popup
             popup.frame = CGRectMake((self.view.bounds.width-300)/2, -400, 300, 225) //CGRectMake((self.view.bounds.width-300)/2, 25, 300, 225)
             popup.mealName.delegate = self

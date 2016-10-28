@@ -105,7 +105,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
         imageObj.drawInRect(CGRect(origin: CGPointZero, size: sizeChange))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return scaledImage
+        return scaledImage!
     }
 
     override func didReceiveMemoryWarning() {

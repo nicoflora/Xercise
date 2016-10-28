@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>1</string>
 	<key>FacebookAppID</key>
 	<string>856010647851834</string>
 	<key>FacebookDisplayName</key>
@@ -78,6 +78,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Xercise would like to access your photo library so that you can add photos to your exercises!</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Xercise would like to access your contacts to share content with your friends</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Xercise would like to access your photo library so that you can add photos to your exercises!</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
