@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import CoreData
 import Parse
+import Firebase
 
 class DataManager {
     
@@ -690,7 +691,7 @@ class DataManager {
             // Not in Parse database, add to Parse
             if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
                 // Got Exercise from Core Data - now add to Parse
-                if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.5) {
+                if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.7) {
                     self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
                         if success {
                             completion(success: true)
@@ -1031,6 +1032,241 @@ class DataManager {
         let workout = Workout(name: name, muscleGroup: muscleGroup, identifier: identifier, exerciseIds: exercise_ids, exerciseNames: exercise_names, publicWorkout: true, workoutCode: identifier)
         completion(workout: workout, resetPreviousIdentifiers : resetPreviousIds)
     }
+    
+    
+    // MARK: - Firebase functions
+    
+    var databaseReference: FIRDatabaseReference?
+    
+    var storageReference: FIRStorageReference?
+    
+    func databaseRef() -> FIRDatabaseReference {
+        if let ref = databaseReference {
+            return ref
+        }
+        
+        let ref = FIRDatabase.database().reference()
+        databaseReference = ref
+        return ref
+    }
+    
+    func storageRef() -> FIRStorageReference {
+        if let ref = storageReference {
+            return ref
+        }
+        
+        let ref = FIRStorage.storage().reference()
+        storageReference = ref
+        return ref
+    }
+    
+    func testFirebase() {
+        //sortMuscleGroups()
+        //uploadPhotos()
+    }
+    
+//    func sortMuscleGroups() {
+//        
+//        databaseRef().child("exercises/results").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+//            
+//            guard snapshot.exists() else {return}
+//            
+//            guard let exercises = snapshot.value as? [String:AnyObject] else {return}
+//            
+//            let exerciseIDs = Array(exercises.keys)
+//            
+//            for exID in exerciseIDs {
+//                
+//                guard let exercise = exercises[exID] as? [String:AnyObject] else {continue}
+//                
+//                self.storageRef().child("exercises/\(exID)").downloadURLWithCompletion({ (downloadURL, error) in
+//                    if let error = error {
+//                        print("*** Error retrieving download URL for image with ID: \(exID)")
+//                    } else if let downloadURL = downloadURL {
+//                        
+//                        if let downloadString = downloadURL.absoluteString {
+//                            self.databaseRef().child("exercises/results/\(exID)").updateChildValues(["imageURL": downloadString])
+//                            print("Successfully updated download URL for image with ID: \(exID) - URL = \(downloadString)")
+//                        } else {
+//                            print("*** Error retrieving download URL for image with ID: \(exID)")
+//                        }
+//                        
+//                    } else {
+//                        print("*** Error retrieving download URL for image with ID: \(exID)")
+//                    }
+//                })
+//            
+////                var exName = ""
+////                
+////                if let name = exercise["name"] as? String {
+////                    
+////                    exName = name
+////                }
+////
+////                
+////                if let muscleGroups = exercise["muscle_groups"] as? [String] {
+////                    
+////                    for value in muscleGroups {
+////                        
+////                        self.addValueToUserDetailsObject(value, value: exID, val2: exName)
+////                        
+////                    }
+////                    
+////                }
+//                
+//            }
+//            
+//            print("\n**** SORTING COMPLETE ****")
+//            
+//            guard let dict = NSUserDefaults.standardUserDefaults().dictionaryForKey("firebaseDictWorkout") else {return}
+//            
+//            print(dict)
+//            
+//            self.setMuscleGroups(dict)
+//            
+//            }) { (error) in
+//                print(error)
+//                print("failure")
+//        }
+//        
+//    }
+    
+//    func setMuscleGroups(muscleGroups: [String:AnyObject]) {
+//        
+//        databaseRef().child("workoutMuscleGroups").setValue(muscleGroups) //muscleGroups
+//        
+//    }
+    
+//    func uploadPhotos() {
+//        
+//        databaseRef().child("exercises/results").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+//            
+//            guard snapshot.exists() else {return}
+//            
+//            guard let exercises = snapshot.value as? [String:AnyObject] else {return}
+//            
+//            let exerciseIDs = Array(exercises.keys)
+//            
+//            for exID in exerciseIDs {
+//                
+//                guard let exercise = exercises[exID] as? [String:AnyObject] else {continue}
+//                
+//                if let imageData = exercise["image"] as? [String:AnyObject] {
+//                    
+//                    if let url = imageData["url"] as? String {
+//                        
+//                        guard let downloadURL = NSURL(string: url) else {
+//                            
+//                            print("** Error uploading image for ID: \(exID) **")
+//                            return
+//                            
+//                        }
+//                        
+//                        self.downloadImage(downloadURL, completion: { (image) in
+//                            if let image = image {
+//                                self.uploadImageToStorage(exID, image: image)
+//                            } else {
+//                                print("** Error uploading image for ID: \(exID) **")
+//                            }
+//                        })
+//                        
+//                        
+//                    }
+//                    
+//                }
+//                
+//            }
+//            
+//            
+//        }) { (error) in
+//            print(error)
+//            print("failure")
+//        }
+//        
+//    }
+    
+//    func uploadImageToStorage(exerciseID:String, image: UIImage) {
+//        
+//        if let img = UIImageJPEGRepresentation(image, 1.0) {
+//            
+//            let metadata = FIRStorageMetadata()
+//            metadata.contentType = "image/jpeg"
+//            
+//            storageRef().child("exercises/\(exerciseID)").putData(img, metadata: metadata, completion: { (metadata, error) in
+//                if let error = error {
+//                    print("** Error (\(error.localizedDescription)) uploading image for ID: \(exerciseID) **")
+//                } else if metadata == nil {
+//                    print("** Error uploading image for ID: \(exerciseID) **")
+//                } else {
+//                    print("Successfully uploaded an image for ID: \(exerciseID)")
+//                }
+//            })
+//            
+//        }
+//        
+//    }
+
+    
+    // MARK: - User Detial Obj for setting up firebase
+    
+//    func getUserDetailsObject() -> [String:AnyObject]? {
+//        let dict = NSUserDefaults.standardUserDefaults().dictionaryForKey("firebaseDictWorkout")
+//        
+//        //print(dict)
+//        
+//        return dict
+//    }
+//    
+//    func setUserDetailsObject(userDetails: [String:AnyObject]) {
+//        NSUserDefaults.standardUserDefaults().setObject(userDetails, forKey: "firebaseDictWorkout")
+//        //print(userDetails)
+//    }
+//    
+//    func addValueToUserDetailsObject(key : String, value : String, val2 : String) {
+//        
+//        print("Adding muscle group: \(key) with exercise ID: \(value) and exercise name \(val2)\n")
+//        
+//        if var userDetails = getUserDetailsObject() {
+//            
+//            // Check if key exists
+//            var setToDict = [String:String]()
+//            if var values = userDetails[key] as? [String:String] {
+//                values[value] = val2
+//                setToDict = values
+//            } else {
+//                setToDict[value] = val2
+//            }
+//            
+//            userDetails[key] = setToDict
+//            setUserDetailsObject(userDetails)
+//        } else {
+//            // dictionary doesn't exist - create it now then save
+//            var newUserDetails = [String:AnyObject]()
+//            
+//            var setToDict = [String:String]()
+//            setToDict[value] = val2
+//            
+//            newUserDetails[key] = setToDict
+//            setUserDetailsObject(newUserDetails)
+//        }
+//    }
+//    
+//    func getValueFromUserDetailsObject(key: String) -> AnyObject? {
+//        guard let dict = getUserDetailsObject() else {return nil}
+//        return dict[key]
+//    }
+//    
+//    func getBoolFromUserDetailsObject(key: String) -> Bool {
+//        guard let dict = getUserDetailsObject() else {return false}
+//        guard let value = dict[key] as? Bool else {return false}
+//        return value
+//    }
+//    
+//    func removeValueFromUserDetailsObject(key: String) {
+//        guard var dict = getUserDetailsObject() else {return}
+//        dict.removeValueForKey(key)
+//        setUserDetailsObject(dict)
+//    }
     
 }
 

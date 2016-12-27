@@ -11,6 +11,7 @@ import CoreData
 import Parse
 import FBSDKCoreKit
 import ParseFacebookUtilsV4
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        FIRApp.configure()
         
         // Initialize Parse.
         Parse.setApplicationId("04vnOim3efwtboWA2ZFc8FNpaqQeiLhkN7GPBkAD",
@@ -35,6 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.tintColor = UIColor.whiteColor() //UIColor(red: 128, green: 175, blue: 220, alpha: 1)
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
+        
+        // Testing Firebase
+        DataManager.sharedInstance.testFirebase()
         
         return true
     }
