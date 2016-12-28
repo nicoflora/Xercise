@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+//import Parse
 
 class InitialViewController: UIViewController {
     
@@ -21,9 +21,13 @@ class InitialViewController: UIViewController {
     }
     
     func checkIfLoggedIn() {
-        if PFUser.currentUser() != nil {
-            loggedIn = true
-        }
+        
+        // Disabling authentication
+        loggedIn = true
+        
+//        if PFUser.currentUser() != nil {
+//            loggedIn = true
+//        }
     }
     
     override func viewDidAppear(animated: Bool) {

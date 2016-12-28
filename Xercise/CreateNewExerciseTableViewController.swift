@@ -180,7 +180,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
         activityIndicator.center = self.tableView.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor(hexString: "#0f3878") //UIColor.grayColor()
         activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()

@@ -178,8 +178,8 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                 downloadedExercises.append(exercise)
                 changeExercise()
             } else {
-                // Fetch from Parse
-                dataMgr.queryForExerciseFromParse(id, completion: { (exercise) -> Void in
+                // Fetch from Firebase
+                dataMgr.getExerciseFromDB(withID: id, completion: { (exercise) in
                     if let exercise = exercise {
                         // Successfully retrieved an exercise
                         self.exerciseToDisplay = exercise
@@ -351,7 +351,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
         activityIndicator.hidesWhenStopped = true
         activityIndicator.alpha = 1.0
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor(hexString: "#0f3878") //UIColor.grayColor()
         activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         self.view.addSubview(activityIndicator)
         self.view.bringSubviewToFront(activityIndicator)

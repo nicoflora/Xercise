@@ -163,9 +163,9 @@ class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDeleg
                         // Validate that the group code doesn't contain a space to guard against invalid codes
                         if !text.containsString(" ") {
                             self.displayActivityIndicator()
-                            self.dataMgr.queryParseForWorkoutFromGroupCode(text, completion: { (workoutFromCode) -> Void in
+                            self.dataMgr.getWorkoutFromDB(withID: text, completion: { (workout) in
                                 self.removeActivityIndicator()
-                                if let workout = workoutFromCode {
+                                if let workout = workout {
                                     // Query was successful, retrieved a workout - save workout to Device
                                     self.dataMgr.queryForItemByID(workout.identifier, entityName: "Workout", completion: { (success) -> Void in
                                         if success {
@@ -182,16 +182,8 @@ class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDeleg
                                                         self.removeActivityIndicator()
                                                         if success {
                                                             // Group code added, now get the exercises from Parse
-                                                            self.displayActivityIndicator()
-                                                            self.dataMgr.queryParseForExercisesFromGroupCode(workout.exerciseIDs, completion: { (success) -> Void in
-                                                                self.removeActivityIndicator()
-                                                                if success {
-                                                                    self.presentAlert("Success", alertMessage: "The workout added from a Group Code was sucessfully added to your My Xercises!")
-                                                                    self.getMyXercises()
-                                                                } else {
-                                                                    self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
-                                                                }
-                                                            })
+                                                            self.presentAlert("Success", alertMessage: "The workout added from a Group Code was sucessfully added to your My Xercises!")
+                                                            self.getMyXercises()
                                                         } else {
                                                             self.presentAlert("Error", alertMessage: "There was an error adding your workout from a Group Code, please try again.")
                                                         }
@@ -338,7 +330,7 @@ class MyXercisesTableViewController: UITableViewController, XercisesUpdatedDeleg
         activityIndicator.center = self.tableView.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor(hexString: "#0f3878") //UIColor.grayColor()
         activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()

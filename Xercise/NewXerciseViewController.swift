@@ -358,7 +358,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         if selectedMuscleGroup != "" {
             // Begin ignoring interaction events
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-            dataMgr.generateWorkout(selectedMuscleGroup, previousIdentifiers: self.previousWorkoutIdentifiers, completion: { (workout, resetPreviousIdentifiers) -> Void in
+            dataMgr.generateWorkout(selectedMuscleGroup, previousIdentifiers: self.previousWorkoutIdentifiers, completion: { (workout, resetPreviousIdentifiers) in
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 if let workout = workout {
                     self.workout = workout

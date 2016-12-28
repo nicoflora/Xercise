@@ -209,7 +209,7 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
         activityIndicator.center = self.tableView.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.backgroundColor = UIColor.grayColor()
+        activityIndicator.backgroundColor = UIColor(hexString: "#0f3878") //UIColor.grayColor()
         activityIndicator.layer.cornerRadius = activityIndicator.bounds.width / 6
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
@@ -241,8 +241,8 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                     // Cache exercise
                     downloadedExercises.append(exercise)
                 } else {
-                    // Fetch from Parse
-                    dataMgr.queryForExerciseFromParse(id, completion: { (exercise) -> Void in
+                    // Fetch from Firebase
+                    dataMgr.getExerciseFromDB(withID: id, completion: { (exercise) in
                         if let exercise = exercise {
                             // Successfully retrieved an exercise
                             self.exerciseToDisplay = exercise

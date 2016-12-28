@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
         
         // Testing Firebase
-        DataManager.sharedInstance.testFirebase()
+        //DataManager.sharedInstance.testFirebase()
         
         return true
     }
