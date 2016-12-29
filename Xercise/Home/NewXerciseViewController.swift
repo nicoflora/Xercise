@@ -45,17 +45,17 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         getExerciseButton.layer.borderWidth = 3.0
         getExerciseButton.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
         getExerciseButton.setTitleColor(UIColor(hexString: "#2c4b85"), forState: UIControlState.Normal)
-        getExerciseButton.layer.shadowColor = UIColor.grayColor().CGColor
-        getExerciseButton.layer.shadowOffset = CGSizeMake(0, 0)
-        getExerciseButton.layer.shadowOpacity = 0.5
+//        getExerciseButton.layer.shadowColor = UIColor.grayColor().CGColor
+//        getExerciseButton.layer.shadowOffset = CGSizeMake(0, 0)
+//        getExerciseButton.layer.shadowOpacity = 0.5
         
         getWorkoutButton.backgroundColor = UIColor.groupTableViewBackgroundColor()
         getWorkoutButton.layer.borderWidth = 3.0
         getWorkoutButton.layer.borderColor = UIColor(hexString: "#2c4b85").CGColor
         getWorkoutButton.setTitleColor(UIColor(hexString: "#2c4b85"), forState: UIControlState.Normal)
-        getWorkoutButton.layer.shadowColor = UIColor.grayColor().CGColor
-        getWorkoutButton.layer.shadowOffset = CGSizeMake(0, 0)
-        getWorkoutButton.layer.shadowOpacity = 0.5
+//        getWorkoutButton.layer.shadowColor = UIColor.grayColor().CGColor
+//        getWorkoutButton.layer.shadowOffset = CGSizeMake(0, 0)
+//        getWorkoutButton.layer.shadowOpacity = 0.5
         
         checkForDisclaimerAcceptance()
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(NewXerciseViewController.handleTapGesture(_:)))
@@ -102,7 +102,7 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         }
         if selectedMainMuscleGroupIndex == -1 {
             // Main Muscle Group NOT Selected
-            mainGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "Select a Main Muscle Group...", dropDownItems: dropdownItems)
+            mainGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "Select a Main Muscle Group", dropDownItems: dropdownItems)
             subGroupDropDownMenu = createDropDownMenu(CGRectZero, menuButtonTitle: "All Sub Muscle Groups", dropDownItems: [createDropDownItem("All Sub Muscle Groups", dropDownHeader: false)])
         } else if muscleGroups.count > selectedMainMuscleGroupIndex {
             // Main Muscle Group Selected
@@ -157,9 +157,9 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         dropDownMenu.dropDownItems = dropDownItems
         dropDownMenu.type = IGLDropDownMenuType.FlipVertical
         dropDownMenu.itemAnimationDelay = 0
-        dropDownMenu.layer.shadowColor = UIColor.grayColor().CGColor
-        dropDownMenu.layer.shadowOffset = CGSizeMake(0, 0)
-        dropDownMenu.layer.shadowOpacity = 0.5
+//        dropDownMenu.layer.shadowColor = UIColor.grayColor().CGColor
+//        dropDownMenu.layer.shadowOffset = CGSizeMake(0, 0)
+//        dropDownMenu.layer.shadowOpacity = 0.5
         dropDownMenu.delegate = self
         return dropDownMenu
     }
