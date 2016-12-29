@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import CoreData
-import Parse
 import Firebase
 
 class DataManager {
@@ -28,6 +27,7 @@ class DataManager {
     var exercisesForMuscleGroupFirebase = [String : [String]]()
     var exercisesInWorkoutsMatchingMuscleGroupFirebase = [String : [String]]()
 
+    var dateFormatter = NSDateFormatter()
     
     
     // MARK: - Utility Functions
@@ -399,7 +399,6 @@ class DataManager {
                     if let updateXercisesDelegate = self.updateXercisesDelegate {
                         updateXercisesDelegate.updateXercises()
                     }
-                    updateParseExerciseIdentifiers(currentId, newId: newId)
                 }
                 do {
                     try context.save()
@@ -435,23 +434,11 @@ class DataManager {
         }
     }
     
-    func updateParseExerciseIdentifiers(prevId : String, newId: String) {
-        let query = PFQuery(className: "Workout")
-        query.whereKey("exercise_ids", equalTo: prevId)
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            guard error == nil else {return}
-            guard let objects = objects else {return}
-            guard objects.count > 0 else {return}
-            for object in objects {
-                guard var exerciseIds = object.valueForKey("exercise_ids") as? [String] else {continue}
-                guard let index = exerciseIds.indexOf(prevId) else {continue}
-                exerciseIds[index] = newId
-                object["exercise_ids"] = exerciseIds
-                object.saveEventually()
-            }
-        }
+    func updateDBExerciseIdentifiers(prevId: String, newId: String) {
+        
+        
+        
     }
-    
     
     func saveWorkoutToDevice(creatingWorkout : Bool, workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], publicWorkout : Bool, completion : (success : Bool) -> Void) {
         
@@ -467,7 +454,7 @@ class DataManager {
         do {
             try context.save()
             if !creatingWorkout {
-                self.queryParseForExercisesFromGroupCode(exerciseIDs, completion: { (success) -> Void in
+                self.queryDBForExercisesFromGroupCode(exerciseIDs, completion: { (success) -> Void in
                     if success {
                         completion(success: true)
                     } else {
@@ -618,120 +605,134 @@ class DataManager {
     
     // MARK: - Parse Functions
     
-    func saveExerciseToParse(name : String, id : String, muscleGroup : [String], image : NSData, exerciseDescription : String, completion : (success : Bool) -> Void) {
-                
-        // Parse exercise object
-        let exercise = PFObject(className: "Exercise")
-        exercise["name"] = name
-        exercise["muscle_groups"] = muscleGroup
-        exercise["exercise_desc"] = exerciseDescription
-        exercise["thumbs_Down_Rate"] = 0
-        exercise["thumbs_Up_Rate"] = 0
-        exercise["approved"] = false
-        let imageFile = PFFile(name: "image.jpeg", data: image)
-        exercise["image"] = imageFile
-        exercise.saveInBackgroundWithBlock { (success, error) -> Void in
-            //guard error == nil else {return}
-            if error == nil {
-                if success {
-                    if let objectId = exercise.objectId {
-                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Exercise")
-                        completion(success: true)
-                    }
-                } else {
-                    completion(success: false)
-                }
-            } else {
-                completion(success: false)
-            }
-        }
-    }
-    
-    
-    func saveWorkoutToParse(workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], exerciseNames : [String], completion : (success : Bool, identifier: String?) -> Void) {
+    func saveExerciseToDB(name : String, id : String, muscleGroup : [String], image : NSData, exerciseDescription : String, completion : (success : Bool, newID: String?) -> Void) {
         
-        // Create Parse object to save
-        let workout = PFObject(className: "Workout")
-        workout["name"] = workoutName
-        workout["exercise_ids"] = exerciseIDs
-        workout["muscle_groups"] = workoutMuscleGroup
-        workout["exercise_names"] = exerciseNames
-        workout["approved"] = false
-        workout.saveInBackgroundWithBlock { (success, error) -> Void in
-            if error == nil {
-                if success {
-                    if let objectId = workout.objectId {
-                        self.updateLocalObjectIdentifier(id, newId: objectId, entityName: "Workout")
-                        completion(success: true, identifier: objectId)
-                    }
-                } else {
-                    completion(success: false, identifier: nil)
-                }
+        // Create exercise dictionary
+        var exerciseDict = [String:AnyObject]()
+        exerciseDict["name"] = name
+        //exerciseDict["objectId"] = id
+        exerciseDict["approved"] = false
+        exerciseDict["muscle_groups"] = muscleGroup
+        exerciseDict["exercise_desc"] = exerciseDescription
+        exerciseDict["thumbs_Down_Rate"] = 0
+        exerciseDict["thumbs_Up_Rate"] = 0
+        
+        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.timeStyle = .MediumStyle
+        exerciseDict["createdAt"] =  dateFormatter.stringFromDate(NSDate())
+        
+        // Upload exercise
+        databaseRef().child("exercisesWaitingApproval").childByAutoId().setValue(exerciseDict, withCompletionBlock: { (error, reference) in
+           
+            if let _ = error {
+                completion(success: false, newID: nil)
             } else {
-                completion(success: false, identifier: nil)
+                // Extract child ID from reference URL and upload image
+                self.uploadImageToStorage(reference.key, imageData: image, completion: { (success, downloadURL) in
+                    
+                    guard let downloadURL = downloadURL else {
+                        completion(success: false, newID: nil)
+                        return
+                    }
+                    
+                    // Update local identifier
+                    self.updateLocalObjectIdentifier(id, newId: reference.key, entityName: "Exercise")
+                    
+                    // Update DB download URL for this exercise
+                    self.databaseRef().child("exercisesWaitingApproval/\(reference.key)").updateChildValues(["imageURL":downloadURL])
+                    
+                    completion(success: true, newID: reference.key)
+                    
+                })
+                
             }
-        }
+            
+        })
+        
     }
     
-    func checkParseExerciseAvailablity(ids : [String], completion : (success : Bool) -> Void) {
-        var completionSuccess = true
+    func saveWorkoutToDB(workoutName : String, workoutMuscleGroup : [String], id : String, exerciseIDs : [String], exerciseNames : [String], completion : (success : Bool, identifier: String?) -> Void) {
+        
+        // Make sure all exercises in workout exist in DB, if not then upload them
+        self.checkDBExerciseAvailablity(exerciseIDs) { (newIDs) in
+            
+            // Check that we have all the exercise IDs we need (uploaded to Firebase if need be)
+            guard let exIDs = newIDs else {completion(success: false, identifier: nil);return}
+            
+            // Create dictionary to save
+            var workoutDict = [String:AnyObject]()
+            workoutDict["name"] = workoutName
+            workoutDict["exercise_ids"] = exIDs
+            workoutDict["muscle_groups"] = workoutMuscleGroup
+            workoutDict["exercise_names"] = exerciseNames
+            workoutDict["approved"] = false
+            
+            self.dateFormatter.dateStyle = .LongStyle
+            self.dateFormatter.timeStyle = .MediumStyle
+            workoutDict["createdAt"] =  self.dateFormatter.stringFromDate(NSDate())
+            
+            self.databaseRef().child("workoutsWaitingApproval").childByAutoId().setValue(workoutDict, withCompletionBlock: { (error, reference) in
+                
+                if let _ = error {
+                    completion(success: false, identifier: nil)
+                } else {
+                    // Update local identifier
+                    self.updateLocalObjectIdentifier(id, newId: reference.key, entityName: "Workout")
+                    completion(success: true, identifier: reference.key)
+                }
+                
+            })
+        
+        }
+        
+    }
+
+    func checkDBExerciseAvailablity(ids : [String], completion : (newIDs: [String]?) -> Void) {
+        var attempts = 0
+        var newExerciseIDs = [String]()
         for exerciseID in ids {
-            checkSingleExerciseAvailabilityOnParse(exerciseID, completion: { (success) -> Void in
-                if !success {
-                    completionSuccess = false
+            checkSingleExerciseAvailabilityOnFirebase(exerciseID, completion: { (id) -> Void in
+                attempts += 1
+                
+                if let id = id {
+                    newExerciseIDs.append(id)
+                } else {
+                    completion(newIDs: nil)
+                    return
+                }
+                
+                if attempts == ids.count {
+                    completion(newIDs: newExerciseIDs)
+                    return
                 }
             })
         }
-        if completionSuccess {
-            completion(success: true)
-        } else {
-            completion(success: false)
-        }
     }
     
-    func checkSingleExerciseAvailabilityOnFirebase(id : String, completion : (success : Bool) -> Void) {
+    func checkSingleExerciseAvailabilityOnFirebase(id : String, completion : (id: String?) -> Void) {
         
         getExerciseFromDB(withID: id) { (exercise) in
             
             if let _ = exercise {
-                // Exercise exists on Firebase
-                completion(success: true)
+                // Exercise exists on Firebase - nothing further needed
+                completion(id: id)
             } else {
-                // Doesn't exist - add it
+                // Doesn't exist - fetch from Core Data & upload to Firebase
+                guard let exerciseToAdd : Exercise = self.getExerciseByID(id) else {completion(id: nil);return}
+                
+                guard let img = UIImageJPEGRepresentation(exerciseToAdd.image, 1.0) else {completion(id: nil);return}
+                
+                self.saveExerciseToDB(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success, newID) -> Void in
+                    completion(id: newID)
+                })
+                
             }
             
         }
         
     }
     
-    func checkSingleExerciseAvailabilityOnParse(id : String, completion : (success : Bool) -> Void) {
-        let query = PFQuery(className: "Exercise")
-        query.whereKey("objectId", equalTo: id)
-        query.findObjectsInBackgroundWithBlock({ (objects : [PFObject]?, error: NSError?) -> Void in
-            guard error == nil else {completion(success: false);return}
-            guard let objects = objects else {completion(success: true);return}
-            guard objects.count == 0 else {completion(success: true);return}
-            // Not in Parse database, add to Parse
-            if let exerciseToAdd : Exercise = self.getExerciseByID(id) {
-                // Got Exercise from Core Data - now add to Parse
-                if let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.7) {
-                    self.saveExerciseToParse(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success) -> Void in
-                        if success {
-                            completion(success: true)
-                        } else {
-                            completion(success: false)
-                        }
-                    })
-                } else {
-                    completion(success: true)
-                }
-            }  else {
-                completion(success: true)
-            }
-        })
-    }
-
-    func queryParseForExercisesFromGroupCode(ids : [String], completion : (success : Bool) -> Void) {
+    func queryDBForExercisesFromGroupCode(ids : [String], completion : (success : Bool) -> Void) {
         var exercisesToFetch = [String]()
         var wasSuccessful = false
         var attempts = 0
@@ -965,7 +966,7 @@ class DataManager {
                 // Randomly get an individual workout from the returned list of workouts
                 self.getOneWorkoutFromResults(workoutIDs, previousIdentifiers: previousIdentifiers, oneObject: false, completion: { (workout, resetPreviousIdentifiers) -> Void in
                         completion(workout: workout, resetPreviousIdentifiers: resetPreviousIdentifiers)
-                })                
+                })
             })
         }
     }
@@ -1041,6 +1042,41 @@ class DataManager {
         //sortMuscleGroups()
         //uploadPhotos()
     }
+    
+    func getTestExerciseWithPath(path: String, completion: (exercise: Exercise?) -> Void) {
+            
+            // Fetch exercise with predetermined ID, then download image, then return Exercise object
+            databaseRef().child(path).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                
+                guard snapshot.exists() else {completion(exercise: nil);return}
+                
+                guard let exerciseDict = snapshot.value as? [String:AnyObject] else {completion(exercise: nil);return}
+                
+                guard let name = exerciseDict["name"] as? String else {completion(exercise: nil);return}
+                
+                guard let muscleGroups = exerciseDict["muscle_groups"] as? [String] else {completion(exercise: nil);return}
+                
+                guard let description = exerciseDict["exercise_desc"] as? String else {completion(exercise: nil);return}
+                
+                guard let downloadURL = exerciseDict["imageURL"] as? String else {completion(exercise: nil);return}
+                
+                guard let imgURL = NSURL(string: downloadURL) else {completion(exercise: nil);return}
+                
+                self.downloadImage(imgURL, completion: { (image) in
+                    if let image = image {
+                        completion(exercise: Exercise(name: name, muscleGroup: muscleGroups, identifier: "test", description: description, image: image))
+                    } else {
+                        completion(exercise: nil)
+                    }
+                })
+                
+            }) { (error) in
+                completion(exercise: nil)
+            }
+            
+        }
+
+    
     
 //    func sortMuscleGroups() {
 //        
@@ -1162,26 +1198,32 @@ class DataManager {
 //        
 //    }
     
-//    func uploadImageToStorage(exerciseID:String, image: UIImage) {
-//        
-//        if let img = UIImageJPEGRepresentation(image, 1.0) {
-//            
-//            let metadata = FIRStorageMetadata()
-//            metadata.contentType = "image/jpeg"
-//            
-//            storageRef().child("exercises/\(exerciseID)").putData(img, metadata: metadata, completion: { (metadata, error) in
-//                if let error = error {
-//                    print("** Error (\(error.localizedDescription)) uploading image for ID: \(exerciseID) **")
-//                } else if metadata == nil {
-//                    print("** Error uploading image for ID: \(exerciseID) **")
-//                } else {
-//                    print("Successfully uploaded an image for ID: \(exerciseID)")
-//                }
-//            })
-//            
-//        }
-//        
-//    }
+    func uploadImageToStorage(exerciseID:String, image: UIImage, completion: (success: Bool, downloadURL: String?) -> Void) {
+        if let img = UIImageJPEGRepresentation(image, 1.0) {
+            uploadImageToStorage(exerciseID, imageData: img, completion: { (success, downloadURL) in
+                completion(success: success, downloadURL: downloadURL)
+            })
+        }
+    }
+    
+    func uploadImageToStorage(exerciseID: String, imageData: NSData, completion: (success: Bool, downloadURL: String?) -> Void) {
+     
+        let metadata = FIRStorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        storageRef().child("exercises/\(exerciseID)").putData(imageData, metadata: metadata, completion: { (metadata, error) in
+            if let error = error {
+                print("** Error (\(error.localizedDescription)) uploading image for ID: \(exerciseID) **")
+                completion(success: false, downloadURL: nil)
+            } else if let metadata = metadata {
+                completion(success: true, downloadURL: metadata.downloadURL()?.absoluteString)
+            } else {
+                print("** Error uploading image for ID: \(exerciseID) **")
+                completion(success: false, downloadURL: nil)
+            }
+        })
+        
+    }
 
     
     // MARK: - User Detial Obj for setting up firebase

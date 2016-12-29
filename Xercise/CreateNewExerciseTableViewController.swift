@@ -82,7 +82,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                                 // Saved to core data, now save to Parse
                                                 // Save to Parse
                                                 self.displayActivityIndicator()
-                                                self.dataMgr.saveExerciseToParse(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                                self.dataMgr.saveExerciseToDB(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success, newID) -> Void in
                                                     self.removeActivityIndicator()
                                                     if success {
                                                         // Present success alert and pop VC
@@ -95,7 +95,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                                         alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                                             //try again
                                                             self.displayActivityIndicator()
-                                                            self.dataMgr.saveExerciseToParse(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
+                                                            self.dataMgr.saveExerciseToDB(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success, newID) -> Void in
                                                                 self.removeActivityIndicator()
                                                                 if success {
                                                                     // Save to Parse was successful

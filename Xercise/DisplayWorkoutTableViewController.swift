@@ -159,14 +159,14 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                     // Upload to Parse
                     self.displayActivityIndicator()
                     //let exercises = self.dataMgr.archiveArray(self.workoutToDisplay.exerciseIDs)
-                    self.dataMgr.saveWorkoutToParse(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, exerciseNames: self.exerciseNames, completion: { (success, identifier) -> Void in
+                    self.dataMgr.saveWorkoutToDB(self.workoutToDisplay.name, workoutMuscleGroup: self.workoutToDisplay.muscleGroup, id: self.workoutToDisplay.identifier, exerciseIDs: self.workoutToDisplay.exerciseIDs, exerciseNames: self.exerciseNames, completion: { (success, identifier) -> Void in
                         self.removeActivityIndicator()
                         if success {
                             // Uploaded to Parse, now check exercise availability
-                            self.displayActivityIndicator()
-                            self.dataMgr.checkParseExerciseAvailablity(self.workoutToDisplay.exerciseIDs, completion: { (success) -> Void in
-                                self.removeActivityIndicator()
-                                if success {
+//                            self.displayActivityIndicator()
+//                            self.dataMgr.checkParseExerciseAvailablity(self.workoutToDisplay.exerciseIDs, completion: { (success) -> Void in
+//                                self.removeActivityIndicator()
+//                                if success {
                                     // Exercise availability is complete, now get ObjectID
                                     if let identifier = identifier {
                                         self.workoutIdentifier = identifier
@@ -178,10 +178,10 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
                                             self.tableView.reloadData()
                                         }*/
                                     }
-                                } else {
-                                    error = true
-                                }
-                            })
+//                                } else {
+//                                    error = true
+//                                }
+//                            })
                         } else {
                             error = true
                         }

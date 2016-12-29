@@ -124,39 +124,39 @@ class CreateNewWorkoutTableViewController: UITableViewController, UITabBarContro
                         if success {
                             // Saving to core data was successful, now try Parse
                             self.displayActivityIndicator()
-                            self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
+                            self.dataMgr.saveWorkoutToDB(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
                                 self.removeActivityIndicator()
                                 if success {
                                     // Save to Parse was successful
                                     // Check to make sure all referenced exercises are in Parse if made public
-                                    self.displayActivityIndicator()
-                                    self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
-                                        self.removeActivityIndicator()
-                                        if success {
+//                                    self.displayActivityIndicator()
+//                                    self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
+//                                        self.removeActivityIndicator()
+//                                        if success {
                                             // Remove exercises from defaults on success
                                             self.defaults.removeObjectForKey("workoutExercises")
                                             //self.presentSucessAlert()
                                             self.navigationController?.popViewControllerAnimated(true)
-                                        }
-                                    })
+//                                        }
+//                                    })
                                 } else {
                                     // Saving to Core Data succeeded but Parse failed
                                     let publicAlert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
                                     publicAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
                                     publicAlert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                         //try again
-                                        self.dataMgr.saveWorkoutToParse(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
+                                        self.dataMgr.saveWorkoutToDB(self.workoutName, workoutMuscleGroup: self.workoutMuscleGroup, id: uuid as String, exerciseIDs: ids, exerciseNames: names, completion: { (success, identifier) -> Void in
                                             if success == true {
                                                 // Save to Parse was successful
                                                 // Check to make sure all referenced exercises are in Parse if made public
-                                                self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
-                                                    if success {
+//                                                self.dataMgr.checkParseExerciseAvailablity(ids, completion: { (success) -> Void in
+//                                                    if success {
                                                         // Remove exercises from defaults on success
                                                         self.defaults.removeObjectForKey("workoutExercises")
                                                         //self.presentSucessAlert()
                                                         self.navigationController?.popViewControllerAnimated(true)
-                                                    }
-                                                })
+//                                                    }
+//                                                })
                                             } else {
                                                 // Saving to Core Data succeeded but Parse failed
                                                 let alert = UIAlertController(title: "Public Save Error", message: "Your workout was unable to be saved to the public database, but is still saved on your device.", preferredStyle: UIAlertControllerStyle.Alert)
