@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import Parse
 
 class InitialViewController: UIViewController {
     
@@ -17,7 +16,13 @@ class InitialViewController: UIViewController {
         super.viewDidLoad()
 
         // Check if user is logged in
-        checkIfLoggedIn()
+        //checkIfLoggedIn()
+        
+        delay(0.2) {
+            dispatch_async(dispatch_get_main_queue(), { 
+                self.performSegueWithIdentifier("loggedIn", sender: self)
+            })
+        }
     }
     
     func checkIfLoggedIn() {
@@ -31,13 +36,13 @@ class InitialViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        checkIfLoggedIn()
+        //checkIfLoggedIn()
         
-        if loggedIn {
-            self.performSegueWithIdentifier("loggedIn", sender: self)
-        } else {
-            self.performSegueWithIdentifier("notLoggedIn", sender: self)
-        }
+//        if loggedIn {
+//            self.performSegueWithIdentifier("loggedIn", sender: self)
+//        } else {
+//            self.performSegueWithIdentifier("notLoggedIn", sender: self)
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,4 +61,10 @@ class InitialViewController: UIViewController {
     }
     */
 
+}
+
+extension UIViewController {
+    func delay(delay : Double, closure: () -> ()) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
 }

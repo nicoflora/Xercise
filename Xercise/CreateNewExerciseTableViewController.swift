@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Parse
 
 class CreateNewExerciseTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITabBarControllerDelegate, UITabBarDelegate, UITextFieldDelegate {
     
@@ -72,7 +71,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 publicActionSheet.addAction(UIAlertAction(title: "Public", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
                                     // Save the exercise to the device and Parse DB
-                                    if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                    if let img = UIImageJPEGRepresentation(self.image!, 0.7) {
                                         
                                         // Save to core data
                                         //self.displayActivityIndicator()
@@ -123,7 +122,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 publicActionSheet.addAction(UIAlertAction(title: "Private", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                                     
                                     // Save the exercise to Core Data only
-                                    if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                    if let img = UIImageJPEGRepresentation(self.image!, 0.7) {
                                         //self.displayActivityIndicator()
                                         self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
                                             //self.removeActivityIndicator()
@@ -145,7 +144,7 @@ class CreateNewExerciseTableViewController: UITableViewController, UINavigationC
                                 // Adding an exercise inside of create workout
                                 // Just save exercise to device
                                 self.displayActivityIndicator()
-                                if let img = UIImageJPEGRepresentation(self.image!, 0.5) {
+                                if let img = UIImageJPEGRepresentation(self.image!, 0.7) {
                                     self.dataMgr.saveExerciseToDevice(self.exerciseTitle, id: uuid as String, muscleGroup: self.exerciseMuscleGroup, image: img, exerciseDescription: self.exerciseDescription, completion: { (success) -> Void in
                                         self.removeActivityIndicator()
                                         if success {

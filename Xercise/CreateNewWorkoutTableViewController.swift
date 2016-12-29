@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Parse
 
 class CreateNewWorkoutTableViewController: UITableViewController, UITabBarControllerDelegate {
     

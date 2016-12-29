@@ -9,8 +9,6 @@
 import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
-import ParseFacebookUtilsV4
-import Parse
 
 class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UITextFieldDelegate {
     
@@ -189,23 +187,24 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
     }
     
     func signupWithParse(username : String, password : String, email : String) {
-        let user = PFUser()
-        user.username = username
-        user.password = password
-        user.email = email
-        self.displayActivityIndicator()
-        user.signUpInBackgroundWithBlock { (success, error) -> Void in
-            if error == nil {
-                if success {
-                    self.dismissSignupVC()
-                } else {
-                    self.presentAlert("Signup Error", alertMessage: "There was an issue creating your account. Please try again.")
-                }
-            } else {
-                self.presentAlert("Signup Error", alertMessage: (error?.localizedDescription)!)
-            }
-            self.removeActivityIndicator()
-        }
+        dismissSignupVC()
+//        let user = PFUser()
+//        user.username = username
+//        user.password = password
+//        user.email = email
+//        self.displayActivityIndicator()
+//        user.signUpInBackgroundWithBlock { (success, error) -> Void in
+//            if error == nil {
+//                if success {
+//                    self.dismissSignupVC()
+//                } else {
+//                    self.presentAlert("Signup Error", alertMessage: "There was an issue creating your account. Please try again.")
+//                }
+//            } else {
+//                self.presentAlert("Signup Error", alertMessage: (error?.localizedDescription)!)
+//            }
+//            self.removeActivityIndicator()
+//        }
     }
     
     func processSignup() {
@@ -238,14 +237,15 @@ class CustomSignUpViewController: UIViewController, FBSDKLoginButtonDelegate, UI
     }
     
     func loginWithFacebook(accessToken : FBSDKAccessToken) {
-        PFFacebookUtils.logInInBackgroundWithAccessToken(accessToken) { (user, error) -> Void in
-            if user != nil {
-                self.dismissSignupVC()
-            } else {
-               // print(error)
-                self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
-            }
-        }
+        dismissSignupVC()
+//        PFFacebookUtils.logInInBackgroundWithAccessToken(accessToken) { (user, error) -> Void in
+//            if user != nil {
+//                self.dismissSignupVC()
+//            } else {
+//               // print(error)
+//                self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
+//            }
+//        }
     }
     
     // MARK: - Utility Functions

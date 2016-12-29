@@ -9,7 +9,6 @@
 #ifndef Xercise_Bridging_Header_h
 #define Xercise_Bridging_Header_h
 
-#import <ParseFacebookUtilsV4/PFFacebookUtils.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "UITextField+Shake.h"

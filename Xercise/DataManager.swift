@@ -20,10 +20,11 @@ class DataManager {
     
     var updateXercisesDelegate : XercisesUpdatedDelegate?
     
-    // Arrays to cache Parse query results
-    var exercisesForMuscleGroup = [String : [PFObject]]()
-    var exercisesInWorkoutsMatchingMuscleGroup = [String : [PFObject]]()
+//    // Arrays to cache Parse query results
+//    var exercisesForMuscleGroup = [String : [PFObject]]()
+//    var exercisesInWorkoutsMatchingMuscleGroup = [String : [PFObject]]()
     
+    // Arrays to cache Firebase query IDs
     var exercisesForMuscleGroupFirebase = [String : [String]]()
     var exercisesInWorkoutsMatchingMuscleGroupFirebase = [String : [String]]()
 
@@ -720,7 +721,7 @@ class DataManager {
                 // Doesn't exist - fetch from Core Data & upload to Firebase
                 guard let exerciseToAdd : Exercise = self.getExerciseByID(id) else {completion(id: nil);return}
                 
-                guard let img = UIImageJPEGRepresentation(exerciseToAdd.image, 1.0) else {completion(id: nil);return}
+                guard let img = UIImageJPEGRepresentation(exerciseToAdd.image, 0.7) else {completion(id: nil);return}
                 
                 self.saveExerciseToDB(exerciseToAdd.name, id: exerciseToAdd.identifier, muscleGroup: exerciseToAdd.muscleGroup, image: img, exerciseDescription: exerciseToAdd.description, completion: { (success, newID) -> Void in
                     completion(id: newID)
@@ -760,7 +761,7 @@ class DataManager {
             self.getExerciseFromDB(withID: ex, completion: { (exercise) in
                 if let exercise = exercise {
                     // Save exercise
-                    guard let imageData = UIImageJPEGRepresentation(exercise.image, 1.0) else {attempts += 1;return}
+                    guard let imageData = UIImageJPEGRepresentation(exercise.image, 0.7) else {attempts += 1;return}
                     self.saveExerciseToDevice(exercise.name, id: exercise.identifier, muscleGroup: exercise.muscleGroup, image: imageData, exerciseDescription: exercise.description, completion: { (success) in
                         attempts += 1
                         if success {
@@ -816,7 +817,7 @@ class DataManager {
                 let exerciseIDs = Array(exercisesInMuscleGroup.keys)
                 
                 // Remove previously cached objects and cache this new set of objects
-                self.exercisesForMuscleGroup.removeAll()
+                self.exercisesForMuscleGroupFirebase.removeAll()
                 self.exercisesForMuscleGroupFirebase[muscleGroup] = exerciseIDs
                 
                 // Get one exercise from this array of results
@@ -1199,7 +1200,7 @@ class DataManager {
 //    }
     
     func uploadImageToStorage(exerciseID:String, image: UIImage, completion: (success: Bool, downloadURL: String?) -> Void) {
-        if let img = UIImageJPEGRepresentation(image, 1.0) {
+        if let img = UIImageJPEGRepresentation(image, 0.7) {
             uploadImageToStorage(exerciseID, imageData: img, completion: { (success, downloadURL) in
                 completion(success: success, downloadURL: downloadURL)
             })

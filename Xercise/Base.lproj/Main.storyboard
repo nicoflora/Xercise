@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cjY-5V-uUy">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cjY-5V-uUy">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Macros-->
@@ -13,14 +17,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="SY8-aJ-MRU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LbE-Xb-DsU">
-                            <rect key="frame" x="0.0" y="161" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="97" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.51764705879999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Reset Macros">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="resetMacrosButton:" destination="kDA-X9-sCj" eventType="touchUpInside" id="ZaR-48-qOB"/>
@@ -28,7 +32,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroHeader" rowHeight="25" id="bl9-N2-5Re">
-                                <rect key="frame" x="0.0" y="92" width="375" height="25"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="25"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bl9-N2-5Re" id="GTp-Ap-LPE">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="24"/>
@@ -40,7 +44,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="XN5-rr-nMP"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fats" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shU-6j-Cav">
@@ -50,7 +54,7 @@
                                                 <constraint firstAttribute="width" constant="46" id="wzH-br-6cg"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Proteins" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUW-vG-5EU">
@@ -60,7 +64,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="GmY-ju-1EI"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Carbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N5K-kG-vWg">
@@ -70,11 +74,11 @@
                                                 <constraint firstAttribute="height" constant="21" id="oZ3-P5-6Bw"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="CUW-vG-5EU" firstAttribute="centerY" secondItem="GTp-Ap-LPE" secondAttribute="centerY" id="90n-A1-Aff"/>
                                         <constraint firstItem="CUW-vG-5EU" firstAttribute="leading" secondItem="shU-6j-Cav" secondAttribute="trailing" constant="20" id="MQl-ag-Qda"/>
@@ -89,7 +93,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroMeal" id="Nlx-U1-gpz" customClass="MacrosTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="117" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nlx-U1-gpz" id="Yth-Ft-ybQ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -97,7 +101,7 @@
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBy-D6-jGq">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="888g" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZ0-aY-wZ0">
                                             <rect key="frame" x="239" y="11" width="46" height="21"/>
@@ -106,7 +110,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="BUK-5b-bk4"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="888g" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qDl-Bn-K1x">
@@ -116,7 +120,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="oV4-fV-UMq"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="888g" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhk-o7-zUg">
@@ -126,7 +130,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="u2M-ud-Za5"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="coZ-k2-JyM">
@@ -135,7 +139,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="jaL-z1-w1D"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -177,7 +181,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-jk-AHu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -188,7 +191,6 @@
             <objects>
                 <navigationController id="Oba-z4-bLk" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Macros" image="macro_tab_icon" id="pci-Jq-pdg"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RPe-Qx-bBL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -208,7 +210,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="b8A-C2-TT3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="eTa-i0-23I" id="7wx-Zr-1VE"/>
                             <outlet property="delegate" destination="eTa-i0-23I" id="9SF-Jd-fKj"/>
@@ -223,7 +225,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <segue destination="pD7-BW-vgG" kind="show" identifier="newWorkout" id="F3b-yt-Bd4"/>
                         <segue destination="hBs-PH-c85" kind="show" identifier="newExercise" id="9O5-yO-qlf"/>
@@ -242,14 +243,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KBn-xg-t8a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZQM-Fl-vB9">
-                            <rect key="frame" x="0.0" y="136" width="375" height="54"/>
+                            <rect key="frame" x="0.0" y="72" width="375" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Save Workout">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="saveWorkoutButtonPressed:" destination="pD7-BW-vgG" eventType="touchUpInside" id="5pw-qJ-kAr"/>
@@ -257,10 +258,10 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="workoutTitle" id="E7E-Mt-RQN" customClass="ExerciseTitleTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E7E-Mt-RQN" id="5SF-hP-zBy">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rK6-Jj-SBK">
@@ -292,7 +293,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <segue destination="hml-sp-qTz" kind="show" identifier="addFromSaved" id="qoP-9W-edl"/>
                         <segue destination="hBs-PH-c85" kind="show" identifier="newExerciseFromWorkout" id="exV-KX-8yW"/>
@@ -309,14 +309,13 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gLd-e2-hAm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="hml-sp-qTz" id="pXs-yS-Ud6"/>
                             <outlet property="delegate" destination="hml-sp-qTz" id="iqT-Ue-Jf9"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add From My Xercises" id="ed0-qh-ezu"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZY0-ag-Yuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -329,14 +328,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="59c-GV-fUB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="5my-GB-bjs">
-                            <rect key="frame" x="0.0" y="485" width="375" height="54"/>
+                            <rect key="frame" x="0.0" y="421" width="375" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Save Exercise">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="saveExercise:" destination="hBs-PH-c85" eventType="touchUpInside" id="t6o-aG-96c"/>
@@ -344,7 +343,7 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseTitle" id="rgG-5D-lnt" customClass="ExerciseTitleTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rgG-5D-lnt" id="cG6-DO-igM">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -367,7 +366,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseImage" rowHeight="54" id="HGR-e8-ciK" customClass="ExerciseImageTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="375" height="54"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HGR-e8-ciK" id="qae-vi-zlr">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
@@ -399,7 +398,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseDescription" rowHeight="125" id="LIF-ty-aWW" customClass="ExerciseDescriptionTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="190" width="375" height="125"/>
+                                <rect key="frame" x="0.0" y="126" width="375" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LIF-ty-aWW" id="7ye-sF-RiN">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
@@ -407,7 +406,7 @@
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HGY-rl-Cwc">
                                             <rect key="frame" x="8" y="8" width="359" height="108"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -425,7 +424,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseReps" rowHeight="85" id="56R-cq-pFh" customClass="ExerciseRepsTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="315" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="251" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56R-cq-pFh" id="B6J-zY-hgg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -440,7 +439,7 @@
                                                 <constraint firstAttribute="width" constant="82" id="wBd-5r-ESZ"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -456,7 +455,7 @@
                                                 <constraint firstAttribute="height" constant="29" id="ard-DV-5pl"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="55" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IU7-8r-yOx">
@@ -466,7 +465,7 @@
                                                 <constraint firstAttribute="height" constant="29" id="qEK-Q3-ynx"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="0Ur-s5-gCF">
@@ -510,7 +509,7 @@
                                                 <constraint firstAttribute="height" constant="29" id="vB4-Kc-89S"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -543,7 +542,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="exerciseSets" rowHeight="85" id="53q-HK-TKz" customClass="ExerciseSetsTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="400" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="336" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="53q-HK-TKz" id="lHJ-tX-40f">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
@@ -558,7 +557,7 @@
                                                 <constraint firstAttribute="height" constant="29" id="yM3-Xw-GgL"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -574,7 +573,7 @@
                                                 <constraint firstAttribute="width" constant="23" id="fIC-sI-CaJ"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="55" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMj-6P-EUn">
@@ -584,7 +583,7 @@
                                                 <constraint firstAttribute="width" constant="23" id="x7i-w0-alX"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="uG4-8R-I8e">
@@ -628,7 +627,7 @@
                                                 <constraint firstAttribute="width" constant="48" id="zLd-x3-roC"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -667,7 +666,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="New Exercise" id="6v3-id-BvV"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="41E-69-GSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -678,7 +676,6 @@
             <objects>
                 <navigationController title="New Exercise" id="FjZ-NK-bVc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="New Xercise" image="dumbbell_tab_icon" id="ot4-Th-uKH"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8tZ-ZD-NPV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -712,15 +709,15 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pux-Uh-uyF">
                                 <rect key="frame" x="36" y="392" width="115" height="40"/>
-                                <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Oje-zA-w7u"/>
                                     <constraint firstAttribute="width" constant="115" id="mFR-Ln-z8d"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
                                 <state key="normal" title="Get Exercise">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="getExerciseButtonPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="7bV-Jq-Dt9"/>
@@ -728,22 +725,22 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kb-4d-YAw">
                                 <rect key="frame" x="224" y="392" width="115" height="40"/>
-                                <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Dib-QY-HuC"/>
                                     <constraint firstAttribute="width" constant="115" id="aji-u0-Y8Y"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
                                 <state key="normal" title="Get Workout">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="getWorkoutButtonPressed:" destination="WOs-uM-HAx" eventType="touchUpInside" id="fZj-KQ-j8a"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Pux-Uh-uyF" firstAttribute="leading" secondItem="xXq-pE-lGO" secondAttribute="leadingMargin" constant="20" id="6Z2-rN-lsZ"/>
                             <constraint firstItem="9Kb-4d-YAw" firstAttribute="top" secondItem="FJc-CE-5ZJ" secondAttribute="bottom" constant="20" id="DPv-DQ-Zgu"/>
@@ -762,18 +759,12 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Xercise Fitness" id="vlh-e1-Bzo">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="7AM-D5-8A8">
-                            <connections>
-                                <action selector="logout:" destination="WOs-uM-HAx" id="aNt-j4-W1O"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Info" id="aSC-aE-Yj9">
                             <connections>
                                 <segue destination="Jyx-0A-eFP" kind="show" id="Tl2-pT-dwe"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="animationImage" destination="FJc-CE-5ZJ" id="dfI-ea-CuV"/>
                         <outlet property="getExerciseButton" destination="Pux-Uh-uyF" id="uP7-1i-nh2"/>
@@ -794,14 +785,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="GBJ-UP-Jfw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WO9-e8-5hO">
-                            <rect key="frame" x="0.0" y="582" width="375" height="54"/>
+                            <rect key="frame" x="0.0" y="518" width="375" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Share Exercise">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="shareExerciseButtonPressed:" destination="7Od-Tc-va4" eventType="touchUpInside" id="7HC-dZ-DWA"/>
@@ -809,10 +800,10 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseImage" rowHeight="230" id="pbc-lx-DUE" customClass="DisplayExerciseImageTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="230"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="230"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pbc-lx-DUE" id="spe-Mw-Lhg">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="229"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="230"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c1x-r2-hqn">
@@ -833,15 +824,15 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseDescription" rowHeight="170" id="MWi-uO-haQ" customClass="DisplayExerciseDescriptionTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="322" width="375" height="170"/>
+                                <rect key="frame" x="0.0" y="258" width="375" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MWi-uO-haQ" id="zxe-by-uJv">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="169"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="170"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXN-cy-r18">
                                             <rect key="frame" x="8" y="8" width="359" height="153"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="153" id="KaE-2J-Z3J"/>
                                             </constraints>
@@ -867,10 +858,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="displayExerciseShare" rowHeight="90" id="EFd-C1-g97" customClass="DisplayExerciseShareTableViewCell" customModule="Xercise" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="492" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="428" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EFd-C1-g97" id="g3u-vB-ABT">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZP-cD-gBS">
@@ -889,7 +880,7 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="23"/>
                                             <state key="normal" title="Share">
-                                                <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                         </button>
                                     </subviews>
@@ -929,7 +920,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="nextButton" destination="D2d-VJ-xWh" id="WxA-P6-TsH"/>
                     </connections>
@@ -943,7 +933,6 @@
             <objects>
                 <navigationController id="xYN-vU-ReL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="My Xercises" image="man_tab_icon" id="Nnb-tu-eQ3"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Gcp-pk-W35">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -961,11 +950,10 @@
             <objects>
                 <tabBarController storyboardIdentifier="tabBarController" id="EPp-to-4cr" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="147-bY-X6E"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="cw2-Bh-byr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="FjZ-NK-bVc" kind="relationship" relationship="viewControllers" id="LYR-iA-AZg"/>
@@ -984,14 +972,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="7uS-jN-cKF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AgA-js-qZU">
-                            <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="20"/>
                             <state key="normal" title="Contact Us">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="contactUsButtonPressed:" destination="Jyx-0A-eFP" eventType="touchUpInside" id="S0Y-OT-hZj"/>
@@ -999,10 +987,10 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="wLO-zh-to2">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wLO-zh-to2" id="5NR-5J-Ezm">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1013,7 +1001,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Info" id="xZI-Ys-Izp"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <segue destination="Fcv-o2-5Cv" kind="show" identifier="expandedInfo" id="ple-BO-dzo"/>
                     </connections>
@@ -1036,7 +1023,7 @@
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-nZ-WRc">
                                 <rect key="frame" x="67" y="123" width="240" height="463"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="CAC-C7-jaG"/>
                                     <constraint firstAttribute="height" constant="267" id="DPZ-af-Pcz"/>
@@ -1053,11 +1040,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expanded Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tzg-7v-E4R">
                                 <rect key="frame" x="106" y="79" width="164" height="29"/>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="22"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="sFf-nZ-WRc" firstAttribute="top" secondItem="Tzg-7v-E4R" secondAttribute="bottom" constant="15" id="03a-o7-hoT"/>
                             <constraint firstItem="Tzg-7v-E4R" firstAttribute="centerX" secondItem="mUx-qr-ziw" secondAttribute="centerX" id="EDL-Ke-1z3"/>
@@ -1074,7 +1061,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="infoLabel" destination="sFf-nZ-WRc" id="o72-VN-f6v"/>
                         <outlet property="titleLabel" destination="Tzg-7v-E4R" id="FKW-aw-Wrv"/>
@@ -1091,14 +1077,14 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gPY-Oc-zVo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dOM-6e-fsC">
-                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.17254901959999999" green="0.29411764709999999" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="23"/>
                             <state key="normal" title="Share">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="shareWithGroupButtonPressed:" destination="Bpm-05-4zj" eventType="touchUpInside" id="rOz-Bg-2sh"/>
@@ -1110,7 +1096,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Workout" id="oTt-he-x7U"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="shareWithGroupButton" destination="dOM-6e-fsC" id="74x-ra-6aN"/>
                         <segue destination="7Od-Tc-va4" kind="show" identifier="displayExerciseFromWorkout" id="Ai5-5F-ddJ"/>
@@ -1146,12 +1131,12 @@
                                     <constraint firstAttribute="width" constant="280" id="KiZ-zK-dnb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="shadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iNG-L8-eDS" firstAttribute="centerX" secondItem="FNr-oM-pKw" secondAttribute="centerX" id="EL0-78-syE"/>
                             <constraint firstItem="L8o-gf-Qmt" firstAttribute="centerX" secondItem="FNr-oM-pKw" secondAttribute="centerX" id="Eyd-4H-G4L"/>
@@ -1159,7 +1144,6 @@
                             <constraint firstItem="L8o-gf-Qmt" firstAttribute="top" secondItem="iNG-L8-eDS" secondAttribute="bottom" constant="8" id="X14-aB-2Af"/>
                         </constraints>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <segue destination="Xwe-Jo-fUc" kind="show" identifier="notLoggedIn" id="ZYd-Cf-tdE"/>
                         <segue destination="EPp-to-4cr" kind="show" identifier="loggedIn" id="xot-8e-WTm"/>
@@ -1188,9 +1172,9 @@
                                     <constraint firstAttribute="width" constant="280" id="mIU-vh-E9A"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="shadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bfr-ct-egG">
                                 <rect key="frame" x="48" y="217" width="280" height="30"/>
@@ -1198,7 +1182,7 @@
                                     <constraint firstAttribute="width" constant="280" id="8yO-5F-KA3"/>
                                     <constraint firstAttribute="height" constant="30" id="A0D-of-yAd"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
@@ -1208,7 +1192,7 @@
                                     <constraint firstAttribute="width" constant="280" id="E9O-as-J1l"/>
                                     <constraint firstAttribute="height" constant="30" id="xZp-6r-brU"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
@@ -1219,40 +1203,40 @@
                                     <constraint firstAttribute="height" constant="28" id="Dwe-th-qs1"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSR-tu-zna">
                                 <rect key="frame" x="48" y="354" width="280" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="YD1-6B-fjb"/>
                                     <constraint firstAttribute="height" constant="1" id="buA-q8-CeC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x54-ED-nta">
                                 <rect key="frame" x="48" y="185" width="117" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="EMJ-pc-hJy"/>
                                     <constraint firstAttribute="width" constant="117" id="nH6-sR-sP5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUs-ut-JYv">
                                 <rect key="frame" x="211" y="185" width="117" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="117" id="hWb-2G-wzD"/>
                                     <constraint firstAttribute="height" constant="1" id="p82-To-cHD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fn0-ZP-Evx">
@@ -1263,7 +1247,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="25"/>
                                 <state key="normal" title="Create Account">
-                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="toggleLoginSignupButtonPressed:" destination="Xwe-Jo-fUc" eventType="touchUpInside" id="fs0-eJ-Hmo"/>
@@ -1284,7 +1268,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="25"/>
                                 <state key="normal" title="Login">
-                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="goButtonPressed:" destination="Xwe-Jo-fUc" eventType="touchUpInside" id="le5-Mw-N9N"/>
@@ -1300,7 +1284,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="18"/>
                                 <state key="normal" title="Reset Password">
-                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -1321,7 +1305,7 @@
                                 </constraints>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="EUs-ut-JYv" firstAttribute="top" secondItem="Nl2-D7-p1R" secondAttribute="bottom" constant="26" id="3DY-nw-0Ae"/>
                             <constraint firstItem="m7l-Pb-cYl" firstAttribute="top" secondItem="0nR-d2-51m" secondAttribute="bottom" constant="17" id="Bmh-kY-caA"/>
@@ -1364,7 +1348,6 @@
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="activityIndicator" destination="6An-ZG-Rp3" id="ad8-MG-Fqu"/>
                         <outlet property="facebookLoginView" destination="Nl2-D7-p1R" id="9r4-ux-IEU"/>
@@ -1398,7 +1381,7 @@
                                     <constraint firstAttribute="width" constant="280" id="KUl-OX-03u"/>
                                     <constraint firstAttribute="height" constant="30" id="ihk-ay-ulC"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                             </textField>
@@ -1408,7 +1391,7 @@
                                     <constraint firstAttribute="height" constant="30" id="NEr-46-1Rz"/>
                                     <constraint firstAttribute="width" constant="280" id="rlb-dJ-jGL"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                             </textField>
@@ -1419,40 +1402,40 @@
                                     <constraint firstAttribute="width" constant="30" id="rVf-KA-xmT"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rbW-Wp-gPM">
                                 <rect key="frame" x="48" y="427" width="280" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="O3R-be-c9w"/>
                                     <constraint firstAttribute="width" constant="280" id="X7b-ib-3Z6"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQR-D4-TQV">
                                 <rect key="frame" x="48" y="343" width="117" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="1FF-Zz-Tgh"/>
                                     <constraint firstAttribute="width" constant="117" id="qI5-FU-Oo6"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkG-y1-ezI">
                                 <rect key="frame" x="211" y="343" width="117" height="1"/>
-                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="5BE-sh-aW8"/>
                                     <constraint firstAttribute="width" constant="117" id="OjR-pc-TtB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11h-xc-Jc9">
@@ -1463,7 +1446,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="24"/>
                                 <state key="normal" title="Have an account? Sign In!">
-                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="toggleLoginSignupButton:" destination="ZvH-4V-EAd" eventType="touchUpInside" id="ZvR-1Y-7Ys"/>
@@ -1484,7 +1467,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="25"/>
                                 <state key="normal" title="Create Account">
-                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="createAccountButtonPressed:" destination="ZvH-4V-EAd" eventType="touchUpInside" id="5ww-dD-t9r"/>
@@ -1496,7 +1479,7 @@
                                     <constraint firstAttribute="height" constant="30" id="0MI-0i-kBm"/>
                                     <constraint firstAttribute="width" constant="280" id="myz-2R-y10"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" secureTextEntry="YES"/>
                             </textField>
@@ -1506,7 +1489,7 @@
                                     <constraint firstAttribute="height" constant="30" id="Bsl-Zh-C58"/>
                                     <constraint firstAttribute="width" constant="280" id="FWG-yS-Frp"/>
                                 </constraints>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
@@ -1524,12 +1507,12 @@
                                     <constraint firstAttribute="height" constant="68" id="zIm-FB-D3T"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="40"/>
-                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.21960784310000001" blue="0.47058823529999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="shadowColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="yqc-w7-eeq" firstAttribute="centerX" secondItem="i3c-VI-AK3" secondAttribute="centerX" id="0Ty-d9-6bl"/>
                             <constraint firstItem="9L0-Dj-HaQ" firstAttribute="top" secondItem="AQR-D4-TQV" secondAttribute="bottom" constant="19" id="2kj-uq-GcK"/>
@@ -1592,7 +1575,6 @@
                         </variation>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="activityIndicator" destination="rYx-tu-lU3" id="rDk-yh-28O"/>
                         <outlet property="confirmPasswordTextField" destination="ESU-p1-sI9" id="Wsx-l3-TFI"/>
@@ -1621,9 +1603,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xot-8e-WTm"/>
-        <segue reference="exV-KX-8yW"/>
+        <segue reference="9O5-yO-qlf"/>
         <segue reference="tSD-4U-aQr"/>
         <segue reference="cMS-Lw-eUM"/>
-        <segue reference="Ai5-5F-ddJ"/>
+        <segue reference="WMk-xE-g5t"/>
     </inferredMetricsTieBreakers>
 </document>

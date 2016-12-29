@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 
 class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITabBarControllerDelegate {
     
@@ -64,11 +63,11 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
     }
     
     override func viewWillAppear(animated: Bool) {
-        // Check user login
-        if PFUser.currentUser() == nil {
-            //If not logged in, display login view controller
-            presentLoginVC()
-        }
+//        // Check user login
+//        if PFUser.currentUser() == nil {
+//            //If not logged in, display login view controller
+//            presentLoginVC()
+//        }
         
         tabBarController?.delegate = self
         setupDropDownMenu()
@@ -402,19 +401,6 @@ class NewXerciseViewController: UIViewController, IGLDropDownMenuDelegate, UITab
         }
         animationImage.image = UIImage(named: "animationFrame\(imageCounter)")
     }
-    
-    
-    @IBAction func logout(sender: AnyObject) {
-        let confirmLogout = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.Alert)
-        confirmLogout.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-        confirmLogout.addAction(UIAlertAction(title: "Logout", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            PFUser.logOut()
-            self.presentLoginVC()
-        }))
-        
-        self.presentViewController(confirmLogout, animated: true, completion: nil)
-    }
-    
     
     func presentLoginVC() {
         guard let loginVC = self.storyboard?.instantiateInitialViewController() else {return}

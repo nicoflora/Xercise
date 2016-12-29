@@ -9,8 +9,6 @@
 import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
-import ParseFacebookUtilsV4
-import Parse
 
 enum validateOption {
     case username
@@ -175,17 +173,18 @@ class CustomLoginViewController: UIViewController, FBSDKLoginButtonDelegate, UIT
     }
     
     func loginWithParse(username : String, password : String) {
-        PFUser.logInWithUsernameInBackground(username, password: password) { (user, error) -> Void in
-            if error == nil {
-                if user != nil {
-                    self.dismissLoginVC()
-                } else {
-                    self.presentAlert("Login Error", alertMessage: "There was an issue logging you in. Please try again.")
-                }
-            } else {
-                self.presentAlert("Login Error", alertMessage: (error?.localizedDescription)!)
-            }
-        }
+        dismissLoginVC()
+//        PFUser.logInWithUsernameInBackground(username, password: password) { (user, error) -> Void in
+//            if error == nil {
+//                if user != nil {
+//                    self.dismissLoginVC()
+//                } else {
+//                    self.presentAlert("Login Error", alertMessage: "There was an issue logging you in. Please try again.")
+//                }
+//            } else {
+//                self.presentAlert("Login Error", alertMessage: (error?.localizedDescription)!)
+//            }
+//        }
     }
     
     func processLogin() {
@@ -232,17 +231,17 @@ class CustomLoginViewController: UIViewController, FBSDKLoginButtonDelegate, UIT
                 // If there was an account name entered
                 if let text = textfield.text {
                     if text != "" {
-                        PFUser.requestPasswordResetForEmailInBackground(text, block: { (success, error) -> Void in
-                            if error == nil {
-                                if success {
-                                    self.presentAlert("Password Reset", alertMessage: "An email has been sent to you with instructions for resetting your password.")
-                                } else {
-                                    self.presentAlert("Error", alertMessage: "There was an error resetting your password, please try again")
-                                }
-                            } else {
-                                self.presentAlert("Password Reset Error", alertMessage: (error?.localizedDescription)!)
-                            }
-                        })
+//                        PFUser.requestPasswordResetForEmailInBackground(text, block: { (success, error) -> Void in
+//                            if error == nil {
+//                                if success {
+//                                    self.presentAlert("Password Reset", alertMessage: "An email has been sent to you with instructions for resetting your password.")
+//                                } else {
+//                                    self.presentAlert("Error", alertMessage: "There was an error resetting your password, please try again")
+//                                }
+//                            } else {
+//                                self.presentAlert("Password Reset Error", alertMessage: (error?.localizedDescription)!)
+//                            }
+//                        })
                     }
                 }
                 // Reset password using retrieved email
@@ -257,15 +256,16 @@ class CustomLoginViewController: UIViewController, FBSDKLoginButtonDelegate, UIT
     
     
     func loginWithFacebook(accessToken : FBSDKAccessToken) {
-        PFFacebookUtils.logInInBackgroundWithAccessToken(accessToken) { (user, error) -> Void in
-            if user != nil {
-                // Successful login with facebook
-                self.dismissLoginVC()
-            } else {
-                //print(error)
-                self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
-            }
-        }
+        dismissLoginVC()
+//        PFFacebookUtils.logInInBackgroundWithAccessToken(accessToken) { (user, error) -> Void in
+//            if user != nil {
+//                // Successful login with facebook
+//                self.dismissLoginVC()
+//            } else {
+//                //print(error)
+//                self.presentAlert("Not Logged In", alertMessage: "You have not been signed in with Facebook. You can either create an account or signup with Facebook.")
+//            }
+//        }
     }
 
     // MARK: - Utility Functions

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 import Social
 import MessageUI
 
@@ -232,7 +231,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                     } else {
                         // Exercise has not been saved to device, save it
                         // Convert image
-                        if let img = UIImageJPEGRepresentation(self.exerciseToDisplay.image, 0.5) {
+                        if let img = UIImageJPEGRepresentation(self.exerciseToDisplay.image, 0.7) {
                             // Save exercise to device
                             self.dataMgr.saveExerciseToDevice(self.exerciseToDisplay.name, id: self.exerciseToDisplay.identifier, muscleGroup: self.exerciseToDisplay.muscleGroup, image: img, exerciseDescription: self.exerciseToDisplay.description, completion: { (success) -> Void in
                                 if success {
@@ -294,7 +293,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
     func thumbsDownRate() {
         // Call to Parse Cloud Code to rate an exercise with a thumbs down
         let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Down_Rate"]
-        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
+//        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
             self.rateCompleted()
             /*if error == nil {
                 self.rateCompleted()
@@ -302,13 +301,13 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                 self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
             }*/
-        }
+//        }
     }
     
     func thumbsUpRate() {
         // Call to Parse Cloud Code to rate an exercise with a thumbs up
         let rateDictionary = ["type" : "Exercise", "id" : exerciseToDisplay.identifier, "rating" : "thumbs_Up_Rate"]
-        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
+//        PFCloud.callFunctionInBackground("rate", withParameters: rateDictionary) { (object, error) -> Void in
             self.rateCompleted()
             /*if error == nil {
                 self.rateCompleted()
@@ -316,7 +315,7 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
                 self.presentAlert("Error Rating", message: "There was an issue saving your rating, please try again.")
                 print("Error: \(error!.localizedDescription)")
             }*/
-        }
+//        }
     }
     
     func rateCompleted() {

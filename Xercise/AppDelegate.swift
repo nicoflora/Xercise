@@ -8,9 +8,7 @@
 
 import UIKit
 import CoreData
-import Parse
 import FBSDKCoreKit
-import ParseFacebookUtilsV4
 import Firebase
 
 @UIApplicationMain
@@ -21,26 +19,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Initialize Firebase
         FIRApp.configure()
         
         // Initialize Parse.
-        Parse.setApplicationId("04vnOim3efwtboWA2ZFc8FNpaqQeiLhkN7GPBkAD",
-            clientKey: "0JdrSyHoct17XvRnzlXqiIJzZuEknmIiUrAKPSZf")
+        //Parse.setApplicationId("04vnOim3efwtboWA2ZFc8FNpaqQeiLhkN7GPBkAD",
+            //clientKey: "0JdrSyHoct17XvRnzlXqiIJzZuEknmIiUrAKPSZf")
         
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+        //PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
 
         
         // [Optional] Track statistics around application opens.
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        //PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
         let navigationBarAppearace = UINavigationBar.appearance()
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         navigationBarAppearace.tintColor = UIColor.whiteColor() //UIColor(red: 128, green: 175, blue: 220, alpha: 1)
         navigationBarAppearace.barTintColor = UIColor(hexString: "#0f3878") //(red: 20, green: 76, blue: 140, alpha: 0)
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "Marker Felt", size: 22)!]
-        
-        // Testing Firebase
-        //DataManager.sharedInstance.testFirebase()
         
         return true
     }
