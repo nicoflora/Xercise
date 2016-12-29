@@ -328,8 +328,11 @@ class DisplayExerciseTableViewController: UITableViewController, MFMessageCompos
     // MARK: - Utility functions
     func showPopup(message : String) {
         let popup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        self.presentViewController(popup, animated: true, completion: nil)
-        self.performSelector(#selector(DisplayExerciseTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
+        self.presentViewController(popup, animated: true, completion: {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.performSelector(#selector(DisplayExerciseTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
+            })
+        })
     }
     
     func hidePopup() {

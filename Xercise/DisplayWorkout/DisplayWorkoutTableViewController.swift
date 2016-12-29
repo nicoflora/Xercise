@@ -386,9 +386,11 @@ class DisplayWorkoutTableViewController: UITableViewController, XercisesUpdatedD
     
     func showPopup(message : String) {
         let copyPopup = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        self.presentViewController(copyPopup, animated: true, completion: nil)
-        self.performSelector(#selector(DisplayWorkoutTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
-
+        self.presentViewController(copyPopup, animated: true, completion: {
+            dispatch_async(dispatch_get_main_queue(), { 
+                self.performSelector(#selector(DisplayWorkoutTableViewController.hidePopup), withObject: nil, afterDelay: 1.0)
+            })
+        })
     }
     
     func hidePopup() {

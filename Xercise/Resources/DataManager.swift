@@ -761,7 +761,19 @@ class DataManager {
             self.getExerciseFromDB(withID: ex, completion: { (exercise) in
                 if let exercise = exercise {
                     // Save exercise
-                    guard let imageData = UIImageJPEGRepresentation(exercise.image, 0.7) else {attempts += 1;return}
+                    guard let imageData = UIImageJPEGRepresentation(exercise.image, 0.7) else {
+                        attempts += 1
+                        
+                        // Check number of attempts
+                        if attempts == ids.count {
+                            // Attempted to get every exercise - return completion handler
+                            completion(success: wasSuccessful)
+                            return
+                        }
+                        
+                        return
+                    }
+                    
                     self.saveExerciseToDevice(exercise.name, id: exercise.identifier, muscleGroup: exercise.muscleGroup, image: imageData, exerciseDescription: exercise.description, completion: { (success) in
                         attempts += 1
                         if success {
@@ -779,13 +791,13 @@ class DataManager {
                     })
                 } else {
                     attempts += 1
-                }
-                
-                // Check number of attempts
-                if attempts == ids.count {
-                    // Attempted to get every exercise - return completion handler
-                    completion(success: wasSuccessful)
-                    return
+                    
+                    // Check number of attempts
+                    if attempts == ids.count {
+                        // Attempted to get every exercise - return completion handler
+                        completion(success: wasSuccessful)
+                        return
+                    }
                 }
                 
             })

@@ -7,20 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		250A63241C75091D00F2D510 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */; };
-		251E73FF1C7F676D003AF509 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */; };
-		251E74001C7F676E003AF509 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */; };
-		251E74031C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */; };
-		251E74041C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */; };
-		251E74051C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */; };
-		251E74061C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */; };
-		251E74071C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */; };
-		251E74081C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */; };
 		251F1BFB1BDFD1DC00B1F3B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */; };
-		251F1BFD1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */; };
-		251F1C001BDFD1DC00B1F3B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */; };
-		251F1C051BDFD1DC00B1F3B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 251F1C041BDFD1DC00B1F3B0 /* Assets.xcassets */; };
-		251F1C081BDFD1DC00B1F3B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 251F1C061BDFD1DC00B1F3B0 /* LaunchScreen.storyboard */; };
 		251F1C131BDFD1DC00B1F3B0 /* XerciseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1C121BDFD1DC00B1F3B0 /* XerciseTests.swift */; };
 		251F1C1E1BDFD1DC00B1F3B0 /* XerciseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1C1D1BDFD1DC00B1F3B0 /* XerciseUITests.swift */; };
 		25300A7D1C9BB1280085F98E /* IGLDropDownItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */; };
@@ -29,46 +16,12 @@
 		25300A801C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
 		25300A811C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
 		25300A821C9BB1280085F98E /* IGLDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */; };
-		25598D211C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
-		25598D221C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
-		25598D231C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */; };
-		2566DB781BE6776C0065507C /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB771BE6776C0065507C /* InfoTableViewController.swift */; };
-		2566DB791BE6776C0065507C /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB771BE6776C0065507C /* InfoTableViewController.swift */; };
-		2566DB7A1BE6776C0065507C /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB771BE6776C0065507C /* InfoTableViewController.swift */; };
-		2566DB7C1BE677D50065507C /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7B1BE677D50065507C /* XerciseConstants.swift */; };
-		2566DB7D1BE677D50065507C /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7B1BE677D50065507C /* XerciseConstants.swift */; };
-		2566DB7E1BE677D50065507C /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7B1BE677D50065507C /* XerciseConstants.swift */; };
-		2566DB801BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */; };
-		2566DB811BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */; };
-		2566DB821BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */; };
-		2566DB841BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */; };
-		2566DB851BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */; };
-		2566DB861BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */; };
-		2566DB881BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */; };
-		2566DB891BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */; };
-		2566DB8A1BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */; };
-		2566DB8C1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */; };
-		2566DB8D1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */; };
-		2566DB8E1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */; };
-		2566DB901BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */; };
-		2566DB911BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */; };
-		2566DB921BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */; };
-		2566DB941BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */; };
-		2566DB951BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */; };
-		2566DB961BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */; };
-		258BFDED1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
-		258BFDEE1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
-		258BFDEF1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */; };
-		25979FA21C73861F00D58B2F /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
 		25ACC23A1C4EAAF0001040E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */; };
 		25ACC23B1C4EAAF0001040E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */; };
 		25ACC23C1C4EAAF0001040E8 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */; };
 		25ACC24B1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC24A1C4EAFCC001040E8 /* FBSDKCoreKit.framework */; };
 		25ACC24C1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC24A1C4EAFCC001040E8 /* FBSDKCoreKit.framework */; };
 		25ACC24D1C4EAFCC001040E8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25ACC24A1C4EAFCC001040E8 /* FBSDKCoreKit.framework */; };
-		25B55C641C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */; };
-		25B55C651C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */; };
-		25B55C661C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */; };
 		25C2251D1BE47E7400CA75C9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2251C1BE47E7400CA75C9 /* Bolts.framework */; };
 		25C2251E1BE47E7400CA75C9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2251C1BE47E7400CA75C9 /* Bolts.framework */; };
 		25C2251F1BE47E7400CA75C9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C2251C1BE47E7400CA75C9 /* Bolts.framework */; };
@@ -82,73 +35,131 @@
 		25C225311BE47EDD00CA75C9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C225301BE47EDD00CA75C9 /* libz.tbd */; };
 		25C225331BE47EED00CA75C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C225321BE47EED00CA75C9 /* libsqlite3.tbd */; };
 		25C225411BE48E3F00CA75C9 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C225401BE48E3F00CA75C9 /* iTunesArtwork.png */; };
-		25C225471BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */; };
-		25C225481BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */; };
-		25C225491BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */; };
-		25C56BE01BEE7664008D7C6B /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BDF1BEE7664008D7C6B /* Exercise.swift */; };
-		25C56BE11BEE7664008D7C6B /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BDF1BEE7664008D7C6B /* Exercise.swift */; };
-		25C56BE21BEE7664008D7C6B /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BDF1BEE7664008D7C6B /* Exercise.swift */; };
-		25C56BE41BEE7688008D7C6B /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BE31BEE7688008D7C6B /* Workout.swift */; };
-		25C56BE51BEE7688008D7C6B /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BE31BEE7688008D7C6B /* Workout.swift */; };
-		25C56BE61BEE7688008D7C6B /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BE31BEE7688008D7C6B /* Workout.swift */; };
-		25C56BEE1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BED1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift */; };
-		25C56BEF1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BED1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift */; };
-		25C56BF01BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BED1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift */; };
-		25C56BF21BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF11BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift */; };
-		25C56BF31BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF11BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift */; };
-		25C56BF41BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF11BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift */; };
-		25C56BF61BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF51BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift */; };
-		25C56BF71BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF51BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift */; };
-		25C56BF81BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF51BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift */; };
-		25C56BFA1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF91BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift */; };
-		25C56BFB1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF91BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift */; };
-		25C56BFC1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C56BF91BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift */; };
-		25D62CF81BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CF71BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift */; };
-		25D62CF91BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CF71BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift */; };
-		25D62CFA1BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CF71BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift */; };
 		25D62CFB1BE82C2700B8F276 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */; };
 		25D62CFC1BE82C2800B8F276 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */; };
-		25D62CFD1BE82C3600B8F276 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
-		25D62CFF1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CFE1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift */; };
-		25D62D001BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CFE1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift */; };
-		25D62D011BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62CFE1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift */; };
-		25D62D031BE83E0D00B8F276 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D021BE83E0D00B8F276 /* DataManager.swift */; };
-		25D62D041BE83E0D00B8F276 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D021BE83E0D00B8F276 /* DataManager.swift */; };
-		25D62D051BE83E0D00B8F276 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D021BE83E0D00B8F276 /* DataManager.swift */; };
-		25D62D071BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
-		25D62D081BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
-		25D62D091BE842D700B8F276 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D62D061BE842D700B8F276 /* Entry.swift */; };
-		25D63E981C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */; };
-		25D63E991C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */; };
-		25D63E9A1C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */; };
-		25D63E9B1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */; };
-		25D63E9C1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */; };
-		25D63E9D1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */; };
-		25D757821E123B4100AC0FBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25D757811E123B4100AC0FBD /* GoogleService-Info.plist */; };
-		25D757831E123B4100AC0FBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25D757811E123B4100AC0FBD /* GoogleService-Info.plist */; };
-		25D757841E123B4100AC0FBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25D757811E123B4100AC0FBD /* GoogleService-Info.plist */; };
-		25E1075C1C7F8A490032BDCA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E1075B1C7F8A490032BDCA /* InitialViewController.swift */; };
-		25E1075D1C7F8A490032BDCA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E1075B1C7F8A490032BDCA /* InitialViewController.swift */; };
-		25E1075E1C7F8A490032BDCA /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E1075B1C7F8A490032BDCA /* InitialViewController.swift */; };
-		25E17B121C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
-		25E17B131C768A19009F5D17 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25979FA11C73861F00D58B2F /* MuscleGroup.swift */; };
-		25EBC6081BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
-		25EBC6091BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */; };
-		2D29E0C21C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
-		2D29E0C31C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
-		2D29E0C41C85EFEC003CA7D3 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */; };
-		2D29E0C61C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
-		2D29E0C71C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
-		2D29E0C81C860768003CA7D3 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D29E0C51C860768003CA7D3 /* MacroGoal.swift */; };
-		2DD477141C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
-		2DD477151C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
-		2DD477161C823C3E00943792 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD477131C823C3E00943792 /* UIViewMacro.swift */; };
-		2DD477181C823CA200943792 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD477171C823CA200943792 /* AddMacroPopupView.xib */; };
-		2DD477191C823CA200943792 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD477171C823CA200943792 /* AddMacroPopupView.xib */; };
-		2DD4771A1C823CA200943792 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD477171C823CA200943792 /* AddMacroPopupView.xib */; };
-		2DD4771C1C82490F00943792 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4771B1C82490F00943792 /* Macro.swift */; };
-		2DD4771D1C82490F00943792 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4771B1C82490F00943792 /* Macro.swift */; };
-		2DD4771E1C82490F00943792 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4771B1C82490F00943792 /* Macro.swift */; };
+		25F9E1581E15804400777826 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1551E15804400777826 /* CustomLoginViewController.swift */; };
+		25F9E1591E15804400777826 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1551E15804400777826 /* CustomLoginViewController.swift */; };
+		25F9E15A1E15804400777826 /* CustomLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1551E15804400777826 /* CustomLoginViewController.swift */; };
+		25F9E15B1E15804400777826 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1561E15804400777826 /* CustomSignUpViewController.swift */; };
+		25F9E15C1E15804400777826 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1561E15804400777826 /* CustomSignUpViewController.swift */; };
+		25F9E15D1E15804400777826 /* CustomSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1561E15804400777826 /* CustomSignUpViewController.swift */; };
+		25F9E15E1E15804400777826 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1571E15804400777826 /* InitialViewController.swift */; };
+		25F9E15F1E15804400777826 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1571E15804400777826 /* InitialViewController.swift */; };
+		25F9E1601E15804400777826 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1571E15804400777826 /* InitialViewController.swift */; };
+		25F9E1621E15806100777826 /* NewXerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1611E15806100777826 /* NewXerciseViewController.swift */; };
+		25F9E1631E15806100777826 /* NewXerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1611E15806100777826 /* NewXerciseViewController.swift */; };
+		25F9E1641E15806100777826 /* NewXerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1611E15806100777826 /* NewXerciseViewController.swift */; };
+		25F9E1671E15807F00777826 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1651E15807F00777826 /* ExpandedInfoViewController.swift */; };
+		25F9E1681E15807F00777826 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1651E15807F00777826 /* ExpandedInfoViewController.swift */; };
+		25F9E1691E15807F00777826 /* ExpandedInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1651E15807F00777826 /* ExpandedInfoViewController.swift */; };
+		25F9E16A1E15807F00777826 /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1661E15807F00777826 /* InfoTableViewController.swift */; };
+		25F9E16B1E15807F00777826 /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1661E15807F00777826 /* InfoTableViewController.swift */; };
+		25F9E16C1E15807F00777826 /* InfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1661E15807F00777826 /* InfoTableViewController.swift */; };
+		25F9E16E1E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E16D1E15808D00777826 /* DisplayWorkoutTableViewController.swift */; };
+		25F9E16F1E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E16D1E15808D00777826 /* DisplayWorkoutTableViewController.swift */; };
+		25F9E1701E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E16D1E15808D00777826 /* DisplayWorkoutTableViewController.swift */; };
+		25F9E1721E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1711E15809C00777826 /* DisplayExerciseTableViewController.swift */; };
+		25F9E1731E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1711E15809C00777826 /* DisplayExerciseTableViewController.swift */; };
+		25F9E1741E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1711E15809C00777826 /* DisplayExerciseTableViewController.swift */; };
+		25F9E1781E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1751E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift */; };
+		25F9E1791E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1751E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift */; };
+		25F9E17A1E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1751E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift */; };
+		25F9E17B1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1761E1580A500777826 /* DisplayExerciseImageTableViewCell.swift */; };
+		25F9E17C1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1761E1580A500777826 /* DisplayExerciseImageTableViewCell.swift */; };
+		25F9E17D1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1761E1580A500777826 /* DisplayExerciseImageTableViewCell.swift */; };
+		25F9E17E1E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1771E1580A500777826 /* DisplayExerciseShareTableViewCell.swift */; };
+		25F9E17F1E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1771E1580A500777826 /* DisplayExerciseShareTableViewCell.swift */; };
+		25F9E1801E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1771E1580A500777826 /* DisplayExerciseShareTableViewCell.swift */; };
+		25F9E1821E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1811E1580BC00777826 /* MyXercisesTableViewController.swift */; };
+		25F9E1831E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1811E1580BC00777826 /* MyXercisesTableViewController.swift */; };
+		25F9E1841E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1811E1580BC00777826 /* MyXercisesTableViewController.swift */; };
+		25F9E1861E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1851E1580D200777826 /* CreateNewExerciseTableViewController.swift */; };
+		25F9E1871E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1851E1580D200777826 /* CreateNewExerciseTableViewController.swift */; };
+		25F9E1881E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1851E1580D200777826 /* CreateNewExerciseTableViewController.swift */; };
+		25F9E18E1E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1891E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift */; };
+		25F9E18F1E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1891E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift */; };
+		25F9E1901E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1891E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift */; };
+		25F9E1911E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18A1E1580DF00777826 /* ExerciseImageTableViewCell.swift */; };
+		25F9E1921E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18A1E1580DF00777826 /* ExerciseImageTableViewCell.swift */; };
+		25F9E1931E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18A1E1580DF00777826 /* ExerciseImageTableViewCell.swift */; };
+		25F9E1941E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18B1E1580DF00777826 /* ExerciseRepsTableViewCell.swift */; };
+		25F9E1951E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18B1E1580DF00777826 /* ExerciseRepsTableViewCell.swift */; };
+		25F9E1961E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18B1E1580DF00777826 /* ExerciseRepsTableViewCell.swift */; };
+		25F9E1971E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18C1E1580DF00777826 /* ExerciseSetsTableViewCell.swift */; };
+		25F9E1981E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18C1E1580DF00777826 /* ExerciseSetsTableViewCell.swift */; };
+		25F9E1991E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18C1E1580DF00777826 /* ExerciseSetsTableViewCell.swift */; };
+		25F9E19A1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18D1E1580DF00777826 /* ExerciseTitleTableViewCell.swift */; };
+		25F9E19B1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18D1E1580DF00777826 /* ExerciseTitleTableViewCell.swift */; };
+		25F9E19C1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E18D1E1580DF00777826 /* ExerciseTitleTableViewCell.swift */; };
+		25F9E19F1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19D1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift */; };
+		25F9E1A01E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19D1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift */; };
+		25F9E1A11E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19D1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift */; };
+		25F9E1A21E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19E1E1580EC00777826 /* CreateNewWorkoutTableViewController.swift */; };
+		25F9E1A31E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19E1E1580EC00777826 /* CreateNewWorkoutTableViewController.swift */; };
+		25F9E1A41E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E19E1E1580EC00777826 /* CreateNewWorkoutTableViewController.swift */; };
+		25F9E1A81E15810200777826 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1A51E15810200777826 /* MacroHeader.xib */; };
+		25F9E1A91E15810200777826 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1A51E15810200777826 /* MacroHeader.xib */; };
+		25F9E1AA1E15810200777826 /* MacroHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1A51E15810200777826 /* MacroHeader.xib */; };
+		25F9E1AB1E15810200777826 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A61E15810200777826 /* MacrosTableViewCell.swift */; };
+		25F9E1AC1E15810200777826 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A61E15810200777826 /* MacrosTableViewCell.swift */; };
+		25F9E1AD1E15810200777826 /* MacrosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A61E15810200777826 /* MacrosTableViewCell.swift */; };
+		25F9E1AE1E15810200777826 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A71E15810200777826 /* MacrosTableViewController.swift */; };
+		25F9E1AF1E15810200777826 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A71E15810200777826 /* MacrosTableViewController.swift */; };
+		25F9E1B01E15810200777826 /* MacrosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1A71E15810200777826 /* MacrosTableViewController.swift */; };
+		25F9E1B21E15810B00777826 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1B11E15810B00777826 /* AddMacroPopupView.xib */; };
+		25F9E1B31E15810B00777826 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1B11E15810B00777826 /* AddMacroPopupView.xib */; };
+		25F9E1B41E15810B00777826 /* AddMacroPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1B11E15810B00777826 /* AddMacroPopupView.xib */; };
+		25F9E1B61E15812200777826 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1B51E15812200777826 /* UIViewMacro.swift */; };
+		25F9E1B71E15812200777826 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1B51E15812200777826 /* UIViewMacro.swift */; };
+		25F9E1B81E15812200777826 /* UIViewMacro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1B51E15812200777826 /* UIViewMacro.swift */; };
+		25F9E1C01E15816000777826 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BA1E15816000777826 /* Assets.xcassets */; };
+		25F9E1C11E15816000777826 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BA1E15816000777826 /* Assets.xcassets */; };
+		25F9E1C21E15816000777826 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BA1E15816000777826 /* Assets.xcassets */; };
+		25F9E1C31E15816000777826 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BC1E15816000777826 /* LaunchScreen.storyboard */; };
+		25F9E1C41E15816000777826 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BC1E15816000777826 /* LaunchScreen.storyboard */; };
+		25F9E1C51E15816000777826 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BC1E15816000777826 /* LaunchScreen.storyboard */; };
+		25F9E1C61E15816000777826 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BE1E15816000777826 /* Main.storyboard */; };
+		25F9E1C71E15816000777826 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BE1E15816000777826 /* Main.storyboard */; };
+		25F9E1C81E15816000777826 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1BE1E15816000777826 /* Main.storyboard */; };
+		25F9E1CA1E15817100777826 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1C91E15817100777826 /* DataManager.swift */; };
+		25F9E1CB1E15817100777826 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1C91E15817100777826 /* DataManager.swift */; };
+		25F9E1CC1E15817100777826 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1C91E15817100777826 /* DataManager.swift */; };
+		25F9E1CF1E15817700777826 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CD1E15817700777826 /* Entry.swift */; };
+		25F9E1D01E15817700777826 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CD1E15817700777826 /* Entry.swift */; };
+		25F9E1D11E15817700777826 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CD1E15817700777826 /* Entry.swift */; };
+		25F9E1D21E15817700777826 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CE1E15817700777826 /* Exercise.swift */; };
+		25F9E1D31E15817700777826 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CE1E15817700777826 /* Exercise.swift */; };
+		25F9E1D41E15817700777826 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1CE1E15817700777826 /* Exercise.swift */; };
+		25F9E1D61E15817F00777826 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D51E15817F00777826 /* MuscleGroup.swift */; };
+		25F9E1D71E15817F00777826 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D51E15817F00777826 /* MuscleGroup.swift */; };
+		25F9E1D81E15817F00777826 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D51E15817F00777826 /* MuscleGroup.swift */; };
+		25F9E1DA1E15818600777826 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D91E15818600777826 /* Workout.swift */; };
+		25F9E1DB1E15818600777826 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D91E15818600777826 /* Workout.swift */; };
+		25F9E1DC1E15818600777826 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1D91E15818600777826 /* Workout.swift */; };
+		25F9E1DF1E1581C100777826 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DD1E1581C100777826 /* Macro.swift */; };
+		25F9E1E01E1581C100777826 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DD1E1581C100777826 /* Macro.swift */; };
+		25F9E1E11E1581C100777826 /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DD1E1581C100777826 /* Macro.swift */; };
+		25F9E1E21E1581C100777826 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DE1E1581C100777826 /* MacroGoal.swift */; };
+		25F9E1E31E1581C100777826 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DE1E1581C100777826 /* MacroGoal.swift */; };
+		25F9E1E41E1581C100777826 /* MacroGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1DE1E1581C100777826 /* MacroGoal.swift */; };
+		25F9E1E61E1581D500777826 /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E51E1581D500777826 /* XerciseConstants.swift */; };
+		25F9E1E71E1581D500777826 /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E51E1581D500777826 /* XerciseConstants.swift */; };
+		25F9E1E81E1581D500777826 /* XerciseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E51E1581D500777826 /* XerciseConstants.swift */; };
+		25F9E1EA1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E91E1581EC00777826 /* ExercisesByMuscleGroup.swift */; };
+		25F9E1EB1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E91E1581EC00777826 /* ExercisesByMuscleGroup.swift */; };
+		25F9E1EC1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1E91E1581EC00777826 /* ExercisesByMuscleGroup.swift */; };
+		25F9E1EF1E1581FA00777826 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1ED1E1581FA00777826 /* Xercise.xcdatamodeld */; };
+		25F9E1F01E1581FA00777826 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1ED1E1581FA00777826 /* Xercise.xcdatamodeld */; };
+		25F9E1F11E1581FA00777826 /* Xercise.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1ED1E1581FA00777826 /* Xercise.xcdatamodeld */; };
+		25F9E1F41E15821700777826 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F21E15821700777826 /* GoogleService-Info.plist */; };
+		25F9E1F51E15821700777826 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F21E15821700777826 /* GoogleService-Info.plist */; };
+		25F9E1F61E15821700777826 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F21E15821700777826 /* GoogleService-Info.plist */; };
+		25F9E1F71E15821700777826 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F31E15821700777826 /* Info.plist */; };
+		25F9E1F81E15821700777826 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F31E15821700777826 /* Info.plist */; };
+		25F9E1F91E15821700777826 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25F9E1F31E15821700777826 /* Info.plist */; };
+		25F9E1FC1E15824F00777826 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1FB1E15824F00777826 /* UITextField+Shake.m */; };
+		25F9E1FD1E15824F00777826 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1FB1E15824F00777826 /* UITextField+Shake.m */; };
+		25F9E1FE1E15824F00777826 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F9E1FB1E15824F00777826 /* UITextField+Shake.m */; };
 		55B42ABC91D9B87EB1E1DEAB /* Pods_Xercise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 602E956B0FA5D0453E2FB48A /* Pods_Xercise.framework */; };
 		624547FA8CF674B89ABF2A0C /* Pods_XerciseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3730988F14965417E0F832C /* Pods_XerciseTests.framework */; };
 		8DD515B14C2A4336F3AF016C /* Pods_XerciseUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B59F9F62A52296AC8F535B /* Pods_XerciseUITests.framework */; };
@@ -172,16 +183,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisesByMuscleGroup.swift; sourceTree = "<group>"; };
-		251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLoginViewController.swift; sourceTree = "<group>"; };
-		251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSignUpViewController.swift; sourceTree = "<group>"; };
 		251F1BF71BDFD1DC00B1F3B0 /* Xercise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Xercise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewXerciseViewController.swift; sourceTree = "<group>"; };
-		251F1BFF1BDFD1DC00B1F3B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		251F1C041BDFD1DC00B1F3B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		251F1C071BDFD1DC00B1F3B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		251F1C091BDFD1DC00B1F3B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		251F1C0E1BDFD1DC00B1F3B0 /* XerciseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XerciseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		251F1C121BDFD1DC00B1F3B0 /* XerciseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XerciseTests.swift; sourceTree = "<group>"; };
 		251F1C141BDFD1DC00B1F3B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -192,22 +195,8 @@
 		25300A7A1C9BB1280085F98E /* IGLDropDownItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLDropDownItem.m; sourceTree = "<group>"; };
 		25300A7B1C9BB1280085F98E /* IGLDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGLDropDownMenu.h; sourceTree = "<group>"; };
 		25300A7C1C9BB1280085F98E /* IGLDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGLDropDownMenu.m; sourceTree = "<group>"; };
-		25598D1D1C8B9F5000A20EC5 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
-		25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Shake.m"; sourceTree = "<group>"; };
-		2566DB771BE6776C0065507C /* InfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewController.swift; sourceTree = "<group>"; };
-		2566DB7B1BE677D50065507C /* XerciseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XerciseConstants.swift; sourceTree = "<group>"; };
-		2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTitleTableViewCell.swift; sourceTree = "<group>"; };
-		2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseImageTableViewCell.swift; sourceTree = "<group>"; };
-		2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseDescriptionTableViewCell.swift; sourceTree = "<group>"; };
-		2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseRepsTableViewCell.swift; sourceTree = "<group>"; };
-		2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetsTableViewCell.swift; sourceTree = "<group>"; };
-		2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewExerciseTableViewController.swift; sourceTree = "<group>"; };
-		258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayWorkoutTableViewController.swift; sourceTree = "<group>"; };
-		25979FA11C73861F00D58B2F /* MuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuscleGroup.swift; sourceTree = "<group>"; };
 		25ACC2391C4EAAF0001040E8 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "parse-library-1-2/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
-		25ACC23D1C4EACD2001040E8 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
 		25ACC24A1C4EAFCC001040E8 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "parse-library-1-2/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
-		25B55C631C825C0B002A5182 /* Xercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xercise.xcdatamodel; sourceTree = "<group>"; };
 		25C2251C1BE47E7400CA75C9 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "parse-library-1-2/Bolts.framework"; sourceTree = "<group>"; };
 		25C225201BE47EA000CA75C9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		25C225221BE47EA500CA75C9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -219,27 +208,49 @@
 		25C225301BE47EDD00CA75C9 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		25C225321BE47EED00CA75C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		25C225401BE48E3F00CA75C9 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iTunesArtwork.png; path = Resources/iTunesArtwork.png; sourceTree = "<group>"; };
-		25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedInfoViewController.swift; sourceTree = "<group>"; };
-		25C56BDF1BEE7664008D7C6B /* Exercise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
-		25C56BE31BEE7688008D7C6B /* Workout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
-		25C56BED1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayExerciseTableViewController.swift; sourceTree = "<group>"; };
-		25C56BF11BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayExerciseImageTableViewCell.swift; sourceTree = "<group>"; };
-		25C56BF51BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayExerciseDescriptionTableViewCell.swift; sourceTree = "<group>"; };
-		25C56BF91BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayExerciseShareTableViewCell.swift; sourceTree = "<group>"; };
-		25D62CF71BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewWorkoutTableViewController.swift; sourceTree = "<group>"; };
-		25D62CFE1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddExerciseFromSavedTableViewController.swift; sourceTree = "<group>"; };
-		25D62D021BE83E0D00B8F276 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		25D62D061BE842D700B8F276 /* Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
-		25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosTableViewCell.swift; sourceTree = "<group>"; };
-		25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosTableViewController.swift; sourceTree = "<group>"; };
-		25D757811E123B4100AC0FBD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		25E1075B1C7F8A490032BDCA /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
-		25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyXercisesTableViewController.swift; sourceTree = "<group>"; };
-		2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MacroHeader.xib; sourceTree = "<group>"; };
-		2D29E0C51C860768003CA7D3 /* MacroGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacroGoal.swift; sourceTree = "<group>"; };
-		2DD477131C823C3E00943792 /* UIViewMacro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewMacro.swift; sourceTree = "<group>"; };
-		2DD477171C823CA200943792 /* AddMacroPopupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddMacroPopupView.xib; sourceTree = "<group>"; };
-		2DD4771B1C82490F00943792 /* Macro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Macro.swift; sourceTree = "<group>"; };
+		25F9E1551E15804400777826 /* CustomLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLoginViewController.swift; path = Login_SignUp/CustomLoginViewController.swift; sourceTree = "<group>"; };
+		25F9E1561E15804400777826 /* CustomSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomSignUpViewController.swift; path = Login_SignUp/CustomSignUpViewController.swift; sourceTree = "<group>"; };
+		25F9E1571E15804400777826 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = Login_SignUp/InitialViewController.swift; sourceTree = "<group>"; };
+		25F9E1611E15806100777826 /* NewXerciseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewXerciseViewController.swift; path = Home/NewXerciseViewController.swift; sourceTree = "<group>"; };
+		25F9E1651E15807F00777826 /* ExpandedInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExpandedInfoViewController.swift; path = Info/ExpandedInfoViewController.swift; sourceTree = "<group>"; };
+		25F9E1661E15807F00777826 /* InfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InfoTableViewController.swift; path = Info/InfoTableViewController.swift; sourceTree = "<group>"; };
+		25F9E16D1E15808D00777826 /* DisplayWorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayWorkoutTableViewController.swift; path = DisplayWorkout/DisplayWorkoutTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1711E15809C00777826 /* DisplayExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayExerciseTableViewController.swift; path = DisplayExercise/DisplayExerciseTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1751E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayExerciseDescriptionTableViewCell.swift; path = DisplayExercise/DisplayExerciseDescriptionTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E1761E1580A500777826 /* DisplayExerciseImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayExerciseImageTableViewCell.swift; path = DisplayExercise/DisplayExerciseImageTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E1771E1580A500777826 /* DisplayExerciseShareTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DisplayExerciseShareTableViewCell.swift; path = DisplayExercise/DisplayExerciseShareTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E1811E1580BC00777826 /* MyXercisesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyXercisesTableViewController.swift; path = MyXercises/MyXercisesTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1851E1580D200777826 /* CreateNewExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateNewExerciseTableViewController.swift; path = NewExercise/CreateNewExerciseTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1891E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExerciseDescriptionTableViewCell.swift; path = NewExercise/ExerciseDescriptionTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E18A1E1580DF00777826 /* ExerciseImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExerciseImageTableViewCell.swift; path = NewExercise/ExerciseImageTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E18B1E1580DF00777826 /* ExerciseRepsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExerciseRepsTableViewCell.swift; path = NewExercise/ExerciseRepsTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E18C1E1580DF00777826 /* ExerciseSetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExerciseSetsTableViewCell.swift; path = NewExercise/ExerciseSetsTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E18D1E1580DF00777826 /* ExerciseTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExerciseTitleTableViewCell.swift; path = NewExercise/ExerciseTitleTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E19D1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddExerciseFromSavedTableViewController.swift; path = NewWorkout/AddExerciseFromSavedTableViewController.swift; sourceTree = "<group>"; };
+		25F9E19E1E1580EC00777826 /* CreateNewWorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateNewWorkoutTableViewController.swift; path = NewWorkout/CreateNewWorkoutTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1A51E15810200777826 /* MacroHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MacroHeader.xib; path = Macros/MacroHeader.xib; sourceTree = "<group>"; };
+		25F9E1A61E15810200777826 /* MacrosTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacrosTableViewCell.swift; path = Macros/MacrosTableViewCell.swift; sourceTree = "<group>"; };
+		25F9E1A71E15810200777826 /* MacrosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacrosTableViewController.swift; path = Macros/MacrosTableViewController.swift; sourceTree = "<group>"; };
+		25F9E1B11E15810B00777826 /* AddMacroPopupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AddMacroPopupView.xib; path = Macros/AddMacroPopupView.xib; sourceTree = "<group>"; };
+		25F9E1B51E15812200777826 /* UIViewMacro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewMacro.swift; path = Macros/UIViewMacro.swift; sourceTree = "<group>"; };
+		25F9E1BA1E15816000777826 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
+		25F9E1BD1E15816000777826 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		25F9E1BF1E15816000777826 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		25F9E1C91E15817100777826 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataManager.swift; path = Resources/DataManager.swift; sourceTree = "<group>"; };
+		25F9E1CD1E15817700777826 /* Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entry.swift; path = Resources/Entry.swift; sourceTree = "<group>"; };
+		25F9E1CE1E15817700777826 /* Exercise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Exercise.swift; path = Resources/Exercise.swift; sourceTree = "<group>"; };
+		25F9E1D51E15817F00777826 /* MuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MuscleGroup.swift; path = Resources/MuscleGroup.swift; sourceTree = "<group>"; };
+		25F9E1D91E15818600777826 /* Workout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Workout.swift; path = Resources/Workout.swift; sourceTree = "<group>"; };
+		25F9E1DD1E1581C100777826 /* Macro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Macro.swift; path = Resources/Macro.swift; sourceTree = "<group>"; };
+		25F9E1DE1E1581C100777826 /* MacroGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacroGoal.swift; path = Resources/MacroGoal.swift; sourceTree = "<group>"; };
+		25F9E1E51E1581D500777826 /* XerciseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XerciseConstants.swift; path = Resources/XerciseConstants.swift; sourceTree = "<group>"; };
+		25F9E1E91E1581EC00777826 /* ExercisesByMuscleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExercisesByMuscleGroup.swift; path = Resources/ExercisesByMuscleGroup.swift; sourceTree = "<group>"; };
+		25F9E1EE1E1581FA00777826 /* Xercise.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Xercise.xcdatamodel; sourceTree = "<group>"; };
+		25F9E1F21E15821700777826 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Resources/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		25F9E1F31E15821700777826 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
+		25F9E1FA1E15823700777826 /* Xercise-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Xercise-Bridging-Header.h"; path = "Resources/Xercise-Bridging-Header.h"; sourceTree = "<group>"; };
+		25F9E1FB1E15824F00777826 /* UITextField+Shake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextField+Shake.m"; path = "Resources/UITextField+Shake.m"; sourceTree = "<group>"; };
+		25F9E1FF1E15825B00777826 /* UITextField+Shake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextField+Shake.h"; path = "Resources/UITextField+Shake.h"; sourceTree = "<group>"; };
 		3BFBD89AC0AA1A2D726BEF2F /* Pods-XerciseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XerciseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XerciseTests/Pods-XerciseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		47B59F9F62A52296AC8F535B /* Pods_XerciseUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XerciseUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5BFAC665D62C2C7378121D /* Pods-XerciseUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XerciseUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-XerciseUITests/Pods-XerciseUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -326,7 +337,11 @@
 				251F1BFA1BDFD1DC00B1F3B0 /* AppDelegate.swift */,
 				25C56BE71BEE777F008D7C6B /* Login/SignUp */,
 				25C56BE81BEE77A0008D7C6B /* Home */,
+				258BFDF21BF01C9000A6488A /* Display Workout */,
+				258BFDF11BF01C8400A6488A /* Display Exercise */,
 				25C56BE91BEE77E5008D7C6B /* My Xercises */,
+				25C56BEB1BEE7886008D7C6B /* New Exercise */,
+				25C56BEC1BEE7891008D7C6B /* New Workout */,
 				25D63E951C7FD50400C457C7 /* Macros */,
 				25C56BEA1BEE7803008D7C6B /* Resources */,
 			);
@@ -366,11 +381,11 @@
 		257417611C8559CC002C8BD4 /* TableView Cells */ = {
 			isa = PBXGroup;
 			children = (
-				2566DB7F1BE691AD0065507C /* ExerciseTitleTableViewCell.swift */,
-				2566DB831BE691CA0065507C /* ExerciseImageTableViewCell.swift */,
-				2566DB871BE691D80065507C /* ExerciseDescriptionTableViewCell.swift */,
-				2566DB8B1BE691E40065507C /* ExerciseRepsTableViewCell.swift */,
-				2566DB8F1BE691F00065507C /* ExerciseSetsTableViewCell.swift */,
+				25F9E1891E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift */,
+				25F9E18A1E1580DF00777826 /* ExerciseImageTableViewCell.swift */,
+				25F9E18B1E1580DF00777826 /* ExerciseRepsTableViewCell.swift */,
+				25F9E18C1E1580DF00777826 /* ExerciseSetsTableViewCell.swift */,
+				25F9E18D1E1580DF00777826 /* ExerciseTitleTableViewCell.swift */,
 			);
 			name = "TableView Cells";
 			sourceTree = "<group>";
@@ -378,9 +393,9 @@
 		258BFDF01BF01C6800A6488A /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				25C56BF11BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift */,
-				25C56BF51BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift */,
-				25C56BF91BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift */,
+				25F9E1751E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift */,
+				25F9E1761E1580A500777826 /* DisplayExerciseImageTableViewCell.swift */,
+				25F9E1771E1580A500777826 /* DisplayExerciseShareTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -388,8 +403,8 @@
 		258BFDF11BF01C8400A6488A /* Display Exercise */ = {
 			isa = PBXGroup;
 			children = (
+				25F9E1711E15809C00777826 /* DisplayExerciseTableViewController.swift */,
 				258BFDF01BF01C6800A6488A /* TableViewCells */,
-				25C56BED1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift */,
 			);
 			name = "Display Exercise";
 			sourceTree = "<group>";
@@ -397,7 +412,7 @@
 		258BFDF21BF01C9000A6488A /* Display Workout */ = {
 			isa = PBXGroup;
 			children = (
-				258BFDEC1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift */,
+				25F9E16D1E15808D00777826 /* DisplayWorkoutTableViewController.swift */,
 			);
 			name = "Display Workout";
 			sourceTree = "<group>";
@@ -405,8 +420,8 @@
 		258BFDF31BF01C9700A6488A /* Info */ = {
 			isa = PBXGroup;
 			children = (
-				2566DB771BE6776C0065507C /* InfoTableViewController.swift */,
-				25C225461BE4983600CA75C9 /* ExpandedInfoViewController.swift */,
+				25F9E1651E15807F00777826 /* ExpandedInfoViewController.swift */,
+				25F9E1661E15807F00777826 /* InfoTableViewController.swift */,
 			);
 			name = Info;
 			sourceTree = "<group>";
@@ -437,9 +452,9 @@
 		25C56BE71BEE777F008D7C6B /* Login/SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				251E74011C7F6BBD003AF509 /* CustomLoginViewController.swift */,
-				251E74021C7F6BBD003AF509 /* CustomSignUpViewController.swift */,
-				25E1075B1C7F8A490032BDCA /* InitialViewController.swift */,
+				25F9E1551E15804400777826 /* CustomLoginViewController.swift */,
+				25F9E1561E15804400777826 /* CustomSignUpViewController.swift */,
+				25F9E1571E15804400777826 /* InitialViewController.swift */,
 			);
 			name = Login/SignUp;
 			sourceTree = "<group>";
@@ -447,9 +462,7 @@
 		25C56BE81BEE77A0008D7C6B /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				251F1BFC1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift */,
-				258BFDF11BF01C8400A6488A /* Display Exercise */,
-				258BFDF21BF01C9000A6488A /* Display Workout */,
+				25F9E1611E15806100777826 /* NewXerciseViewController.swift */,
 				258BFDF31BF01C9700A6488A /* Info */,
 			);
 			name = Home;
@@ -458,9 +471,7 @@
 		25C56BE91BEE77E5008D7C6B /* My Xercises */ = {
 			isa = PBXGroup;
 			children = (
-				25EBC6071BE5E92D00F63DF7 /* MyXercisesTableViewController.swift */,
-				25C56BEB1BEE7886008D7C6B /* New Exercise */,
-				25C56BEC1BEE7891008D7C6B /* New Workout */,
+				25F9E1811E1580BC00777826 /* MyXercisesTableViewController.swift */,
 			);
 			name = "My Xercises";
 			sourceTree = "<group>";
@@ -468,24 +479,17 @@
 		25C56BEA1BEE7803008D7C6B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				25D62D061BE842D700B8F276 /* Entry.swift */,
-				25C56BDF1BEE7664008D7C6B /* Exercise.swift */,
-				25C56BE31BEE7688008D7C6B /* Workout.swift */,
-				2566DB7B1BE677D50065507C /* XerciseConstants.swift */,
-				25979FA11C73861F00D58B2F /* MuscleGroup.swift */,
-				25D62D021BE83E0D00B8F276 /* DataManager.swift */,
-				250A63231C75091D00F2D510 /* ExercisesByMuscleGroup.swift */,
-				2DD4771B1C82490F00943792 /* Macro.swift */,
-				2D29E0C51C860768003CA7D3 /* MacroGoal.swift */,
-				251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */,
-				251F1C041BDFD1DC00B1F3B0 /* Assets.xcassets */,
-				251F1C061BDFD1DC00B1F3B0 /* LaunchScreen.storyboard */,
-				25D757811E123B4100AC0FBD /* GoogleService-Info.plist */,
-				251F1C091BDFD1DC00B1F3B0 /* Info.plist */,
-				25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */,
-				25ACC23D1C4EACD2001040E8 /* Xercise-Bridging-Header.h */,
-				25598D201C8B9F5000A20EC5 /* UITextField+Shake.m */,
-				25598D1D1C8B9F5000A20EC5 /* Xercise-Bridging-Header.h */,
+				25F9E1C91E15817100777826 /* DataManager.swift */,
+				25F9E1E51E1581D500777826 /* XerciseConstants.swift */,
+				25F9E1B91E15812F00777826 /* Models */,
+				25F9E1BA1E15816000777826 /* Assets.xcassets */,
+				25F9E1BB1E15816000777826 /* Base.lproj */,
+				25F9E1ED1E1581FA00777826 /* Xercise.xcdatamodeld */,
+				25F9E1F21E15821700777826 /* GoogleService-Info.plist */,
+				25F9E1F31E15821700777826 /* Info.plist */,
+				25F9E1FA1E15823700777826 /* Xercise-Bridging-Header.h */,
+				25F9E1FF1E15825B00777826 /* UITextField+Shake.h */,
+				25F9E1FB1E15824F00777826 /* UITextField+Shake.m */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -493,7 +497,7 @@
 		25C56BEB1BEE7886008D7C6B /* New Exercise */ = {
 			isa = PBXGroup;
 			children = (
-				2566DB931BE698260065507C /* CreateNewExerciseTableViewController.swift */,
+				25F9E1851E1580D200777826 /* CreateNewExerciseTableViewController.swift */,
 				257417611C8559CC002C8BD4 /* TableView Cells */,
 			);
 			name = "New Exercise";
@@ -502,8 +506,8 @@
 		25C56BEC1BEE7891008D7C6B /* New Workout */ = {
 			isa = PBXGroup;
 			children = (
-				25D62CF71BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift */,
-				25D62CFE1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift */,
+				25F9E19D1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift */,
+				25F9E19E1E1580EC00777826 /* CreateNewWorkoutTableViewController.swift */,
 			);
 			name = "New Workout";
 			sourceTree = "<group>";
@@ -511,13 +515,37 @@
 		25D63E951C7FD50400C457C7 /* Macros */ = {
 			isa = PBXGroup;
 			children = (
-				25D63E971C7FD51B00C457C7 /* MacrosTableViewController.swift */,
-				25D63E961C7FD51B00C457C7 /* MacrosTableViewCell.swift */,
-				2DD477131C823C3E00943792 /* UIViewMacro.swift */,
-				2DD477171C823CA200943792 /* AddMacroPopupView.xib */,
-				2D29E0C11C85EFEC003CA7D3 /* MacroHeader.xib */,
+				25F9E1B11E15810B00777826 /* AddMacroPopupView.xib */,
+				25F9E1A51E15810200777826 /* MacroHeader.xib */,
+				25F9E1B51E15812200777826 /* UIViewMacro.swift */,
+				25F9E1A61E15810200777826 /* MacrosTableViewCell.swift */,
+				25F9E1A71E15810200777826 /* MacrosTableViewController.swift */,
 			);
 			name = Macros;
+			sourceTree = "<group>";
+		};
+		25F9E1B91E15812F00777826 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				25F9E1E91E1581EC00777826 /* ExercisesByMuscleGroup.swift */,
+				25F9E1DD1E1581C100777826 /* Macro.swift */,
+				25F9E1DE1E1581C100777826 /* MacroGoal.swift */,
+				25F9E1D91E15818600777826 /* Workout.swift */,
+				25F9E1D51E15817F00777826 /* MuscleGroup.swift */,
+				25F9E1CD1E15817700777826 /* Entry.swift */,
+				25F9E1CE1E15817700777826 /* Exercise.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		25F9E1BB1E15816000777826 /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				25F9E1BC1E15816000777826 /* LaunchScreen.storyboard */,
+				25F9E1BE1E15816000777826 /* Main.storyboard */,
+			);
+			name = Base.lproj;
+			path = Resources/Base.lproj;
 			sourceTree = "<group>";
 		};
 		C819F531C9CD5124AFBD4B70 /* Pods */ = {
@@ -655,13 +683,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				251F1C081BDFD1DC00B1F3B0 /* LaunchScreen.storyboard in Resources */,
-				251F1C051BDFD1DC00B1F3B0 /* Assets.xcassets in Resources */,
-				2DD477181C823CA200943792 /* AddMacroPopupView.xib in Resources */,
+				25F9E1C31E15816000777826 /* LaunchScreen.storyboard in Resources */,
+				25F9E1F41E15821700777826 /* GoogleService-Info.plist in Resources */,
+				25F9E1F71E15821700777826 /* Info.plist in Resources */,
+				25F9E1C61E15816000777826 /* Main.storyboard in Resources */,
+				25F9E1A81E15810200777826 /* MacroHeader.xib in Resources */,
 				25C225411BE48E3F00CA75C9 /* iTunesArtwork.png in Resources */,
-				251F1C001BDFD1DC00B1F3B0 /* Main.storyboard in Resources */,
-				2D29E0C21C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
-				25D757821E123B4100AC0FBD /* GoogleService-Info.plist in Resources */,
+				25F9E1C01E15816000777826 /* Assets.xcassets in Resources */,
+				25F9E1B21E15810B00777826 /* AddMacroPopupView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,9 +698,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DD477191C823CA200943792 /* AddMacroPopupView.xib in Resources */,
-				2D29E0C31C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
-				25D757831E123B4100AC0FBD /* GoogleService-Info.plist in Resources */,
+				25F9E1F81E15821700777826 /* Info.plist in Resources */,
+				25F9E1B31E15810B00777826 /* AddMacroPopupView.xib in Resources */,
+				25F9E1C11E15816000777826 /* Assets.xcassets in Resources */,
+				25F9E1C71E15816000777826 /* Main.storyboard in Resources */,
+				25F9E1C41E15816000777826 /* LaunchScreen.storyboard in Resources */,
+				25F9E1A91E15810200777826 /* MacroHeader.xib in Resources */,
+				25F9E1F51E15821700777826 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,9 +712,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DD4771A1C823CA200943792 /* AddMacroPopupView.xib in Resources */,
-				2D29E0C41C85EFEC003CA7D3 /* MacroHeader.xib in Resources */,
-				25D757841E123B4100AC0FBD /* GoogleService-Info.plist in Resources */,
+				25F9E1F91E15821700777826 /* Info.plist in Resources */,
+				25F9E1B41E15810B00777826 /* AddMacroPopupView.xib in Resources */,
+				25F9E1C21E15816000777826 /* Assets.xcassets in Resources */,
+				25F9E1C81E15816000777826 /* Main.storyboard in Resources */,
+				25F9E1C51E15816000777826 /* LaunchScreen.storyboard in Resources */,
+				25F9E1AA1E15810200777826 /* MacroHeader.xib in Resources */,
+				25F9E1F61E15821700777826 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,43 +867,43 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C56BEE1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */,
-				2566DB8C1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */,
-				251E74061C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */,
-				2DD477141C823C3E00943792 /* UIViewMacro.swift in Sources */,
-				25598D211C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */,
-				25E1075C1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
-				25EBC6081BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */,
-				258BFDED1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
-				25C56BE01BEE7664008D7C6B /* Exercise.swift in Sources */,
-				25D62CFF1BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
-				25B55C641C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
-				25D62CF81BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25F9E1671E15807F00777826 /* ExpandedInfoViewController.swift in Sources */,
+				25F9E19F1E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */,
+				25F9E16E1E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */,
+				25F9E17B1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */,
+				25F9E1FC1E15824F00777826 /* UITextField+Shake.m in Sources */,
+				25F9E1821E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */,
 				25300A7D1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
-				25979FA21C73861F00D58B2F /* MuscleGroup.swift in Sources */,
-				2566DB901BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */,
-				25D62D031BE83E0D00B8F276 /* DataManager.swift in Sources */,
-				2566DB7C1BE677D50065507C /* XerciseConstants.swift in Sources */,
-				2566DB881BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */,
-				251E74031C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */,
-				25D63E9B1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */,
+				25F9E1581E15804400777826 /* CustomLoginViewController.swift in Sources */,
+				25F9E1E21E1581C100777826 /* MacroGoal.swift in Sources */,
+				25F9E15E1E15804400777826 /* InitialViewController.swift in Sources */,
+				25F9E1AE1E15810200777826 /* MacrosTableViewController.swift in Sources */,
+				25F9E1B61E15812200777826 /* UIViewMacro.swift in Sources */,
+				25F9E1CF1E15817700777826 /* Entry.swift in Sources */,
+				25F9E19A1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */,
+				25F9E18E1E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */,
 				25300A801C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
-				2566DB801BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
-				2566DB781BE6776C0065507C /* InfoTableViewController.swift in Sources */,
-				2566DB941BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
-				2D29E0C61C860768003CA7D3 /* MacroGoal.swift in Sources */,
-				251F1BFD1BDFD1DC00B1F3B0 /* NewXerciseViewController.swift in Sources */,
-				25C56BFA1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
-				25C56BF61BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
-				25C56BE41BEE7688008D7C6B /* Workout.swift in Sources */,
+				25F9E1DF1E1581C100777826 /* Macro.swift in Sources */,
+				25F9E17E1E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */,
+				25F9E1EF1E1581FA00777826 /* Xercise.xcdatamodeld in Sources */,
+				25F9E15B1E15804400777826 /* CustomSignUpViewController.swift in Sources */,
+				25F9E1DA1E15818600777826 /* Workout.swift in Sources */,
+				25F9E1621E15806100777826 /* NewXerciseViewController.swift in Sources */,
+				25F9E1D21E15817700777826 /* Exercise.swift in Sources */,
+				25F9E1AB1E15810200777826 /* MacrosTableViewCell.swift in Sources */,
+				25F9E1911E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */,
 				251F1BFB1BDFD1DC00B1F3B0 /* AppDelegate.swift in Sources */,
-				250A63241C75091D00F2D510 /* ExercisesByMuscleGroup.swift in Sources */,
-				2DD4771C1C82490F00943792 /* Macro.swift in Sources */,
-				2566DB841BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
-				25D63E981C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */,
-				25D62D071BE842D700B8F276 /* Entry.swift in Sources */,
-				25C56BF21BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
-				25C225471BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
+				25F9E1EA1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */,
+				25F9E1941E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */,
+				25F9E1E61E1581D500777826 /* XerciseConstants.swift in Sources */,
+				25F9E1861E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */,
+				25F9E1781E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1CA1E15817100777826 /* DataManager.swift in Sources */,
+				25F9E1A21E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25F9E16A1E15807F00777826 /* InfoTableViewController.swift in Sources */,
+				25F9E1D61E15817F00777826 /* MuscleGroup.swift in Sources */,
+				25F9E1721E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */,
+				25F9E1971E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,43 +911,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25D62CF91BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */,
-				251E74041C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */,
-				2566DB911BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */,
-				25C56BEF1BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */,
-				25598D221C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */,
-				25C56BE51BEE7688008D7C6B /* Workout.swift in Sources */,
-				251E73FF1C7F676D003AF509 /* ExercisesByMuscleGroup.swift in Sources */,
-				25D63E9C1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */,
-				2566DB891BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1DB1E15818600777826 /* Workout.swift in Sources */,
+				25F9E1D01E15817700777826 /* Entry.swift in Sources */,
+				25F9E1AC1E15810200777826 /* MacrosTableViewCell.swift in Sources */,
+				25F9E1F01E1581FA00777826 /* Xercise.xcdatamodeld in Sources */,
+				25F9E1921E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */,
+				25F9E1A01E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */,
+				25F9E17F1E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */,
+				25F9E1871E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */,
+				25F9E1E71E1581D500777826 /* XerciseConstants.swift in Sources */,
+				25F9E18F1E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1FD1E15824F00777826 /* UITextField+Shake.m in Sources */,
 				25D62CFB1BE82C2700B8F276 /* AppDelegate.swift in Sources */,
-				25C56BE11BEE7664008D7C6B /* Exercise.swift in Sources */,
-				25B55C651C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
+				25F9E16B1E15807F00777826 /* InfoTableViewController.swift in Sources */,
 				25300A7E1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
-				2566DB811BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
-				25D62D081BE842D700B8F276 /* Entry.swift in Sources */,
-				2566DB951BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
-				25C56BFB1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
-				25D62D001BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
-				25E1075D1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
-				25C56BF71BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1591E15804400777826 /* CustomLoginViewController.swift in Sources */,
+				25F9E1B71E15812200777826 /* UIViewMacro.swift in Sources */,
+				25F9E1981E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */,
+				25F9E15F1E15804400777826 /* InitialViewController.swift in Sources */,
+				25F9E1791E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1A31E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25F9E1E31E1581C100777826 /* MacroGoal.swift in Sources */,
+				25F9E19B1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */,
 				25300A811C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
-				251E74071C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */,
-				258BFDEE1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
-				2DD4771D1C82490F00943792 /* Macro.swift in Sources */,
-				2DD477151C823C3E00943792 /* UIViewMacro.swift in Sources */,
-				2D29E0C71C860768003CA7D3 /* MacroGoal.swift in Sources */,
-				2566DB7D1BE677D50065507C /* XerciseConstants.swift in Sources */,
-				25D62D041BE83E0D00B8F276 /* DataManager.swift in Sources */,
-				25D63E991C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */,
-				2566DB851BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
-				25C225481BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
-				2566DB791BE6776C0065507C /* InfoTableViewController.swift in Sources */,
-				25C56BF31BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
-				25E17B121C768A19009F5D17 /* MuscleGroup.swift in Sources */,
-				25EBC6091BE5E92D00F63DF7 /* MyXercisesTableViewController.swift in Sources */,
+				25F9E17C1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */,
+				25F9E1831E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */,
+				25F9E1D31E15817700777826 /* Exercise.swift in Sources */,
+				25F9E1AF1E15810200777826 /* MacrosTableViewController.swift in Sources */,
+				25F9E15C1E15804400777826 /* CustomSignUpViewController.swift in Sources */,
+				25F9E16F1E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */,
+				25F9E1631E15806100777826 /* NewXerciseViewController.swift in Sources */,
+				25F9E1EB1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */,
+				25F9E1E01E1581C100777826 /* Macro.swift in Sources */,
+				25F9E1731E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */,
+				25F9E1681E15807F00777826 /* ExpandedInfoViewController.swift in Sources */,
+				25F9E1951E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */,
+				25F9E1D71E15817F00777826 /* MuscleGroup.swift in Sources */,
+				25F9E1CB1E15817100777826 /* DataManager.swift in Sources */,
 				251F1C131BDFD1DC00B1F3B0 /* XerciseTests.swift in Sources */,
-				2566DB8D1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,43 +956,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25D62CFA1BE82BA400B8F276 /* CreateNewWorkoutTableViewController.swift in Sources */,
-				251E74051C7F6BBD003AF509 /* CustomLoginViewController.swift in Sources */,
-				2566DB921BE691F00065507C /* ExerciseSetsTableViewCell.swift in Sources */,
-				25C56BF01BEE8DD3008D7C6B /* DisplayExerciseTableViewController.swift in Sources */,
-				25598D231C8B9F5000A20EC5 /* UITextField+Shake.m in Sources */,
-				25C56BE61BEE7688008D7C6B /* Workout.swift in Sources */,
-				251E74001C7F676E003AF509 /* ExercisesByMuscleGroup.swift in Sources */,
-				25D63E9D1C7FD51B00C457C7 /* MacrosTableViewController.swift in Sources */,
-				2566DB8A1BE691D80065507C /* ExerciseDescriptionTableViewCell.swift in Sources */,
-				2566DB821BE691AD0065507C /* ExerciseTitleTableViewCell.swift in Sources */,
-				25C56BE21BEE7664008D7C6B /* Exercise.swift in Sources */,
-				25B55C661C825C0B002A5182 /* Xercise.xcdatamodeld in Sources */,
+				25F9E1DC1E15818600777826 /* Workout.swift in Sources */,
+				25F9E1D11E15817700777826 /* Entry.swift in Sources */,
+				25F9E1AD1E15810200777826 /* MacrosTableViewCell.swift in Sources */,
+				25F9E1F11E1581FA00777826 /* Xercise.xcdatamodeld in Sources */,
+				25F9E1931E1580DF00777826 /* ExerciseImageTableViewCell.swift in Sources */,
+				25F9E1A11E1580EC00777826 /* AddExerciseFromSavedTableViewController.swift in Sources */,
+				25F9E1801E1580A500777826 /* DisplayExerciseShareTableViewCell.swift in Sources */,
+				25F9E1881E1580D200777826 /* CreateNewExerciseTableViewController.swift in Sources */,
+				25F9E1E81E1581D500777826 /* XerciseConstants.swift in Sources */,
+				25F9E1901E1580DF00777826 /* ExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1FE1E15824F00777826 /* UITextField+Shake.m in Sources */,
+				25F9E16C1E15807F00777826 /* InfoTableViewController.swift in Sources */,
 				25300A7F1C9BB1280085F98E /* IGLDropDownItem.m in Sources */,
+				25F9E15A1E15804400777826 /* CustomLoginViewController.swift in Sources */,
 				25D62CFC1BE82C2800B8F276 /* AppDelegate.swift in Sources */,
-				25D62D091BE842D700B8F276 /* Entry.swift in Sources */,
-				2566DB961BE698260065507C /* CreateNewExerciseTableViewController.swift in Sources */,
-				25C56BFC1BEE8E55008D7C6B /* DisplayExerciseShareTableViewCell.swift in Sources */,
-				25D62D011BE82FC600B8F276 /* AddExerciseFromSavedTableViewController.swift in Sources */,
-				25E1075E1C7F8A490032BDCA /* InitialViewController.swift in Sources */,
-				25C56BF81BEE8E47008D7C6B /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1B81E15812200777826 /* UIViewMacro.swift in Sources */,
+				25F9E1991E1580DF00777826 /* ExerciseSetsTableViewCell.swift in Sources */,
+				25F9E1601E15804400777826 /* InitialViewController.swift in Sources */,
+				25F9E17A1E1580A500777826 /* DisplayExerciseDescriptionTableViewCell.swift in Sources */,
+				25F9E1A41E1580EC00777826 /* CreateNewWorkoutTableViewController.swift in Sources */,
+				25F9E1E41E1581C100777826 /* MacroGoal.swift in Sources */,
+				25F9E19C1E1580DF00777826 /* ExerciseTitleTableViewCell.swift in Sources */,
 				25300A821C9BB1280085F98E /* IGLDropDownMenu.m in Sources */,
-				251E74081C7F6BBD003AF509 /* CustomSignUpViewController.swift in Sources */,
-				258BFDEF1BF01C5E00A6488A /* DisplayWorkoutTableViewController.swift in Sources */,
-				2DD4771E1C82490F00943792 /* Macro.swift in Sources */,
-				2DD477161C823C3E00943792 /* UIViewMacro.swift in Sources */,
-				2D29E0C81C860768003CA7D3 /* MacroGoal.swift in Sources */,
-				2566DB7E1BE677D50065507C /* XerciseConstants.swift in Sources */,
-				25D62D051BE83E0D00B8F276 /* DataManager.swift in Sources */,
-				25D63E9A1C7FD51B00C457C7 /* MacrosTableViewCell.swift in Sources */,
-				2566DB861BE691CA0065507C /* ExerciseImageTableViewCell.swift in Sources */,
-				25C225491BE4983600CA75C9 /* ExpandedInfoViewController.swift in Sources */,
-				2566DB7A1BE6776C0065507C /* InfoTableViewController.swift in Sources */,
-				25C56BF41BEE8E3A008D7C6B /* DisplayExerciseImageTableViewCell.swift in Sources */,
-				25E17B131C768A19009F5D17 /* MuscleGroup.swift in Sources */,
+				25F9E17D1E1580A500777826 /* DisplayExerciseImageTableViewCell.swift in Sources */,
+				25F9E1841E1580BC00777826 /* MyXercisesTableViewController.swift in Sources */,
+				25F9E1D41E15817700777826 /* Exercise.swift in Sources */,
+				25F9E1B01E15810200777826 /* MacrosTableViewController.swift in Sources */,
+				25F9E15D1E15804400777826 /* CustomSignUpViewController.swift in Sources */,
+				25F9E1701E15808D00777826 /* DisplayWorkoutTableViewController.swift in Sources */,
+				25F9E1641E15806100777826 /* NewXerciseViewController.swift in Sources */,
+				25F9E1EC1E1581EC00777826 /* ExercisesByMuscleGroup.swift in Sources */,
+				25F9E1E11E1581C100777826 /* Macro.swift in Sources */,
+				25F9E1741E15809C00777826 /* DisplayExerciseTableViewController.swift in Sources */,
+				25F9E1691E15807F00777826 /* ExpandedInfoViewController.swift in Sources */,
+				25F9E1961E1580DF00777826 /* ExerciseRepsTableViewCell.swift in Sources */,
+				25F9E1D81E15817F00777826 /* MuscleGroup.swift in Sources */,
+				25F9E1CC1E15817100777826 /* DataManager.swift in Sources */,
 				251F1C1E1BDFD1DC00B1F3B0 /* XerciseUITests.swift in Sources */,
-				25D62CFD1BE82C3600B8F276 /* MyXercisesTableViewController.swift in Sources */,
-				2566DB8E1BE691E40065507C /* ExerciseRepsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -974,20 +1013,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		251F1BFE1BDFD1DC00B1F3B0 /* Main.storyboard */ = {
+		25F9E1BC1E15816000777826 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				251F1BFF1BDFD1DC00B1F3B0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		251F1C061BDFD1DC00B1F3B0 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				251F1C071BDFD1DC00B1F3B0 /* Base */,
+				25F9E1BD1E15816000777826 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		25F9E1BE1E15816000777826 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25F9E1BF1E15816000777826 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1092,12 +1131,12 @@
 					"$(PROJECT_DIR)/parse-library-1-2",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Xercise/Info.plist;
+				INFOPLIST_FILE = Xercise/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KyleBlazier.Xercise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Xercise/Xercise-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Xercise/Resources/Xercise-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 			};
@@ -1116,12 +1155,12 @@
 					"$(PROJECT_DIR)/parse-library-1-2",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Xercise/Info.plist;
+				INFOPLIST_FILE = Xercise/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KyleBlazier.Xercise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Xercise/Xercise-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Xercise/Resources/Xercise-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
@@ -1254,13 +1293,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		25B55C621C825C0B002A5182 /* Xercise.xcdatamodeld */ = {
+		25F9E1ED1E1581FA00777826 /* Xercise.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				25B55C631C825C0B002A5182 /* Xercise.xcdatamodel */,
+				25F9E1EE1E1581FA00777826 /* Xercise.xcdatamodel */,
 			);
-			currentVersion = 25B55C631C825C0B002A5182 /* Xercise.xcdatamodel */;
-			path = Xercise.xcdatamodeld;
+			currentVersion = 25F9E1EE1E1581FA00777826 /* Xercise.xcdatamodel */;
+			name = Xercise.xcdatamodeld;
+			path = Resources/Xercise.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
